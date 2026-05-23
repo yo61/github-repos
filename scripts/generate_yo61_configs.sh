@@ -137,7 +137,7 @@ for name in "${REPOS[@]}"; do
     [[ "${allow_rebase_merge}"     == "false"              ]] && echo "allow_rebase_merge: false"
     [[ "${allow_auto_merge}"       == "true"               ]] && echo "allow_auto_merge: true"
     [[ "${allow_update_branch}"    == "false"              ]] && echo "allow_update_branch: false"
-    [[ "${delete_branch_on_merge}" == "true"               ]] && echo "delete_branch_on_merge: true"
+    [[ "${delete_branch_on_merge}" == "false"              ]] && echo "delete_branch_on_merge: false"
     # Commit-message fields only relevant when the matching merge style is allowed.
     [[ "${allow_merge_commit}" == "true"  && "${merge_commit_message}"  != "PR_TITLE"           ]] && echo "merge_commit_message: ${merge_commit_message}"
     [[ "${allow_merge_commit}" == "true"  && "${merge_commit_title}"    != "MERGE_MESSAGE"      ]] && echo "merge_commit_title: ${merge_commit_title}"

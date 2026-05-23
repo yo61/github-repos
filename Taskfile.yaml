@@ -55,7 +55,7 @@ tasks:
     desc: Sync the lockfile for all supported platforms
     cmds:
     - |
-      stategraph tf providers lock \
+      terraform providers lock \
         -platform=linux_amd64 \
         -platform=darwin_amd64 \
         -platform=linux_arm64 \

@@ -114,7 +114,7 @@ EOT
 variable "builtin_ruleset_names" {
   description = "List of built-in ruleset names to be applied"
   type        = list(string)
-  default     = []
+  default     = ["default_branch"]
   nullable    = false
 }
 
@@ -150,10 +150,28 @@ variable "default_branch" {
   default     = "main"
 }
 
+variable "default_branch_ruleset_bypass_actors" {
+  description = "Actors permitted to bypass the default_branch built-in ruleset. Empty means no bypass."
+  type = list(object({
+    actor_id    = number
+    actor_type  = string
+    bypass_mode = string
+  }))
+  default  = []
+  nullable = false
+}
+
+variable "default_branch_ruleset_required_approving_review_count" {
+  description = "Number of approving reviews required on PRs targeting the default branch when the default_branch built-in ruleset is enabled."
+  type        = number
+  default     = 0
+  nullable    = false
+}
+
 variable "delete_branch_on_merge" {
-  description = "Automatically delete head branch after a pull request is merged. Defaults to false."
+  description = "Automatically delete head branch after a pull request is merged."
   type        = bool
-  default     = false
+  default     = true
   nullable    = false
 }
 

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "irssi-xmpp is an irssi plugin to connect to the Jabber network."
+has_projects: true
+homepage_url: "http://cybione.org/~irssi-xmpp/"
+name: irssi-xmpp
+visibility: public

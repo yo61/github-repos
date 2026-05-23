@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "VMware vSphere provider for Vagrant"
+has_projects: true
+has_wiki: true
+name: vagrant-vsphere
+visibility: public

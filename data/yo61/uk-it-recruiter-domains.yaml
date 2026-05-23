@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "List of the domains of UK IT recruiters & some scripts for processing it."
+has_projects: true
+has_wiki: true
+name: uk-it-recruiter-domains
+visibility: public

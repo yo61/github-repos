@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Example of a puppet profile class wrapping a 3rd-party activemq module"
+has_projects: true
+has_wiki: true
+name: demo_profile_activemq
+visibility: public
+vulnerability_alerts: true

@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: develop
+description: "A sandbox to play with multiple Riak nodes via Vagrant."
+has_projects: true
+name: vagrant-riak-cluster
+visibility: public

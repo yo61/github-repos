@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A shell script to install puppet on multiple distros"
+has_projects: true
+has_wiki: true
+name: puppet-install-shell
+visibility: public

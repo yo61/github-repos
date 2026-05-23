@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Implementation of the Trello API for Ruby"
+has_projects: true
+has_wiki: true
+name: ruby-trello
+visibility: public

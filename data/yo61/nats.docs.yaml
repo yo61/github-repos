@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "NATS.io Documentation on Gitbook"
+has_projects: true
+homepage_url: "https://docs.nats.io"
+name: nats.docs
+visibility: public

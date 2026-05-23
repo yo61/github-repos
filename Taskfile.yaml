@@ -1,0 +1,62 @@
+---
+# https://taskfile.dev
+
+version: '3'
+
+set: [errexit, nounset, pipefail]
+
+vars:
+  PLAN_FILE: tfplan.json
+
+tasks:
+  default:
+    cmds:
+    - task --list
+    silent: true
+
+  plan:
+    desc: Generate a plan file via `stategraph tf plan --out {{.PLAN_FILE}}`
+    cmds:
+    - stategraph tf plan --out {{.PLAN_FILE}}
+
+  plan:repo:
+    desc: Generate a plan targetting one or more repos (REPOS="org/repo ...")
+    requires:
+      vars: [REPOS]
+    vars:
+      TARGETS:
+        sh: |
+          for target in {{.REPOS}} ; do
+            org="${target%%/*}"
+            repo="${target#*/}"
+            printf " -target='module.org_%s.module.repo[\"%s\"]'" "$org" "$repo"
+          done
+    cmds:
+    - stategraph tf plan --out {{.PLAN_FILE}}{{.TARGETS}}
+
+  apply:
+    desc: Apply the previously generated plan file
+    cmds:
+    - stategraph tf apply {{.PLAN_FILE}}
+
+  state:list:
+    desc: List resources in state
+    cmds:
+    - stategraph tf state list
+
+  state:show:
+    desc: Show state for one resource
+    requires:
+      vars: [RESOURCE]
+    cmds:
+    - stategraph tf state show '{{.RESOURCE}}'
+
+  lockfile:sync:
+    desc: Sync the lockfile for all supported platforms
+    cmds:
+    - |
+      stategraph tf providers lock \
+        -platform=linux_amd64 \
+        -platform=darwin_amd64 \
+        -platform=linux_arm64 \
+        -platform=darwin_arm64

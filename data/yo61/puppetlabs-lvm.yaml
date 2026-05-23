@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet Module to manage LVM"
+has_projects: true
+homepage_url: "https://forge.puppetlabs.com/puppetlabs/lvm"
+name: puppetlabs-lvm
+visibility: public

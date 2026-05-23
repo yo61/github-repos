@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+has_projects: true
+has_wiki: true
+name: puppet-demo-roles-profiles
+visibility: public
+vulnerability_alerts: true

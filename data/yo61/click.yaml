@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Python composable command line utility"
+has_projects: true
+homepage_url: "http://click.pocoo.org/"
+name: click
+visibility: public

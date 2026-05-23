@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Simple command-line parsing for Bash scripts"
+has_projects: true
+name: ghettopt
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Ruby client library for interacting with PuppetDB API"
+has_projects: true
+has_wiki: true
+name: puppetdb-ruby
+visibility: public

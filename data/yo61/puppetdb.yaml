@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Centralized Puppet Storage"
+has_projects: true
+homepage_url: "http://docs.puppetlabs.com/puppetdb"
+name: puppetdb
+visibility: public

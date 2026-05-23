@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Sensu community plugins for checks, handlers, & mutators."
+has_projects: true
+name: sensu-community-plugins
+visibility: public

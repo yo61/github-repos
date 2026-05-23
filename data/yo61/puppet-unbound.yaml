@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet module for deploying the swiss-army of DNS, Unbound"
+has_projects: true
+name: puppet-unbound
+visibility: public

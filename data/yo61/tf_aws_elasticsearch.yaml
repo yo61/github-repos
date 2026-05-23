@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Terraform module which creates AWS Elasticsearch resources"
+has_projects: true
+has_wiki: true
+homepage_url: "http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/"
+name: tf_aws_elasticsearch
+visibility: public

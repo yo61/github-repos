@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Exporter for machine metrics"
+has_projects: true
+homepage_url: "http://prometheus.io/"
+name: node_exporter
+visibility: public

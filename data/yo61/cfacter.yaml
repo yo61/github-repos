@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Collect and display system facts from a C++ library."
+has_projects: true
+has_wiki: true
+homepage_url: "https://tickets.puppetlabs.com/browse/CFACT"
+name: cfacter
+visibility: public

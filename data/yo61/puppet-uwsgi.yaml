@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet module to manage uWSGI"
+has_projects: true
+has_wiki: true
+name: puppet-uwsgi
+visibility: public

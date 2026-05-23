@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "easy to use retry decorator in python"
+has_projects: true
+has_wiki: true
+name: retry
+visibility: public

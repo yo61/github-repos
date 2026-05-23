@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Bits of AWS code that may be of use to others..."
+has_projects: true
+has_wiki: true
+name: aws-mojo
+visibility: public

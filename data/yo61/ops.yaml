@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Building special snowflakes consistently"
+has_projects: true
+has_wiki: true
+name: ops
+visibility: public

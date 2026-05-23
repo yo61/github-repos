@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Hiera hierarchy module for templating `hiera.yaml`"
+has_projects: true
+has_wiki: true
+name: hunner-hiera
+visibility: public

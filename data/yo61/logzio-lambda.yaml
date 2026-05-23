@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A Lambda function to stream logs to Logz.io"
+has_projects: true
+has_wiki: true
+name: logzio-lambda
+visibility: public

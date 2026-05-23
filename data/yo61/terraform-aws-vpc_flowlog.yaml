@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "reusable Terraform module for setting up AWS VPC flow logs"
+has_projects: true
+name: terraform-aws-vpc_flowlog
+visibility: public

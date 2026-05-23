@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A slightly improved pre-commit hook for git"
+has_projects: true
+has_wiki: true
+homepage_url: "http://jish.github.com/pre-commit/"
+name: pre-commit
+visibility: public

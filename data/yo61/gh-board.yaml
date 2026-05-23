@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: ":octocat: Serverless Kanban for GitHub Issues using gh-pages"
+has_projects: true
+has_wiki: true
+homepage_url: "http://philschatz.github.io/gh-board/"
+name: gh-board
+visibility: public

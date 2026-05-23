@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Collect and display system facts"
+has_projects: true
+homepage_url: "https://tickets.puppetlabs.com/browse/FACT"
+name: facter
+visibility: public

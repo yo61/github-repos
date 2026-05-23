@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "An experimental puppet directory type"
+has_projects: true
+has_wiki: true
+name: puppet-directory
+visibility: public

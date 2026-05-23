@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "a ruby interface to GnuPG Made Easy (GPGME)."
+has_projects: true
+has_wiki: true
+name: ruby-gpgme
+visibility: public

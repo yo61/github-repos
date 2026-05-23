@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "AWS Lambda function to copy a DB snapshot"
+has_projects: true
+has_wiki: true
+name: lambda-copy-db-snapshot
+visibility: public
+vulnerability_alerts: true

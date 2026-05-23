@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "S3 back end for Hiera"
+has_projects: true
+has_wiki: true
+name: hiera-s3
+visibility: public

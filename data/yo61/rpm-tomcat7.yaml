@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "An RPM spec file to install Tomcat 7.0. "
+has_projects: true
+has_wiki: true
+name: rpm-tomcat7
+visibility: public

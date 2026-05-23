@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A puppet module for configuring postfix for amazon_ses"
+has_projects: true
+has_wiki: true
+name: amazon_ses
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Plugins for The Marionette Collective"
+has_projects: true
+homepage_url: "http://mcollective-plugins.googlecode.com/"
+name: mc-plugins
+visibility: public

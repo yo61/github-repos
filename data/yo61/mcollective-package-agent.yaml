@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "MCollective Agent to manage the OS Packages"
+has_projects: true
+name: mcollective-package-agent
+visibility: public

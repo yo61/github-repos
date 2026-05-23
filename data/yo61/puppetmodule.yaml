@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A Puppet configuration manager for puppet agent, master, and puppetdb"
+has_projects: true
+homepage_url: "http://forge.puppetlabs.com/stephenrjohnson/puppet"
+name: puppetmodule
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Performance test for comparison of AWS versus Wasabi S3 systems."
+has_projects: true
+has_wiki: true
+name: s3-benchmark
+visibility: public

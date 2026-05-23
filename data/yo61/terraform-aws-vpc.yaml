@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "An example of Terraform which brings up a VPC with Public/Private Subnets"
+has_projects: true
+name: terraform-aws-vpc
+visibility: public

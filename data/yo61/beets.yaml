@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "music library manager and MusicBrainz tagger"
+has_projects: true
+has_wiki: true
+homepage_url: "http://beets.io/"
+name: beets
+visibility: public

@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Data composition types for puppet"
+has_projects: true
+has_wiki: true
+homepage_url: "http://forge.puppetlabs.com/richardc/datacat"
+name: puppet-datacat
+visibility: public

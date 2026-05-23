@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Distribution of plugins for MCollective as found in Puppet 4"
+has_projects: true
+has_wiki: true
+name: mcollective-choria
+visibility: public

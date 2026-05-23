@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Enhanced C implementation of Carbon relay, aggregator and rewriter"
+has_projects: true
+has_wiki: true
+name: carbon-c-relay
+visibility: public

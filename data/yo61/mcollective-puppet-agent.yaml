@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "MCollective Agent to manage the Puppet Agent"
+has_projects: true
+name: mcollective-puppet-agent
+visibility: public

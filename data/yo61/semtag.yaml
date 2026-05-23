@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A sematic tag script for Git"
+has_projects: true
+has_wiki: true
+name: semtag
+visibility: public

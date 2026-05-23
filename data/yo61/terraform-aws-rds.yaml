@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Terraform module which creates RDS resources on AWS"
+has_projects: true
+has_wiki: true
+homepage_url: "https://registry.terraform.io/modules/terraform-aws-modules/rds/aws"
+name: terraform-aws-rds
+visibility: public

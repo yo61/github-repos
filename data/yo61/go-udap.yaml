@@ -1,0 +1,12 @@
+---
+builtin_ruleset_names:
+  - default_branch
+collaborators:
+  users:
+    - {permission: admin, username: robinbowes}
+create_default_branch: true
+default_branch: main
+delete_branch_on_merge: true
+has_issues: true
+name: go-udap
+visibility: public

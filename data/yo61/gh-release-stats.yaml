@@ -1,0 +1,11 @@
+---
+allow_auto_merge: true
+allow_merge_commit: false
+allow_update_branch: false
+delete_branch_on_merge: true
+description: "Print GitHub release-asset download stats as a text table or JSON."
+has_projects: true
+has_wiki: true
+name: gh-release-stats
+visibility: public
+vulnerability_alerts: true

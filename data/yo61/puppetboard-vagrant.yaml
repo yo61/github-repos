@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A vagrant file and puppet manifest to get a puppetboard instance up and running"
+has_projects: true
+has_wiki: true
+name: puppetboard-vagrant
+visibility: public

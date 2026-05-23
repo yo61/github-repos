@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A Vagrant plugin to install Puppet modules using Librarian-Puppet."
+has_projects: true
+has_wiki: true
+name: vagrant-librarian-puppet
+visibility: public

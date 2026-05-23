@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A lite development env for BOSH"
+has_projects: true
+name: bosh-lite
+visibility: public

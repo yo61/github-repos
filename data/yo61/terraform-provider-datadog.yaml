@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Terraform Datadog provider"
+has_projects: true
+homepage_url: "https://www.terraform.io/docs/providers/datadog/"
+name: terraform-provider-datadog
+visibility: public

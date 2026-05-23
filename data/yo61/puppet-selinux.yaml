@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet Module to manage SELinux on RHEL machines"
+has_projects: true
+has_wiki: true
+homepage_url: "http://www.frymanet.com"
+name: puppet-selinux
+visibility: public

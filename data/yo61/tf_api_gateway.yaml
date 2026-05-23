@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Python Wrapper gateway for the Terraform Enterprise API"
+has_projects: true
+has_wiki: true
+name: tf_api_gateway
+visibility: public

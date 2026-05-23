@@ -1,0 +1,6 @@
+---
+allow_update_branch: false
+description: "Tool to create friendly wrapping command lines over operations tools"
+has_projects: true
+name: appbuilder
+visibility: public

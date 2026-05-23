@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet module for Jenkins"
+has_projects: true
+has_wiki: true
+homepage_url: "http://forge.puppetlabs.com/rtyler/jenkins"
+name: puppet-jenkins
+visibility: public

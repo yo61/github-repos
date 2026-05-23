@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A Vagrant provider for VMware vCenter®"
+has_projects: true
+has_wiki: true
+name: vagrant-vcenter
+visibility: public

@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A load-generation and testing tool for basically whatever you can write a returning Erlang function for."
+has_projects: true
+name: basho_bench
+visibility: public

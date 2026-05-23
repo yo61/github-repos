@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Installs and configures NFS server and clients"
+has_projects: true
+has_wiki: true
+homepage_url: "https://forge.puppetlabs.com/derdanne/nfs"
+name: puppet-nfs
+visibility: public

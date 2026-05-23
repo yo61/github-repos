@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Ruby wrapper and CLI for GitLab REST API"
+has_projects: true
+homepage_url: "http://narkoz.github.io/gitlab"
+name: gitlab
+visibility: public

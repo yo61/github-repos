@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Terraform module which creates EC2-VPC security groups on AWS"
+has_projects: true
+has_wiki: true
+homepage_url: "https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws"
+name: terraform-aws-security-group
+visibility: public

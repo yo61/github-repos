@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Center for Internet Security Linux Benchmark implementation for PuppetLabs"
+has_projects: true
+has_wiki: true
+name: cis-puppet
+visibility: public

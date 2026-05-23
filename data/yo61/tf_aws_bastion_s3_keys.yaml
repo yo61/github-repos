@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A Terraform module for creating bastion host on AWS EC2 and populate its ~/.ssh/authorized_keys with public keys from bucket"
+has_projects: true
+has_wiki: true
+name: tf_aws_bastion_s3_keys
+visibility: public

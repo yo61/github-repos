@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: develop
+description: "Universal Command Line Interface for Amazon Web Services"
+has_projects: true
+name: aws-cli
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A demonstration of a continuous integration pipeline focused on security testing"
+has_projects: true
+has_wiki: true
+name: jenkins-example
+visibility: public

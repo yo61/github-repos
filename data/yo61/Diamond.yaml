@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Diamond is a python daemon that collects system metrics and publishes them to Graphite (and others). It is capable of collecting cpu, memory, network, i/o, load and disk metrics. Additionally, it features an API for implementing custom collectors for gathering metrics from almost any source."
+has_projects: true
+has_wiki: true
+name: Diamond
+visibility: public

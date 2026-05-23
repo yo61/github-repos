@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "The missing package manager for OS X."
+has_projects: true
+has_wiki: true
+homepage_url: "http://brew.sh"
+name: homebrew
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: public/7.8
+description: "Server for Logitech Squeezebox players. This server is also called Logitech Media Server"
+has_projects: true
+has_wiki: true
+name: slimserver
+visibility: public

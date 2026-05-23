@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "vCloud Air API bindings for Golang"
+has_projects: true
+has_wiki: true
+name: vmware-govcd
+visibility: public

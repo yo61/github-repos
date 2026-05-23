@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Backup everything from Trello: boards, lists, cards and attachments"
+has_projects: true
+has_wiki: true
+name: trello-full-backup
+visibility: public

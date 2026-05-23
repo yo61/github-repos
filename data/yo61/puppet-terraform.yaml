@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Installs terraform according to the README instructions"
+has_projects: true
+has_wiki: true
+name: puppet-terraform
+visibility: public

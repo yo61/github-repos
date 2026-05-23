@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Shared test suite for OS hardening  - InSpec Profile"
+has_projects: true
+has_wiki: true
+homepage_url: "http://dev-sec.io/"
+name: tests-os-hardening
+visibility: public

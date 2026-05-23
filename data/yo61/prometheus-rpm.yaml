@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Stuff to build a prometheus.io rpm until provided by the project itself"
+has_projects: true
+has_wiki: true
+name: prometheus-rpm
+visibility: public

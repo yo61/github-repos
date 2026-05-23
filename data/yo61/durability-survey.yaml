@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A list of things to ask about the state of a company"
+has_projects: true
+has_wiki: true
+name: durability-survey
+visibility: public

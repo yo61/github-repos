@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "The repository used for Otto getting started guide."
+has_projects: true
+has_wiki: true
+name: otto-getting-started
+visibility: public

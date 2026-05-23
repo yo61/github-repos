@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+description: "Python3 client for NATS"
+has_projects: true
+has_wiki: true
+homepage_url: "https://nats-io.github.io/nats.py/"
+name: nats.py
+visibility: public

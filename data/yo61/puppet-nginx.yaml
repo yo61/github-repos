@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet Module to manage NGINX on various UNIXes"
+has_projects: true
+name: puppet-nginx
+visibility: public

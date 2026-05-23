@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Shutdown agent for MCollective"
+has_projects: true
+has_wiki: true
+name: mcollective-shutdown
+visibility: public

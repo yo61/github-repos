@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "CiviCRM (Core Application and Framework)"
+has_projects: true
+has_wiki: true
+name: civicrm-core
+visibility: public

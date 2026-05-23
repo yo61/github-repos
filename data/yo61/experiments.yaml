@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "random experiments"
+has_projects: true
+has_wiki: true
+name: experiments
+visibility: public

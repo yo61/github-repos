@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "qpsmtpd is a flexible smtpd daemon written in Perl"
+has_projects: true
+has_wiki: true
+homepage_url: "http://smtpd.github.io/qpsmtpd/"
+name: qpsmtpd
+visibility: public

@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "MySQL Puppet Module / Manifests + Types & Providers"
+has_projects: true
+name: puppetlabs-mysql
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: public/7.9
+description: "Third-party software used with slimserver"
+has_projects: true
+has_wiki: true
+name: slimserver-vendor
+visibility: public

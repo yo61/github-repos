@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet module to install and manage google auth proxy instances with nginx"
+has_projects: true
+has_wiki: true
+name: puppet-google_auth_proxy
+visibility: public
+vulnerability_alerts: true

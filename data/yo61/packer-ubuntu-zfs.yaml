@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Packer templates for Ubuntu AMIs with a ZFS Root filesystem."
+has_projects: true
+has_wiki: true
+name: packer-ubuntu-zfs
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Server automation framework and application"
+has_projects: true
+homepage_url: "http://www.puppetlabs.com/puppet/introduction/"
+name: puppet
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet module to install and manage puppetboard"
+has_projects: true
+has_wiki: true
+name: puppet-module-puppetboard
+visibility: public

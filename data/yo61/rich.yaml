@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Rich is a Python library for rich text and beautiful formatting in the terminal."
+has_projects: true
+has_wiki: true
+homepage_url: "https://rich.readthedocs.io/en/latest/"
+name: rich
+visibility: public

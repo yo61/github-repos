@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A puppet module for installing and managing puppetdb"
+has_projects: true
+has_wiki: true
+name: puppetlabs-puppetdb
+visibility: public

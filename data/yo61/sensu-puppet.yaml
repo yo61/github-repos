@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Sensu Puppet module."
+has_projects: true
+has_wiki: true
+homepage_url: "https://github.com/sensu/sensu-puppet"
+name: sensu-puppet
+visibility: public

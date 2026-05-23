@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Community Helm Chart Repository"
+has_projects: true
+homepage_url: "https://truecharts.org"
+name: charts
+visibility: public

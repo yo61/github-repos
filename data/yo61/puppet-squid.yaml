@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet module for configuration of squid caching proxy."
+has_projects: true
+has_wiki: true
+name: puppet-squid
+visibility: public

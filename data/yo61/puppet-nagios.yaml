@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet Nagios module"
+has_projects: true
+has_wiki: true
+name: puppet-nagios
+visibility: public

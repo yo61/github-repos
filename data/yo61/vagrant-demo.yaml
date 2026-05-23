@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Vagrant based Choria demo environment"
+has_projects: true
+has_wiki: true
+name: vagrant-demo
+visibility: public

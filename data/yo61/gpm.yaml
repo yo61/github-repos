@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Barebones dependency manager for Go."
+has_projects: true
+has_wiki: true
+name: gpm
+visibility: public

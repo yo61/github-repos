@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: production
+description: "A next generation Puppet 4 control-repo"
+has_projects: true
+has_wiki: true
+homepage_url: "http://www.example42.com"
+name: control-repo
+visibility: public

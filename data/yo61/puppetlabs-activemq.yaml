@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Puppet ActiveMQ Module"
+has_projects: true
+homepage_url: "http://www.puppetlabs.com"
+name: puppetlabs-activemq
+visibility: public

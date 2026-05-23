@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: develop
+description: "Decrypt Hiera YAML values encrypted with GPG"
+has_projects: true
+has_wiki: true
+name: hiera_yamlgpg
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Terraform is a tool for building, changing, and combining infrastructure safely and efficiently."
+has_projects: true
+homepage_url: "http://www.terraform.io"
+name: terraform
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Fast carbon relay with admin interface, online routing table changing and zero-downtime restarts"
+has_projects: true
+has_wiki: true
+name: carbon-relay-ng
+visibility: public

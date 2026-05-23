@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Ansible tutorial"
+has_projects: true
+has_wiki: true
+name: ansible-tuto
+visibility: public

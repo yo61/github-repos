@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+description: "Patterns for using Claude Agent Teams"
+has_projects: true
+has_wiki: true
+homepage_url: "https://eirwin.github.io/agent-team-topologies/"
+name: agent-team-topologies
+visibility: public

@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Terraform module to create a lambda function"
+has_projects: true
+has_wiki: true
+name: terraform-aws-lambda_function
+visibility: public
+vulnerability_alerts: true

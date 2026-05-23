@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+description: "Generate modern Python clients from OpenAPI"
+has_projects: true
+has_wiki: true
+name: openapi-python-client
+visibility: public

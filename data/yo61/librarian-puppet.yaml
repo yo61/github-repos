@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+has_projects: true
+has_wiki: true
+homepage_url: "http://librarian-puppet.com"
+name: librarian-puppet
+visibility: public

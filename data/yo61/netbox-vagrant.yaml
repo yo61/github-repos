@@ -1,0 +1,7 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Vagrant setup for NetBox"
+has_projects: true
+name: netbox-vagrant
+visibility: public

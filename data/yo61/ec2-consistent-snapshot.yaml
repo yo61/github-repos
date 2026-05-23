@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Initiate consistent EBS snapshots in Amazon EC2"
+has_projects: true
+has_wiki: true
+homepage_url: "http://alestic.com/2009/09/ec2-consistent-snapshot"
+name: ec2-consistent-snapshot
+visibility: public

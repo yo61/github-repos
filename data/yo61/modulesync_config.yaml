@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "configuration for our module sync"
+has_projects: true
+has_wiki: true
+name: modulesync_config
+visibility: public

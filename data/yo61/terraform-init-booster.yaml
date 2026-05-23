@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "A Pre-terraform routine that speedups terraform modules download for bulky blueprints."
+has_projects: true
+has_wiki: true
+name: terraform-init-booster
+visibility: public

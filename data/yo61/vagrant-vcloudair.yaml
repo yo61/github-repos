@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Vagrant Provider for VMware vCloud® Air™"
+has_projects: true
+has_wiki: true
+name: vagrant-vcloudair
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "MCollective Server and Client Puppet Module"
+has_projects: true
+homepage_url: "https://forge.puppetlabs.com/puppetlabs/mcollective"
+name: puppetlabs-mcollective
+visibility: public

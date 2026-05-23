@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Packer Post Processor to create vagrant-vcloud and vagrant-vcenter compatible boxes."
+has_projects: true
+has_wiki: true
+name: packer-post-processor-vagrant-vmware-ovf
+visibility: public

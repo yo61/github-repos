@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+default_branch: master
+description: "Build your own minimal Vagrant CentOS Base Box."
+has_projects: true
+homepage_url: "https://www.twitter.com/astrostl"
+name: vagrant-centos
+visibility: public

@@ -1,0 +1,8 @@
+---
+allow_update_branch: false
+description: "Install and Run Python Applications in Isolated Environments"
+has_projects: true
+has_wiki: true
+homepage_url: "https://pypa.github.io/pipx/"
+name: pipx
+visibility: public

@@ -4,10 +4,6 @@ Terraform code to manage GitHub repository settings across multiple
 organisations. State is held in [stategraph](https://stategraph.dev/) —
 operations run as `stategraph tf <subcommand>`.
 
-> Status: mid-refactor. See
-> [`docs/dev/2026-05-22-multi-org-github-repos-design.md`](docs/dev/2026-05-22-multi-org-github-repos-design.md)
-> for the design that this README will be updated to match.
-
 ## Repository configuration
 
 Each repo is defined by a YAML file at `data/<ORG>/<REPO>.yaml`. The filename
@@ -41,14 +37,6 @@ Or via [Task](https://taskfile.dev/):
 ```bash
 task plan       # writes tfplan.json
 task apply      # consumes tfplan.json
-```
-
-Target a subset of repos by passing `REPOS="<org>/<repo> ..."` to `plan:repo`,
-then `apply` consumes the targeted plan:
-
-```bash
-task plan:repo REPOS="yo61/go-udap"
-task apply
 ```
 
 State setup (one-time): copy `stategraph.json.example` to `stategraph.json`

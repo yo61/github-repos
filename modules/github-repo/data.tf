@@ -20,8 +20,26 @@ locals {
   )
 
   # Read built-in rulesets from file
-  rulesets_file    = "${path.module}/data/rulesets.yaml"
-  builtin_rulesets = yamldecode(file(local.rulesets_file))
+  rulesets_file        = "${path.module}/data/rulesets.yaml"
+  builtin_rulesets_raw = yamldecode(file(local.rulesets_file))
+
+  # Inject variable-driven fields into the default_branch built-in ruleset
+  # (bypass_actors, required_approving_review_count). Kept out of the YAML so
+  # each org / repo can supply its own without forking the ruleset catalog.
+  # Other built-ins (when added) pass through unchanged via the outer merge.
+  # Assumes every rule in the default_branch ruleset has a pull_request block.
+  builtin_rulesets = merge(local.builtin_rulesets_raw, {
+    default_branch = merge(local.builtin_rulesets_raw["default_branch"], {
+      bypass_actors = var.default_branch_ruleset_bypass_actors
+      rules = [
+        for rule in local.builtin_rulesets_raw["default_branch"].rules : merge(rule, {
+          pull_request = merge(rule.pull_request, {
+            required_approving_review_count = var.default_branch_ruleset_required_approving_review_count
+          })
+        })
+      ]
+    })
+  })
 
   # build a map of all selected built-in rulesets
   selected_builtin_rulesets = {

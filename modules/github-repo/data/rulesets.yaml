@@ -15,7 +15,6 @@ default_branch:
     pull_request:
       dismiss_stale_reviews_on_push: true
       require_code_owner_review: false
-      require_last_push_approval: true
       required_review_thread_resolution: false
     required_signatures: true
     update: false

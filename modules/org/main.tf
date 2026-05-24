@@ -36,6 +36,9 @@ module "repo" {
   default_branch_ruleset_bypass_actors = lookup(
     each.value, "default_branch_ruleset_bypass_actors", var.default_branch_ruleset_bypass_actors
   )
+  default_branch_ruleset_require_last_push_approval = lookup(
+    each.value, "default_branch_ruleset_require_last_push_approval", var.default_branch_ruleset_require_last_push_approval
+  )
   default_branch_ruleset_required_approving_review_count = lookup(
     each.value, "default_branch_ruleset_required_approving_review_count", var.default_branch_ruleset_required_approving_review_count
   )

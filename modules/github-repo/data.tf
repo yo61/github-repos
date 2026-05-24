@@ -34,6 +34,7 @@ locals {
       rules = [
         for rule in local.builtin_rulesets_raw["default_branch"].rules : merge(rule, {
           pull_request = merge(rule.pull_request, {
+            require_last_push_approval      = var.default_branch_ruleset_require_last_push_approval
             required_approving_review_count = var.default_branch_ruleset_required_approving_review_count
           })
         })

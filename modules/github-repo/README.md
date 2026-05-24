@@ -269,7 +269,7 @@ module "repo" {
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_github"></a> [github](#provider\_github) | 6.12.1 |
+| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.0 |
 
 ## Modules
 
@@ -306,6 +306,7 @@ No modules.
 | <a name="input_create_default_branch"></a> [create\_default\_branch](#input\_create\_default\_branch) | Have terraform create the default branch resource. Defaults to false; the default branch on existing repos is left unmanaged unless explicitly opted in. | `bool` | `false` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The name of the default branch of the repository | `string` | `"main"` | no |
 | <a name="input_default_branch_ruleset_bypass_actors"></a> [default\_branch\_ruleset\_bypass\_actors](#input\_default\_branch\_ruleset\_bypass\_actors) | Actors permitted to bypass the default\_branch built-in ruleset. Empty means no bypass. | <pre>list(object({<br/>    actor_id    = number<br/>    actor_type  = string<br/>    bypass_mode = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_default_branch_ruleset_require_last_push_approval"></a> [default\_branch\_ruleset\_require\_last\_push\_approval](#input\_default\_branch\_ruleset\_require\_last\_push\_approval) | Whether the most recent reviewable push must be approved by someone other than the pusher. With required\_approving\_review\_count = 0 and this = true, solo authors are still blocked. Defaults to false. | `bool` | `false` | no |
 | <a name="input_default_branch_ruleset_required_approving_review_count"></a> [default\_branch\_ruleset\_required\_approving\_review\_count](#input\_default\_branch\_ruleset\_required\_approving\_review\_count) | Number of approving reviews required on PRs targeting the default branch when the default\_branch built-in ruleset is enabled. | `number` | `0` | no |
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Automatically delete head branch after a pull request is merged. | `bool` | `true` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `null` | no |

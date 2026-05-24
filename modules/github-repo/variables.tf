@@ -161,6 +161,13 @@ variable "default_branch_ruleset_bypass_actors" {
   nullable = false
 }
 
+variable "default_branch_ruleset_require_last_push_approval" {
+  description = "Whether the most recent reviewable push must be approved by someone other than the pusher. With required_approving_review_count = 0 and this = true, solo authors are still blocked. Defaults to false."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
 variable "default_branch_ruleset_required_approving_review_count" {
   description = "Number of approving reviews required on PRs targeting the default branch when the default_branch built-in ruleset is enabled."
   type        = number

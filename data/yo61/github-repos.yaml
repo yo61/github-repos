@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+has_issues: true
 has_projects: true
 has_wiki: true
 name: github-repos

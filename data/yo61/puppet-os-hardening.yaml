@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "This puppet module provides numerous security-related configurations, providing all-round base protection."
+description: "This puppet module provides numerous security-related configurations, providing all-round
+  base protection."
 has_projects: true
 has_wiki: true
 homepage_url: "http://dev-sec.io/"

@@ -80,9 +80,9 @@ module.
 Rulesets can be applied in two ways:
 
 1. Specifying a list of built-in ruleset IDs in the `builtin_ruleset_names`
-   parameter.  
+   parameter.
    The built-in rulesets are defined in `data/rulesets.yaml` The ruleset ID is
-   the top-level key.  
+   the top-level key.
    Currently, the following rulesets are available:
 
    - `default_branch`: Applies branch protection rules to the default branch
@@ -269,7 +269,7 @@ module "repo" {
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.12.1 |
 
 ## Modules
 
@@ -284,6 +284,7 @@ No modules.
 | [github_branch_protection.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection) | resource |
 | [github_repository.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
 | [github_repository_collaborators.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborators) | resource |
+| [github_repository_pages.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_pages) | resource |
 | [github_repository_ruleset.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_repository_vulnerability_alerts.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_vulnerability_alerts) | resource |
 

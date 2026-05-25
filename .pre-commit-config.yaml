@@ -1,37 +1,36 @@
 ---
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
-  hooks:
-  - id: check-json
-  - id: check-merge-conflict
-  - id: check-yaml
-  - id: trailing-whitespace
-  - id: end-of-file-fixer
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
 
-- repo: https://github.com/adrienverge/yamllint.git
-  rev: v1.37.1
-  hooks:
-  - id: yamllint
-    args: [--format, parsable, --strict]
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [--format, parsable, --strict]
 
-- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-  rev: 0.2.3
-  hooks:
-  - id: yamlfmt
-    args: [--mapping, '2', --sequence, '2', --offset, '0', --width, '150']
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.21.0
+    hooks:
+      - id: yamlfmt
 
-- repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.103.0
-  hooks:
-  - id: terraform_validate
-  - id: terraform_fmt
-  - id: terraform_docs
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.103.0
+    hooks:
+      - id: terraform_validate
+      - id: terraform_fmt
+      - id: terraform_docs
 
-- repo: local
-  hooks:
-  - id: repo-yaml-name-check
-    name: Verify data/<org>/<repo>.yaml name field matches filename stem
-    entry: scripts/check_repo_yaml_name.sh
-    language: script
-    files: ^data/[^/]+/[^/]+\.yaml$
+  - repo: local
+    hooks:
+      - id: repo-yaml-name-check
+        name: Verify data/<org>/<repo>.yaml name field matches filename stem
+        entry: scripts/check_repo_yaml_name.sh
+        language: script
+        files: ^data/[^/]+/[^/]+\.yaml$

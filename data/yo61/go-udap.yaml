@@ -9,4 +9,6 @@ default_branch: main
 delete_branch_on_merge: true
 has_issues: true
 name: go-udap
+pages:
+  build_type: workflow
 visibility: public

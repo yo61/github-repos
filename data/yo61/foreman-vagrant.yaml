@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: centos_7
-description: "Automate the creation and configuration of a Foreman server VM and multiple Puppet Agent VMs"
+description: "Automate the creation and configuration of a Foreman server VM and multiple Puppet Agent
+  VMs"
 has_projects: true
 has_wiki: true
 name: foreman-vagrant

@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "Proxies incoming HTTP and TLS connections based on the hostname contained in the initial request of the TCP session."
+description: "Proxies incoming HTTP and TLS connections based on the hostname contained in the initial
+  request of the TCP session."
 has_projects: true
 has_wiki: true
 name: sniproxy

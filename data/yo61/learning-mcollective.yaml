@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "This repository contains files to assist people working through the Learning MCollective book."
+description: "This repository contains files to assist people working through the Learning MCollective
+  book."
 has_projects: true
 has_wiki: true
 name: learning-mcollective

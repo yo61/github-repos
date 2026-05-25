@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "Allow arbitrary definition of resources (classes and defined types) via hiera content while avoiding the hiera_hash/create_resources pattern."
+description: "Allow arbitrary definition of resources (classes and defined types) via hiera content while
+  avoiding the hiera_hash/create_resources pattern."
 has_projects: true
 has_wiki: true
 name: hiera_resources

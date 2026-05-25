@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "This Let's Encrypt repo is an ACME client that can obtain certs and extensibly update server configurations (currently supports Apache on .deb based systems, nginx support coming soon)"
+description: "This Let's Encrypt repo is an ACME client that can obtain certs and extensibly update server
+  configurations (currently supports Apache on .deb based systems, nginx support coming soon)"
 has_projects: true
 has_wiki: true
 name: letsencrypt

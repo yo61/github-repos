@@ -1,7 +1,8 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "Vagrant config to deploy a four-node puppet cluster consisting of postgresql, puppetdb, puppet master, puppetboard"
+description: "Vagrant config to deploy a four-node puppet cluster consisting of postgresql, puppetdb,
+  puppet master, puppetboard"
 has_projects: true
 has_wiki: true
 name: vagrant-puppet-cluster

@@ -1,7 +1,7 @@
 ---
 allow_update_branch: false
 default_branch: master
-description: "\U0001F37B Default formulae for the missing package manager for macOS"
+description: "🍻 Default formulae for the missing package manager for macOS"
 has_projects: true
 homepage_url: "https://brew.sh"
 name: homebrew-core

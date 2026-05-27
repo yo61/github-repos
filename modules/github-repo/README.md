@@ -284,6 +284,7 @@ No modules.
 | [github_branch_protection.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection) | resource |
 | [github_repository.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
 | [github_repository_collaborators.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborators) | resource |
+| [github_repository_dependabot_security_updates.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_dependabot_security_updates) | resource |
 | [github_repository_pages.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_pages) | resource |
 | [github_repository_ruleset.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_repository_vulnerability_alerts.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_vulnerability_alerts) | resource |
@@ -310,6 +311,7 @@ No modules.
 | <a name="input_default_branch_ruleset_require_last_push_approval"></a> [default\_branch\_ruleset\_require\_last\_push\_approval](#input\_default\_branch\_ruleset\_require\_last\_push\_approval) | Whether the most recent reviewable push must be approved by someone other than the pusher. With required\_approving\_review\_count = 0 and this = true, solo authors are still blocked. Defaults to false. | `bool` | `false` | no |
 | <a name="input_default_branch_ruleset_required_approving_review_count"></a> [default\_branch\_ruleset\_required\_approving\_review\_count](#input\_default\_branch\_ruleset\_required\_approving\_review\_count) | Number of approving reviews required on PRs targeting the default branch when the default\_branch built-in ruleset is enabled. | `number` | `0` | no |
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Automatically delete head branch after a pull request is merged. | `bool` | `true` | no |
+| <a name="input_dependabot_security_updates"></a> [dependabot\_security\_updates](#input\_dependabot\_security\_updates) | Whether Dependabot opens PRs that fix vulnerable dependencies automatically.<br/>Set true/false to manage explicitly; leave null (the default) to leave the<br/>attribute unmanaged so existing repos see no drift. Enabling requires<br/>vulnerability\_alerts to be enabled — the GitHub API rejects this otherwise,<br/>and the module sets a depends\_on to enforce ordering on apply. | `bool` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `null` | no |
 | <a name="input_has_discussions"></a> [has\_discussions](#input\_has\_discussions) | Set to true to enable GitHub Discussions on the repository. Defaults to false. | `bool` | `false` | no |
 | <a name="input_has_issues"></a> [has\_issues](#input\_has\_issues) | Set to true to enable the GitHub Issues features on the repository. | `bool` | `false` | no |

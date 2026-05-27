@@ -79,6 +79,15 @@ resource "github_repository_vulnerability_alerts" "this" {
   enabled    = var.vulnerability_alerts
 }
 
+resource "github_repository_dependabot_security_updates" "this" {
+  for_each = var.dependabot_security_updates == null ? toset([]) : toset(["this"])
+
+  repository = github_repository.this.name
+  enabled    = var.dependabot_security_updates
+
+  depends_on = [github_repository_vulnerability_alerts.this]
+}
+
 resource "github_branch" "this" {
   for_each = toset(var.create_default_branch ? ["default"] : [])
 

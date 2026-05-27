@@ -182,6 +182,19 @@ variable "delete_branch_on_merge" {
   nullable    = false
 }
 
+variable "dependabot_security_updates" {
+  description = <<-EOT
+    Whether Dependabot opens PRs that fix vulnerable dependencies automatically.
+    Set true/false to manage explicitly; leave null (the default) to leave the
+    attribute unmanaged so existing repos see no drift. Enabling requires
+    vulnerability_alerts to be enabled — the GitHub API rejects this otherwise,
+    and the module sets a depends_on to enforce ordering on apply.
+  EOT
+  type        = bool
+  default     = null
+  nullable    = true
+}
+
 variable "description" {
   description = "A description of the repository."
   type        = string

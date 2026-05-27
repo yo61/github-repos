@@ -43,6 +43,7 @@ module "repo" {
     each.value, "default_branch_ruleset_required_approving_review_count", var.default_branch_ruleset_required_approving_review_count
   )
   delete_branch_on_merge      = lookup(each.value, "delete_branch_on_merge", null)
+  dependabot_security_updates = lookup(each.value, "dependabot_security_updates", null)
   description                 = lookup(each.value, "description", null)
   has_discussions             = lookup(each.value, "has_discussions", null)
   has_issues                  = lookup(each.value, "has_issues", null)

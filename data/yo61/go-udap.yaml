@@ -11,4 +11,8 @@ has_issues: true
 name: go-udap
 pages:
   build_type: workflow
+security_and_analysis:
+  secret_scanning: true
+  secret_scanning_push_protection: true
 visibility: public
+vulnerability_alerts: true

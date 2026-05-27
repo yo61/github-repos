@@ -285,6 +285,32 @@ variable "pages" {
   }
 }
 
+variable "security_and_analysis" {
+  description = <<-EOT
+    GitHub security_and_analysis configuration. Defaults to null which leaves
+    the attribute unmanaged so existing repos see no drift. Set any sub-field
+    to opt in. advanced_security applies to private/internal repos in
+    enterprise orgs; the GitHub API rejects it on public repos.
+  EOT
+  type = object({
+    advanced_security               = optional(bool)
+    secret_scanning                 = optional(bool)
+    secret_scanning_push_protection = optional(bool)
+  })
+  default  = null
+  nullable = true
+
+  validation {
+    condition = (
+      var.security_and_analysis == null ? true : !(
+        coalesce(var.security_and_analysis.secret_scanning_push_protection, false)
+        && !coalesce(var.security_and_analysis.secret_scanning, false)
+      )
+    )
+    error_message = "secret_scanning_push_protection requires secret_scanning to be enabled."
+  }
+}
+
 variable "squash_merge_commit_message" {
   description = "Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true."
   type        = string

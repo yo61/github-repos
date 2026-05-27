@@ -54,6 +54,7 @@ module "repo" {
   merge_commit_title          = lookup(each.value, "merge_commit_title", null)
   name                        = each.value.name
   pages                       = lookup(each.value, "pages", null)
+  security_and_analysis       = lookup(each.value, "security_and_analysis", null)
   squash_merge_commit_message = lookup(each.value, "squash_merge_commit_message", null)
   squash_merge_commit_title   = lookup(each.value, "squash_merge_commit_title", null)
   template                    = lookup(each.value, "template", null)

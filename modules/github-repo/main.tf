@@ -29,6 +29,30 @@ resource "github_repository" "this" {
   }
   visibility = var.visibility
 
+  dynamic "security_and_analysis" {
+    for_each = var.security_and_analysis[*]
+    content {
+      dynamic "advanced_security" {
+        for_each = var.security_and_analysis.advanced_security == null ? [] : [var.security_and_analysis.advanced_security]
+        content {
+          status = advanced_security.value ? "enabled" : "disabled"
+        }
+      }
+      dynamic "secret_scanning" {
+        for_each = var.security_and_analysis.secret_scanning == null ? [] : [var.security_and_analysis.secret_scanning]
+        content {
+          status = secret_scanning.value ? "enabled" : "disabled"
+        }
+      }
+      dynamic "secret_scanning_push_protection" {
+        for_each = var.security_and_analysis.secret_scanning_push_protection == null ? [] : [var.security_and_analysis.secret_scanning_push_protection]
+        content {
+          status = secret_scanning_push_protection.value ? "enabled" : "disabled"
+        }
+      }
+    }
+  }
+
   lifecycle {
     ignore_changes = [pages]
   }

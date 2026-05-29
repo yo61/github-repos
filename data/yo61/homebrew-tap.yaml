@@ -2,6 +2,7 @@
 allow_update_branch: false
 delete_branch_on_merge: true
 description: "Homebrew tap for yo61 tools"
+has_issues: true
 has_projects: true
 has_wiki: true
 name: homebrew-tap

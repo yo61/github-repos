@@ -4,18 +4,18 @@ default_branch:
   name: Default Branch
   target: branch
   conditions:
-  - ref_name:
-      exclude: []
-      include:
-      - ~DEFAULT_BRANCH
+    - ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
   rules:
-  - creation: false
-    deletion: true
-    non_fast_forward: true
-    pull_request:
-      dismiss_stale_reviews_on_push: true
-      require_code_owner_review: false
-      required_review_thread_resolution: false
-    required_signatures: true
-    update: false
-    update_allows_fetch_and_merge: false
+    - creation: false
+      deletion: true
+      non_fast_forward: true
+      pull_request:
+        dismiss_stale_reviews_on_push: true
+        require_code_owner_review: false
+        required_review_thread_resolution: false
+      required_signatures: true
+      update: false
+      update_allows_fetch_and_merge: false

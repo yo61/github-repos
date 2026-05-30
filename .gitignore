@@ -1,6 +1,12 @@
 # Local .terraform directories
 **/.terraform/*
 
+# Child-module provider lockfiles. Lockfiles belong at the root module that
+# calls these children, not inside reusable modules. Without this rule,
+# running `terraform init` from inside modules/* leaves an untracked
+# .terraform.lock.hcl that blocks worktree cleanup on merged branches.
+modules/*/.terraform.lock.hcl
+
 # .tfstate files
 *.tfstate
 *.tfstate.*

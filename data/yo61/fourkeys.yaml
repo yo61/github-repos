@@ -4,3 +4,4 @@ has_projects: true
 has_wiki: true
 name: fourkeys
 visibility: public
+vulnerability_alerts: true

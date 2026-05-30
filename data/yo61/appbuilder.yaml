@@ -4,3 +4,4 @@ description: "Tool to create friendly wrapping command lines over operations too
 has_projects: true
 name: appbuilder
 visibility: public
+vulnerability_alerts: true

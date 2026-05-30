@@ -6,3 +6,4 @@ has_wiki: true
 homepage_url: "https://pypa.github.io/pipx/"
 name: pipx
 visibility: public
+vulnerability_alerts: true

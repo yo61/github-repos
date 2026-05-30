@@ -6,3 +6,4 @@ has_wiki: true
 homepage_url: "https://nats-io.github.io/nats.py/"
 name: nats.py
 visibility: public
+vulnerability_alerts: true

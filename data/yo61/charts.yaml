@@ -6,3 +6,4 @@ has_projects: true
 homepage_url: "https://truecharts.org"
 name: charts
 visibility: public
+vulnerability_alerts: true

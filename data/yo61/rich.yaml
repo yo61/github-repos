@@ -7,3 +7,4 @@ has_wiki: true
 homepage_url: "https://rich.readthedocs.io/en/latest/"
 name: rich
 visibility: public
+vulnerability_alerts: true

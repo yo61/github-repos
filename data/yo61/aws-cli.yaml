@@ -5,3 +5,4 @@ description: "Universal Command Line Interface for Amazon Web Services"
 has_projects: true
 name: aws-cli
 visibility: public
+vulnerability_alerts: true

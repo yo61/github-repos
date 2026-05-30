@@ -3,3 +3,4 @@ allow_update_branch: false
 has_projects: true
 name: welcome-project-community
 visibility: public
+vulnerability_alerts: true

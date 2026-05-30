@@ -7,3 +7,4 @@ has_wiki: true
 homepage_url: "http://beets.io/"
 name: beets
 visibility: public
+vulnerability_alerts: true

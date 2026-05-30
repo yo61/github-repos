@@ -81,11 +81,6 @@ resource "github_repository_vulnerability_alerts" "this" {
   enabled    = var.vulnerability_alerts
 }
 
-moved {
-  from = github_repository_vulnerability_alerts.this
-  to   = github_repository_vulnerability_alerts.this["this"]
-}
-
 resource "github_repository_dependabot_security_updates" "this" {
   for_each = var.dependabot_security_updates == null ? toset([]) : toset(["this"])
 

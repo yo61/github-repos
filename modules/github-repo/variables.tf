@@ -372,8 +372,14 @@ variable "visibility" {
 }
 
 variable "vulnerability_alerts" {
-  description = "Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled at the owner level. Wired to the standalone github_repository_vulnerability_alerts resource."
+  description = <<-EOT
+    Whether GitHub security alerts for vulnerable dependencies are enabled.
+    Set true/false to manage explicitly; leave null (the default) to leave the
+    attribute unmanaged so existing repos see no drift. Enabling requires
+    alerts to be enabled at the owner level. Wired to the standalone
+    github_repository_vulnerability_alerts resource.
+  EOT
   type        = bool
-  default     = false
-  nullable    = false
+  default     = null
+  nullable    = true
 }

@@ -75,8 +75,15 @@ resource "github_repository_pages" "this" {
 }
 
 resource "github_repository_vulnerability_alerts" "this" {
+  for_each = var.vulnerability_alerts == null ? toset([]) : toset(["this"])
+
   repository = github_repository.this.name
   enabled    = var.vulnerability_alerts
+}
+
+moved {
+  from = github_repository_vulnerability_alerts.this
+  to   = github_repository_vulnerability_alerts.this["this"]
 }
 
 resource "github_repository_dependabot_security_updates" "this" {

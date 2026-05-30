@@ -6,3 +6,4 @@ has_projects: true
 has_wiki: true
 name: nz.co.fuzion.defaultautorenew
 visibility: public
+vulnerability_alerts: true

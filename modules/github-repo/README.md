@@ -329,7 +329,7 @@ No modules.
 | <a name="input_team_ids"></a> [team\_ids](#input\_team\_ids) | A map of github team ids, indexed on team slug | `map(string)` | `{}` | no |
 | <a name="input_template"></a> [template](#input\_template) | Use a template repository to create this resource. | <pre>object({<br/>    include_all_branches = optional(bool, false)<br/>    owner                = string<br/>    repository           = string<br/>  })</pre> | `null` | no |
 | <a name="input_visibility"></a> [visibility](#input\_visibility) | Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter. | `string` | `"private"` | no |
-| <a name="input_vulnerability_alerts"></a> [vulnerability\_alerts](#input\_vulnerability\_alerts) | Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled at the owner level. Wired to the standalone github\_repository\_vulnerability\_alerts resource. | `bool` | `false` | no |
+| <a name="input_vulnerability_alerts"></a> [vulnerability\_alerts](#input\_vulnerability\_alerts) | Whether GitHub security alerts for vulnerable dependencies are enabled.<br/>Set true/false to manage explicitly; leave null (the default) to leave the<br/>attribute unmanaged so existing repos see no drift. Enabling requires<br/>alerts to be enabled at the owner level. Wired to the standalone<br/>github\_repository\_vulnerability\_alerts resource. | `bool` | `null` | no |
 
 ## Outputs
 

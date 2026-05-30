@@ -5,3 +5,4 @@ has_projects: true
 has_wiki: true
 name: choria-compose
 visibility: public
+vulnerability_alerts: true

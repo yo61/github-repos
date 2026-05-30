@@ -5,3 +5,4 @@ description: "A simple tool to set values in yaml files preserving format and co
 has_projects: true
 name: ytool
 visibility: public
+vulnerability_alerts: true

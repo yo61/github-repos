@@ -11,13 +11,13 @@ vars:
 tasks:
   default:
     cmds:
-    - task --list
+      - task --list
     silent: true
 
   plan:
     desc: Generate a plan file via `stategraph tf plan --out {{.PLAN_FILE}}`
     cmds:
-    - stategraph tf plan --out {{.PLAN_FILE}}
+      - stategraph tf plan --out {{.PLAN_FILE}}
 
   plan:repo:
     desc: Generate a plan targetting one or more repos (REPOS="org/repo ...")
@@ -32,31 +32,31 @@ tasks:
             printf " -target='module.org_%s.module.repo[\"%s\"]'" "$org" "$repo"
           done
     cmds:
-    - stategraph tf plan --out {{.PLAN_FILE}}{{.TARGETS}}
+      - stategraph tf plan --out {{.PLAN_FILE}}{{.TARGETS}}
 
   apply:
     desc: Apply the previously generated plan file
     cmds:
-    - stategraph tf apply {{.PLAN_FILE}}
+      - stategraph tf apply {{.PLAN_FILE}}
 
   state:list:
     desc: List resources in state
     cmds:
-    - stategraph tf state list
+      - stategraph tf state list
 
   state:show:
     desc: Show state for one resource
     requires:
       vars: [RESOURCE]
     cmds:
-    - stategraph tf state show '{{.RESOURCE}}'
+      - stategraph tf state show '{{.RESOURCE}}'
 
   lockfile:sync:
     desc: Sync the lockfile for all supported platforms
     cmds:
-    - |
-      terraform providers lock \
-        -platform=linux_amd64 \
-        -platform=darwin_amd64 \
-        -platform=linux_arm64 \
-        -platform=darwin_arm64
+      - |
+        terraform providers lock \
+          -platform=linux_amd64 \
+          -platform=darwin_amd64 \
+          -platform=linux_arm64 \
+          -platform=darwin_arm64

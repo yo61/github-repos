@@ -7,3 +7,4 @@ has_wiki: true
 homepage_url: "https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws"
 name: terraform-aws-security-group
 visibility: public
+vulnerability_alerts: true

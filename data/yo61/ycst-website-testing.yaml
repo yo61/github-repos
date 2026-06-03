@@ -1,0 +1,8 @@
+---
+auto_init: true
+builtin_ruleset_names: []
+dependabot_security_updates: true
+has_issues: true
+name: ycst-website-testing
+visibility: private
+vulnerability_alerts: true

@@ -1,4 +1,5 @@
 ---
+allow_auto_merge: true
 allow_update_branch: false
 delete_branch_on_merge: true
 description: "Homebrew tap for yo61 tools"

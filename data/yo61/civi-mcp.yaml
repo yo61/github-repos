@@ -1,0 +1,11 @@
+---
+name: civi-mcp
+description: "Model Context Protocol server for CiviCRM (APIv4). Phase 1: read-only with four generic
+  tools."
+visibility: public
+has_issues: true
+has_projects: true
+has_wiki: true
+allow_update_branch: false
+delete_branch_on_merge: false
+vulnerability_alerts: true

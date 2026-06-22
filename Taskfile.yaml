@@ -19,38 +19,31 @@ tasks:
     cmds:
       - stategraph tf plan --out {{.PLAN_FILE}}
 
-  plan:repo:
-    desc: Generate a plan targetting one or more repos (REPOS="org/repo ...")
-    requires:
-      vars: [REPOS]
-    vars:
-      TARGETS:
-        sh: |
-          for target in {{.REPOS}} ; do
-            org="${target%%/*}"
-            repo="${target#*/}"
-            printf " -target='module.org_%s.module.repo[\"%s\"]'" "$org" "$repo"
-          done
-    cmds:
-      - stategraph tf plan --out {{.PLAN_FILE}}{{.TARGETS}}
-
   apply:
     desc: Apply the previously generated plan file
     cmds:
       - stategraph tf apply {{.PLAN_FILE}}
 
   state:list:
-    desc: List resources in state
+    desc: List resource instance addresses in state
+    vars:
+      STATE_ID:
+        sh: stategraph states resolve
     cmds:
-      - stategraph tf state list
-
+      - >-
+        stategraph sql query "SELECT address FROM instances WHERE state_id = '{{.STATE_ID}}' ORDER BY
+        address" #magic___^_^___line
   state:show:
-    desc: Show state for one resource
+    desc: Show all resource instances for one repo (REPO=<name>)
     requires:
-      vars: [RESOURCE]
+      vars: [REPO]
+    vars:
+      STATE_ID:
+        sh: stategraph states resolve
     cmds:
-      - stategraph tf state show '{{.RESOURCE}}'
-
+      - >-
+        stategraph sql query "SELECT address, status FROM instances WHERE state_id = '{{.STATE_ID}}' AND
+        address LIKE 'module.org_yo61.module.repo[\"{{.REPO}}\"]%'" #magic___^_^___line
   lockfile:sync:
     desc: Sync the lockfile for all supported platforms
     cmds:

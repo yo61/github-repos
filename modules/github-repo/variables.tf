@@ -112,7 +112,12 @@ EOT
 }
 
 variable "builtin_ruleset_names" {
-  description = "List of built-in ruleset names to be applied"
+  description = <<-EOT
+    Built-in ruleset names to apply. Repository rulesets are free on public
+    repos but require GitHub Pro / Team / Enterprise on private repos
+    (the GitHub API returns 403 otherwise). Set to [] on free-tier private
+    repos to skip ruleset creation.
+  EOT
   type        = list(string)
   default     = ["default_branch"]
   nullable    = false
@@ -302,8 +307,13 @@ variable "security_and_analysis" {
   description = <<-EOT
     GitHub security_and_analysis configuration. Defaults to null which leaves
     the attribute unmanaged so existing repos see no drift. Set any sub-field
-    to opt in. advanced_security applies to private/internal repos in
-    enterprise orgs; the GitHub API rejects it on public repos.
+    to opt in.
+
+    GitHub API licensing gates (enforced at apply time):
+    - secret_scanning / secret_scanning_push_protection: free on public
+      repos; require GHAS on private repos (the API returns 422 otherwise).
+    - advanced_security: requires GHAS regardless of visibility; the API
+      also rejects it on public repos.
   EOT
   type = object({
     advanced_security               = optional(bool)

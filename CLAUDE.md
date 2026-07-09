@@ -48,17 +48,20 @@ files.
 
 ## Applying changes (Stategraph)
 
-State lives in Stategraph. Use the `stategraph` and `stategraph-change` skills
-for the full workflow; the core sequence is:
+State lives in Stategraph, driven through the `Taskfile` wrappers rather than
+raw `stategraph` commands (`task --list` shows everything):
 
 ```bash
-stategraph info                                          # orient; find the tenant id
-stategraph tf plan --tenant <TENANT_ID> --out plan.json  # plan (read-only)
-stategraph tf apply plan.json                            # apply (only after review)
+task plan    # stategraph tf plan  --out tfplan.json   (read-only)
+task apply   # stategraph tf apply tfplan.json          (only after reviewing the plan)
 ```
 
-Always plan and review before applying. Plan files can contain sensitive
-values and are gitignored.
+Inspect state with `task state:list` (all instance addresses) and
+`task state:show REPO=<name>` (one repo's instances). Always review the plan
+before applying; plan files can contain sensitive values and are gitignored.
+
+For deeper or non-standard operations, the `stategraph` and `stategraph-change`
+skills cover the underlying CLI.
 
 ## Git workflow
 

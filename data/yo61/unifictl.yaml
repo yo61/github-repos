@@ -1,18 +1,12 @@
 ---
-builtin_ruleset_names:
-  - default_branch
 collaborators:
   users:
     - permission: admin
       username: robinbowes
-create_default_branch: true
-default_branch: main
-delete_branch_on_merge: true
 dependabot_security_updates: true
+description: "Command-line tool for managing UniFi devices"
 has_issues: true
-name: go-udap
-pages:
-  build_type: workflow
+name: unifictl
 security_and_analysis:
   secret_scanning: true
   secret_scanning_push_protection: true

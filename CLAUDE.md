@@ -1,42 +1,66 @@
-<!-- BEGIN swamp managed section - DO NOT EDIT -->
 # Project
 
-This repository is managed with [swamp](https://github.com/swamp-club/swamp).
+This repository declaratively manages GitHub repositories across
+organizations with Terraform. State is stored in Stategraph (not local
+`.tfstate`).
 
-## Rules
+Each managed repo is one YAML file at `data/<org>/<name>.yaml` that records
+only its **deviations** from the module defaults. The `modules/github-repo`
+module turns each file into a `github_repository` plus its rulesets,
+collaborators, and security settings; `modules/org` fans out over an org's
+files.
 
-1. **Search before you build.** When automating AWS, APIs, or any external service: (a) search community extensions with `swamp extension search <query>` — prefer `@swamp/*` official extensions first, (b) search local/installed types with `swamp model type search <query>`, (c) if a community extension exists, install it with `swamp extension pull <package>` instead of building from scratch, (d) extend an existing type if it covers the domain but lacks the method you need, (e) only create a custom extension model in `extensions/models/` as a last resort. Use the `swamp` skill for guidance. The `command/shell` model is ONLY for ad-hoc one-off shell commands, NEVER for wrapping CLI tools or building integrations.
-2. **Extend, don't be clever.** When a model covers the domain but lacks the method you need, extend it with `export const extension` — don't bypass it with shell scripts, CLI tools, or multi-step hacks. One method, one purpose. Use `swamp model type describe <type> --json` to check available methods.
-3. **Use the data model.** Once data exists in a model (via `lookup`, `start`, `sync`, etc.), reference it with CEL expressions. Don't re-fetch data that's already available.
-4. **CEL expressions everywhere.** Wire models together with CEL expressions. Always prefer `data.latest("<name>", "<dataName>").attributes.<field>` over the deprecated `model.<name>.resource.<spec>.<instance>.attributes.<field>` pattern.
-5. **Verify before destructive operations.** Always `swamp model get <name> --json` and verify resource IDs before running delete/stop/destroy methods.
-6. **Prefer fan-out methods over loops.** When operating on multiple targets, use a single method that handles all targets internally (factory pattern) rather than looping N separate `swamp model method run` calls against the same model. Multiple parallel calls against the same model contend on the per-model lock, causing timeouts. A single fan-out method acquires the lock once and produces all outputs in one execution. Check `swamp model type describe` for methods that accept filters or produce multiple outputs.
-7. **Extension npm deps are bundled, not lockfile-tracked.** Swamp's bundler inlines all npm packages (except zod) into extension bundles at bundle time. `deno.lock` and `package.json` do NOT cover extension model dependencies — this is by design. Always pin explicit versions in `npm:` import specifiers (e.g., `npm:lodash-es@4.17.21`).
-8. **Reports for reusable data pipelines.** When the task involves building a repeatable pipeline to transform, aggregate, or analyze model output (security reports, cost analysis, compliance checks, summaries), create a report extension. Use the `swamp` skill for guidance.
-9. **"Workflow" means a swamp workflow.** In this repository the word "workflow" (and "create/run/execute/validate/debug workflow", "automate", "orchestrate", "automated/nightly job") refers to a swamp workflow — a declarative YAML DAG of model-method steps authored via `swamp workflow create`. Load and follow the `swamp` skill for these requests. Do NOT interpret these as a request to build an agent task list, spin up worktrees, or schedule a cron/remote agent. Only use those orchestration mechanisms when the user explicitly names one (e.g. "task list", "subagent", "worktree", "cron", "remote agent") or explicitly asks you to do the work yourself step by step rather than author a swamp workflow.
+## Repository layout
 
-## Skills
+- `data/<org>/*.yaml` — one file per managed repo (the source of truth)
+- `modules/github-repo/` — the reusable repo module; `variables.tf` lists
+  every supported field and its default
+- `modules/org/` — iterates an org's `data/` files
+- `main.tf`, `providers.tf`, `versions.tf` — root module
+- `scripts/` — import and config-generation helpers
 
-**IMPORTANT:** Always load swamp skills, even when in plan mode. The skills provide
-essential context for working with this repository.
+## Adding or changing a repo
 
-- `swamp` - Swamp CLI — models, workflows, data, vaults, extensions, publishing, repos, reports, issues, and troubleshooting
-- `swamp-getting-started` - Interactive onboarding for new swamp users
+1. Create or edit `data/<org>/<name>.yaml`. State only what differs from the
+   module defaults in `modules/github-repo/variables.tf`.
+2. Lint it: `prek run --files <file>` (yamllint + yamlfmt; a hook checks the
+   `name:` field matches the filename stem).
+3. Open a PR from a feature branch — never commit on `main`.
+4. After merge, apply with Stategraph (below).
 
-## Getting Started
+### Conventions
 
-**IMPORTANT:** At the start of every conversation, run
-`swamp model search --json`. If no models are returned (empty result), you MUST
-immediately invoke the `swamp-getting-started` skill before doing anything else.
-This walks new users through an interactive onboarding tutorial.
+- **State deviations only.** Don't restate values that already equal the
+  module default.
+- **New repos omit `create_default_branch`.** It builds a `github_branch`
+  resource that needs a source commit, so it fails on a brand-new empty repo;
+  `main` is established on the first push. Existing/imported repos may set it.
+- **Collaborators use block style:**
+  ```yaml
+  collaborators:
+    users:
+      - permission: admin
+        username: robinbowes
+  ```
+- **Private repos on the free-tier personal org:** rulesets and secret
+  scanning are paywalled — omit them. Keep `vulnerability_alerts` and
+  `dependabot_security_updates`.
 
-If models already exist, start by using the `swamp` skill to work with
-swamp models.
+## Applying changes (Stategraph)
 
-## Commands
+State lives in Stategraph. Use the `stategraph` and `stategraph-change` skills
+for the full workflow; the core sequence is:
 
-Use `swamp --help` to see available commands. For a machine-readable JSON
-schema of the CLI (commands, options, arguments) intended for agent
-consumption, run `swamp help [<command>...]` — e.g. `swamp help` returns
-the full tree, and `swamp help model method run` scopes to a subtree.
-<!-- END swamp managed section -->
+```bash
+stategraph info                                          # orient; find the tenant id
+stategraph tf plan --tenant <TENANT_ID> --out plan.json  # plan (read-only)
+stategraph tf apply plan.json                            # apply (only after review)
+```
+
+Always plan and review before applying. Plan files can contain sensitive
+values and are gitignored.
+
+## Git workflow
+
+Feature branch → commit → PR → squash-merge → apply. Use conventional-commit
+subjects, e.g. `feat(<org>): add <repo> public repo`.

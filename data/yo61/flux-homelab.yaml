@@ -1,0 +1,8 @@
+---
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "Flux config for lab.yo61.net k8s test cluster."
+has_issues: true
+name: flux-homelab
+visibility: private
+vulnerability_alerts: true

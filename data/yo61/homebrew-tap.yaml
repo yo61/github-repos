@@ -1,6 +1,7 @@
 ---
 allow_auto_merge: true
 allow_update_branch: false
+default_branch_ruleset_bypass_actors: []
 delete_branch_on_merge: true
 description: "Homebrew tap for yo61 tools"
 has_issues: true

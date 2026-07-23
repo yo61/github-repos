@@ -1,4 +1,33 @@
 ---
+additional_rulesets:
+  required_status_checks:
+    enforcement: active
+    name: Required status checks
+    target: branch
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - ~DEFAULT_BRANCH
+    rules:
+      - creation: false
+        deletion: false
+        non_fast_forward: false
+        required_signatures: false
+        update: false
+        update_allows_fetch_and_merge: false
+        required_status_checks:
+          strict_required_status_checks_policy: false
+          required_check:
+            - context: test (ubuntu-latest)
+            - context: test (macos-latest)
+            - context: test (windows-2025-vs2026)
+            - context: lint
+            - context: completion-smoke
+            - context: Conventional Commits
+            - context: govulncheck
+            - context: sbom-scan
+allow_auto_merge: true
 builtin_ruleset_names:
   - default_branch
 collaborators:

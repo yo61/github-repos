@@ -32,10 +32,18 @@ data "github_repositories" "org" {
   include_repo_id = false
 }
 
+# Non-fork repos in the org. Fork status is GitHub's source of truth, so the
+# non-fork bypass actors track reality without a hand-maintained is_fork flag.
+data "github_repositories" "non_fork" {
+  query           = "org:${var.org} fork:false"
+  include_repo_id = false
+}
+
 locals {
   configured_names = toset([for stem, _ in local.raw_repo_data : stem])
   github_names     = toset(data.github_repositories.org.names)
   missing_configs  = setsubtract(local.github_names, local.configured_names)
+  non_fork_names   = toset(data.github_repositories.non_fork.names)
 }
 
 # Anchors the fatal name-mismatch validation. terraform_data is a no-op resource;

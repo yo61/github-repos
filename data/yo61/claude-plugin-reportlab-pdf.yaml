@@ -24,13 +24,6 @@ additional_rulesets:
             - context: lint
 allow_auto_merge: true
 allow_update_branch: false
-default_branch_ruleset_bypass_actors:
-  - actor_id: 3654569
-    actor_type: Integration
-    bypass_mode: always
-  - actor_id: 5
-    actor_type: RepositoryRole
-    bypass_mode: always
 default_branch_ruleset_required_approving_review_count: 1
 delete_branch_on_merge: true
 description: "Claude Code plugin: ReportLab-based PDF generation. Programmatic Platypus PDFs (CVs, invoices,

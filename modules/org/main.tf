@@ -34,7 +34,11 @@ module "repo" {
   create_default_branch            = lookup(each.value, "create_default_branch", null)
   default_branch                   = lookup(each.value, "default_branch", null)
   default_branch_ruleset_bypass_actors = lookup(
-    each.value, "default_branch_ruleset_bypass_actors", var.default_branch_ruleset_bypass_actors
+    each.value, "default_branch_ruleset_bypass_actors",
+    concat(
+      var.default_branch_ruleset_bypass_actors,
+      contains(local.non_fork_names, each.key) ? var.default_branch_ruleset_non_fork_bypass_actors : []
+    )
   )
   default_branch_ruleset_require_last_push_approval = lookup(
     each.value, "default_branch_ruleset_require_last_push_approval", var.default_branch_ruleset_require_last_push_approval

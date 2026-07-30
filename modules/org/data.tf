@@ -27,13 +27,10 @@ locals {
 }
 
 # Drift detection: implicitly uses the aliased github provider bound by the caller.
-data "github_repositories" "org" {
-  query           = "org:${var.org}"
-  include_repo_id = false
-}
-
-# Non-fork repos in the org. Fork status is GitHub's source of truth, so the
-# non-fork bypass actors track reality without a hand-maintained is_fork flag.
+# Non-fork repos in the org. Fork status is GitHub's source of truth. Drives two
+# things: scoping the admin-role bypass to non-forks, and drift detection — only
+# non-fork repos are expected to have local config. Forks are intentionally
+# unmanaged, so they are excluded from both.
 data "github_repositories" "non_fork" {
   query           = "org:${var.org} fork:false"
   include_repo_id = false
@@ -41,9 +38,8 @@ data "github_repositories" "non_fork" {
 
 locals {
   configured_names = toset([for stem, _ in local.raw_repo_data : stem])
-  github_names     = toset(data.github_repositories.org.names)
-  missing_configs  = setsubtract(local.github_names, local.configured_names)
   non_fork_names   = toset(data.github_repositories.non_fork.names)
+  missing_configs  = setsubtract(local.non_fork_names, local.configured_names)
 }
 
 # Anchors the fatal name-mismatch validation. terraform_data is a no-op resource;

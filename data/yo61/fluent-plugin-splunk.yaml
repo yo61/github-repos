@@ -1,9 +1,0 @@
----
-allow_update_branch: false
-default_branch: master
-description: "Fluentd Plugin for Splunk"
-has_projects: true
-has_wiki: true
-name: fluent-plugin-splunk
-visibility: public
-vulnerability_alerts: true

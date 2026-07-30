@@ -1,7 +1,0 @@
----
-allow_update_branch: false
-has_projects: true
-has_wiki: true
-name: fourkeys
-visibility: public
-vulnerability_alerts: true

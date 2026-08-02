@@ -1,9 +1,34 @@
 ---
-name: unifi-mcp
+additional_rulesets:
+  required_status_checks:
+    enforcement: active
+    name: Required status checks
+    target: branch
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - ~DEFAULT_BRANCH
+    rules:
+      - creation: false
+        deletion: false
+        non_fast_forward: false
+        required_signatures: false
+        update: false
+        update_allows_fetch_and_merge: false
+        required_status_checks:
+          strict_required_status_checks_policy: false
+          required_check:
+            - context: check (node 22)
+            - context: check (node 24)
+            - context: Conventional Commits
+allow_auto_merge: true
+allow_update_branch: false
+default_branch_ruleset_required_approving_review_count: 1
 description: "Model Context Protocol server for UniFi."
-visibility: public
 has_issues: true
 has_projects: true
 has_wiki: true
-allow_update_branch: false
+name: unifi-mcp
+visibility: public
 vulnerability_alerts: true

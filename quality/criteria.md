@@ -155,7 +155,11 @@ PR #40
 
 ## Last triggered: 2026-08-04 — `unifi-mcp` #31/#32/#33 sat approved and
 unmerged after the gate went live; PR #40 recorded "apply is blocked" when
-the apply had in fact landed.
+the apply had in fact landed. Also 2026-08-04, PR #46 — the stale-record
+criterion fired outside a post-apply context: adding a second admin to
+`ycst-admin-docs` invalidated the "single maintainer" premise its decision
+record used to reject a Team upgrade. Corrected in the same PR. Consider
+moving that criterion to its own category if it keeps triggering here.
 
 ---
 

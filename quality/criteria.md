@@ -37,7 +37,15 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: never
+## Last triggered: 2026-08-04 — `ycst-admin-docs`. The free-tier private-repo
+criterion determined the whole file: rulesets, the review gate, secret
+scanning, and Pages were all dropped from the `homelab-docs` shape it was
+modelled on. Confirmed post-apply — `GET /rulesets` returns 403, so declaring
+any ruleset would have failed the apply. `auto_init` was also omitted so the
+repo was created empty for the initial push. One deliberate departure:
+`visibility: private` restates the module default and was kept anyway, since
+it is the fact the access-control design rests on; see
+`decisions/2026-08-04-ycst-admin-docs-private-cpanel.md`.
 
 ---
 

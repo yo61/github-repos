@@ -55,12 +55,18 @@ everything).
 
 `backend.tf` is a partial configuration: it declares the backend but omits
 the address, so both the address and the API key come from the environment.
-Export these once per shell (they live in `~/.extra`):
+They live in `.envrc` in this directory, loaded by direnv (`direnv allow`
+once per clone):
 
 ```bash
 export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<state-uuid>"
 export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
 ```
+
+`.envrc` holds a live API key and is gitignored. It is deliberately ignored
+by this repo's own `.gitignore` rather than relying on a machine-global one,
+so the protection travels with the repository — this is a public repo and a
+stray `git add -A` would otherwise publish the key.
 
 ```bash
 task init    # terraform init                    (once per clone)

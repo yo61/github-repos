@@ -22,6 +22,13 @@ crash.*.log
 *.tfvars
 *.tfvars.json
 
+# direnv environment file. Holds TF_HTTP_ADDRESS (the Stategraph state UUID)
+# and TF_HTTP_PASSWORD (a live API key). Ignored here, in the repository's own
+# .gitignore, rather than relying on a machine-global ignore: this repo is
+# public, and the protection has to travel with it to a fresh clone, another
+# machine, or CI.
+.envrc
+
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf

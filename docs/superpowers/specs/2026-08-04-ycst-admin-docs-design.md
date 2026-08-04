@@ -1,7 +1,9 @@
 # `yo61/ycst-admin-docs` — private docs repo on Krystal cPanel
 
 **Date:** 2026-08-04
-**Status:** approved
+**Status:** implemented — repo created and initial commit pushed 2026-08-04.
+Outstanding: merge PR #45 so the declaration reaches `main`, and configure the
+six deploy secrets.
 
 ## Goal
 
@@ -73,19 +75,38 @@ Three changes land in the working tree *before* `git init`, so the initial
 commit meets the standard rather than needing a follow-up PR:
 
 1. **SHA-pin the actions** in `ci.yaml` and `deploy.yaml`, which currently use
-   floating `@v4` tags. Pin to the versions `homelab-docs` runs today, with
-   version comments: `actions/checkout` v7.0.0, `actions/setup-node` v7.0.0,
-   `pnpm/action-setup` v6.0.9. This is a real v4 → v7 bump, not just a pin.
+   floating `@v4` tags. Pin to current stable with version comments:
+   `actions/checkout` v7.0.1, `actions/setup-node` v7.0.0, `pnpm/action-setup`
+   v6.0.10. This is a real v4 → v7 bump, not just a pin. Two of these are newer
+   than the SHAs `homelab-docs` carries; a new repo should not start behind, and
+   Dependabot converges them within the week.
+
+   Gotcha worth recording: `pnpm/action-setup` v6.0.10 is an **annotated** tag,
+   so `repos/…/git/ref/tags/<tag>` returns the *tag object* SHA
+   (`ff378ebe…`), not the commit (`0977fd99…`). Pinning to a tag-object SHA
+   does not resolve at run time. Use `repos/…/commits/<tag>`, which
+   dereferences either kind. `actions/checkout` uses lightweight tags, so both
+   endpoints agree there — which is what makes the mistake easy to miss.
 2. **Add `.pre-commit-config.yaml`**, copied from `homelab-docs` (same stack):
    conventional-commits, gitleaks, detect-private-key, check-yaml,
    end-of-file-fixer, trailing-whitespace, check-added-large-files,
    check-merge-conflict, actionlint, zizmor. `.github/dependabot.yml` already
    declares a `pre-commit` ecosystem that currently has no config to read.
-3. **Fix the template-injection that (2) will surface.** `deploy.yaml`'s
-   "Set up SSH" step interpolates `${{ secrets.SSH_PRIVATE_KEY }}` and
-   `${{ secrets.SSH_KNOWN_HOSTS }}` directly into a `run:` block, which zizmor
-   flags. The rsync step already does this correctly by passing secrets through
-   `env:`; apply the same treatment to the SSH setup step.
+3. **Pass the SSH secrets through `env:`.** `deploy.yaml`'s "Set up SSH" step
+   interpolates `${{ secrets.SSH_PRIVATE_KEY }}` and
+   `${{ secrets.SSH_KNOWN_HOSTS }}` directly into a `run:` block. The rsync step
+   already passes its secrets through `env:`; apply the same treatment here,
+   plus `set -euo pipefail` and a subshell `umask 077` so the private key is
+   never briefly world-readable.
+
+   Note: this is **not** a zizmor finding. Verified by running zizmor against
+   the unmodified file — zero findings, nine suppressed. Its template-injection
+   audit targets attacker-controllable contexts (`github.event.*`,
+   `github.head_ref`); `secrets.*` is trusted input. The change is still
+   worthwhile on its own merits — direct interpolation bakes the secret into a
+   temp script on the runner's disk, and a multi-line PEM interpolated into a
+   shell script is a quoting hazard — but it fixes a latent footgun, not a
+   flagged vulnerability.
 
 Deploy secrets themselves (`SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`, `SSH_HOST`,
 `SSH_USER`, `SSH_PORT`, `DEPLOY_PATH`) are out of scope — configured
@@ -119,13 +140,20 @@ Ordering matters: the GitHub repo must exist and be empty before the push.
 
 ## Verification
 
-- `gh api repos/yo61/ycst-admin-docs --jq '{visibility,has_issues,homepage}'`
-  returns `private`, `true`, `https://admin.ycst.org.uk`.
-- `gh api repos/yo61/ycst-admin-docs/rulesets` returns `[]` — confirming the
-  `builtin_ruleset_names: []` opt-out held and nothing 403'd.
-- `gh api repos/yo61/ycst-admin-docs/vulnerability-alerts` returns 204.
-- The pushed tree contains no `node_modules`, `.source`, `out/`, or
-  `*.tsbuildinfo`.
+All checked 2026-08-04, post-apply and post-push:
+
+- `gh api repos/yo61/ycst-admin-docs` → `private`, `has_issues: true`,
+  `homepage: https://admin.ycst.org.uk`. ✅
+- `gh api repos/yo61/ycst-admin-docs/rulesets` → **403 "Upgrade to GitHub Pro
+  or make this repository public"**. ✅ Expected. This is the positive
+  confirmation that `builtin_ruleset_names: []` was necessary: had the module
+  attempted the default `default_branch` ruleset, the apply would have failed
+  on this exact 403. The spec originally predicted `[]`; the endpoint refuses
+  outright rather than returning an empty list.
+- `gh api repos/yo61/ycst-admin-docs/vulnerability-alerts` → 204. ✅
+- `git/trees/main?recursive=1` → 46 blobs, matching the 46 tracked files
+  locally; no `node_modules`, `.source/`, `out/`, or `*.tsbuildinfo`. ✅
+- `prek run --all-files` → all 9 hooks pass. ✅
 - The CI workflow runs green on a subsequent PR. It cannot be a *required*
   check on this plan — that is the accepted trade-off.
 

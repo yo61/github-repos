@@ -1,0 +1,9 @@
+---
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "Board admin hub and docs for York City Supporters Trust."
+has_issues: true
+homepage_url: https://admin.ycst.org.uk
+name: ycst-admin-docs
+visibility: private
+vulnerability_alerts: true

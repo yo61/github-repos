@@ -6,7 +6,7 @@ version: '3'
 set: [errexit, nounset, pipefail]
 
 vars:
-  PLAN_FILE: tfplan.json
+  PLAN_FILE: tfplan
 
 tasks:
   default:
@@ -14,36 +14,77 @@ tasks:
       - task --list
     silent: true
 
-  plan:
-    desc: Generate a plan file via `stategraph tf plan --out {{.PLAN_FILE}}`
+  # backend.tf is a partial config: the http backend reads its address and
+  # credentials from the environment. Fail with a usable message rather than
+  # letting terraform prompt for a missing address or 401 on a missing key.
+  preflight:
+    internal: true
+    silent: true
     cmds:
-      - stategraph tf plan --out {{.PLAN_FILE}}
+      - |
+        if [ -z "${TF_HTTP_ADDRESS:-}" ]; then
+          echo "ERROR: TF_HTTP_ADDRESS is not set." >&2
+          echo >&2
+          echo "backend.tf omits the state address on purpose. Supply it:" >&2
+          echo "    export TF_HTTP_ADDRESS=\"https://app.stategraph.cloud/\\" >&2
+          echo "        api/v1/states/backend/<state-uuid>\"" >&2
+          exit 1
+        fi
+      - |
+        if [ -z "${TF_HTTP_PASSWORD:-}" ]; then
+          echo "ERROR: TF_HTTP_PASSWORD is not set." >&2
+          echo >&2
+          echo "The backend authenticates with the Stategraph API key as the" >&2
+          echo "HTTP Basic password:" >&2
+          echo "    export TF_HTTP_PASSWORD=\"\$STATEGRAPH_API_KEY\"" >&2
+          exit 1
+        fi
+      - |
+        if [ -f .terraform/terraform.tfstate ] && command -v jq >/dev/null 2>&1; then
+          backend=$(jq -r '.backend.type // "none"' .terraform/terraform.tfstate)
+          if [ "$backend" != "http" ]; then
+            echo "ERROR: terraform is initialised with the '$backend' backend." >&2
+            echo "Re-run 'task init' with backend_override.tf in place." >&2
+            exit 1
+          fi
+        fi
+
+  init:
+    desc: Initialise terraform against the Stategraph HTTP backend
+    deps: [preflight]
+    cmds:
+      - terraform init
+
+  plan:
+    desc: Generate a plan file via `terraform plan -out {{.PLAN_FILE}}` (read-only)
+    deps: [preflight]
+    cmds:
+      - terraform plan -out={{.PLAN_FILE}}
 
   apply:
     desc: Apply the previously generated plan file
+    deps: [preflight]
     cmds:
-      - stategraph tf apply {{.PLAN_FILE}}
+      - terraform apply {{.PLAN_FILE}}
 
   state:list:
     desc: List resource instance addresses in state
-    vars:
-      STATE_ID:
-        sh: stategraph states resolve
+    deps: [preflight]
     cmds:
-      - >-
-        stategraph sql query "SELECT address FROM instances WHERE state_id = '{{.STATE_ID}}' ORDER BY
-        address" #magic___^_^___line
+      - terraform state list
+
   state:show:
     desc: Show all resource instances for one repo (REPO=<name>)
+    deps: [preflight]
     requires:
       vars: [REPO]
-    vars:
-      STATE_ID:
-        sh: stategraph states resolve
     cmds:
-      - >-
-        stategraph sql query "SELECT address, status FROM instances WHERE state_id = '{{.STATE_ID}}' AND
-        address LIKE 'module.org_yo61.module.repo[\"{{.REPO}}\"]%'" #magic___^_^___line
+      - |
+        terraform state list | grep -F 'module.repo["{{.REPO}}"]' || {
+          echo "No instances in state for repo '{{.REPO}}'." >&2
+          exit 1
+        }
+
   lockfile:sync:
     desc: Sync the lockfile for all supported platforms
     cmds:

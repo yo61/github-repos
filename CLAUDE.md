@@ -46,22 +46,35 @@ files.
   scanning are paywalled — omit them. Keep `vulnerability_alerts` and
   `dependabot_security_updates`.
 
-## Applying changes (Stategraph)
+## Applying changes
 
-State lives in Stategraph, driven through the `Taskfile` wrappers rather than
-raw `stategraph` commands (`task --list` shows everything):
+State lives in Stategraph, reached through its **HTTP backend** using the
+native `terraform` CLI. The `stategraph` CLI is not used to plan or apply.
+Drive everything through the `Taskfile` wrappers (`task --list` shows
+everything).
+
+`backend.tf` is a partial configuration: it declares the backend but omits
+the address, so both the address and the API key come from the environment.
+Export these once per shell (they live in `~/.extra`):
 
 ```bash
-task plan    # stategraph tf plan  --out tfplan.json   (read-only)
-task apply   # stategraph tf apply tfplan.json          (only after reviewing the plan)
+export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<state-uuid>"
+export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
+```
+
+```bash
+task init    # terraform init                    (once per clone)
+task plan    # terraform plan -out tfplan        (read-only)
+task apply   # terraform apply tfplan            (only after reviewing the plan)
 ```
 
 Inspect state with `task state:list` (all instance addresses) and
 `task state:show REPO=<name>` (one repo's instances). Always review the plan
 before applying; plan files can contain sensitive values and are gitignored.
 
-For deeper or non-standard operations, the `stategraph` and `stategraph-change`
-skills cover the underlying CLI.
+`task` refuses to run if either environment variable is missing. The backend
+is unlocked (Stategraph exposes no lock endpoint), so avoid concurrent
+applies.
 
 ## Git workflow
 

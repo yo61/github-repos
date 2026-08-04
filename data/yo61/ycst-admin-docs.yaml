@@ -1,5 +1,9 @@
 ---
 builtin_ruleset_names: []
+collaborators:
+  users:
+    - permission: admin
+      username: PlanetSeth
 dependabot_security_updates: true
 description: "Board admin hub and docs for York City Supporters Trust."
 has_issues: true

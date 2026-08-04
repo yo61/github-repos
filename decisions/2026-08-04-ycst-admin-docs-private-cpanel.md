@@ -21,7 +21,10 @@ are all paywalled on private repos.
   licensing at apply time, so it plans clean and then 4xx's, risking a wedged
   transaction for no benefit.
 - **Upgrade `yo61` to Team to keep both privacy and the gate.** Rejected: the
-  cost is not warranted for one Board docs site with a single maintainer.
+  cost is not warranted for one Board docs site with a small maintainer set.
+  (Amended 2026-08-04: `PlanetSeth` added as a second admin. The rejection
+  stands — a free org takes unlimited collaborators on private repos, whereas
+  Team bills per seat, so a second maintainer raises the upgrade cost.)
 - **Deploy to GitHub Pages and gate at the edge.** Rejected: Pages on a private
   repo is paywalled, and the existing WordPress role check (`view_admin_docs`
   on the Trust Board role) already provides the authorisation model. Moving it

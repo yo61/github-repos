@@ -63,10 +63,9 @@ export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<stat
 export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
 ```
 
-`.envrc` holds a live API key and is gitignored. It is deliberately ignored
-by this repo's own `.gitignore` rather than relying on a machine-global one,
-so the protection travels with the repository — this is a public repo and a
-stray `git add -A` would otherwise publish the key.
+`.envrc` is machine-specific and untracked. Like editor config, it belongs in
+a global ignore (`~/.gitignore`) rather than this repo's `.gitignore`. Any
+other way of exporting the two variables works just as well.
 
 ```bash
 task init    # terraform init                    (once per clone)

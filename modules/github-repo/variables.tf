@@ -248,9 +248,9 @@ variable "is_template" {
 }
 
 variable "merge_commit_message" {
-  description = "Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true."
+  description = "Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true. Defaults to BLANK: with PR_TITLE, a conventional-commit PR title lands in the merge commit body and release-please counts the change twice."
   type        = string
-  default     = "PR_TITLE"
+  default     = "BLANK"
   validation {
     condition     = var.merge_commit_message == null ? true : contains(["PR_BODY", "PR_TITLE", "BLANK"], var.merge_commit_message)
     error_message = "merge_commit_message must be one of PR_BODY, PR_TITLE or BLANK."

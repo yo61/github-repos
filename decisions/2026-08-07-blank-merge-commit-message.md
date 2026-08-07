@@ -1,4 +1,4 @@
-## Decision: Default `merge_commit_message` to `BLANK`, and squash-merge release-please repos by preference. Fleet-wide module change: every managed repo's merge commits become title-only.
+## Decision: Add `nullable = false` to the four merge/squash commit-message variables so their module defaults actually apply, and set `merge_commit_message` to `BLANK`. Squash-merge release-please repos by preference. Fleet-wide module change: every managed repo's merge commits become title-only.
 
 ## Context: release-please PR yo61/unifi-mcp#44 (`chore(main): release 0.2.2`) listed the same change twice:
 
@@ -21,6 +21,49 @@ Three ingredients are required, and the fleet has all three: merge commits enabl
 - **Set `merge_commit_message: BLANK` per-repo for the three affected.** Rejected: the setting is uniform across the fleet with no overrides, and repos adopting release-please later would inherit the broken default. Fixing the default fixes it once.
 - **Stop writing conventional-commit PR titles.** Rejected: the titles are useful in the PR list, and this depends on every future contributor and agent remembering.
 - **Disable merge commits entirely (`allow_merge_commit: false`).** Rejected as heavier than needed — it removes a merge method that is occasionally the right one, when the goal is only to stop the body being parseable.
+
+## The module was never managing these settings
+
+Changing the default alone produced an **empty plan**. The cause is a Terraform
+subtlety worth recording.
+
+`modules/org/main.tf:58` passes the value through with a null fallback:
+
+```hcl
+merge_commit_message = lookup(each.value, "merge_commit_message", null)
+```
+
+An explicitly-passed `null` falls back to a variable's default **only** when the
+variable declares `nullable = false`. Without it the variable is genuinely
+`null`, the provider omits the attribute, and Terraform does not manage the
+setting at all — GitHub's own default applies.
+
+That is why every repo reported `merge_commit_message: PR_TITLE` with no
+per-repo overrides. It was never Terraform's value; it was GitHub's, showing
+through an unmanaged attribute.
+
+Four variables are affected, and all four module defaults happen to equal
+GitHub's own defaults, which is why the inertness was invisible:
+
+| Variable | Module default | GitHub default |
+| --- | --- | --- |
+| `merge_commit_message` | `PR_TITLE` (before this change) | `PR_TITLE` |
+| `merge_commit_title` | `MERGE_MESSAGE` | `MERGE_MESSAGE` |
+| `squash_merge_commit_message` | `COMMIT_MESSAGES` | `COMMIT_MESSAGES` |
+| `squash_merge_commit_title` | `COMMIT_OR_PR_TITLE` | `COMMIT_OR_PR_TITLE` |
+
+`nullable = false` is added to all four, not only the one being changed, so the
+other three stop being latent traps. `default_branch_ruleset_required_approving_review_count`
+already carries it, which is why the review-count change earlier the same day
+worked as expected.
+
+Audited the rest of the `lookup(..., null)` pass-throughs in `modules/org`. The
+others with no `nullable = false` all have `default = null` — `description`,
+`homepage_url`, `template`, `pages`, `security_and_analysis`,
+`branch_protection_rules_override`, `vulnerability_alerts`,
+`dependabot_security_updates` — so null is the intended value and there is no
+bug. Every `data/` file sets `vulnerability_alerts` explicitly, so no security
+setting is left unmanaged.
 
 ## Reasoning: `BLANK` removes the cause rather than the symptom. The merge commit keeps its title (`Merge pull request #N from <branch>`, from `merge_commit_title: MERGE_MESSAGE`), which release-please ignores because it is not conventional. Nothing about the workflow changes and nothing has to be remembered.
 

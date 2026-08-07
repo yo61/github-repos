@@ -251,6 +251,7 @@ variable "merge_commit_message" {
   description = "Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true. Defaults to BLANK: with PR_TITLE, a conventional-commit PR title lands in the merge commit body and release-please counts the change twice."
   type        = string
   default     = "BLANK"
+  nullable    = false
   validation {
     condition     = var.merge_commit_message == null ? true : contains(["PR_BODY", "PR_TITLE", "BLANK"], var.merge_commit_message)
     error_message = "merge_commit_message must be one of PR_BODY, PR_TITLE or BLANK."
@@ -262,6 +263,7 @@ variable "merge_commit_title" {
   description = "Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true."
   type        = string
   default     = "MERGE_MESSAGE"
+  nullable    = false
   validation {
     condition     = var.merge_commit_title == null ? true : contains(["PR_TITLE", "MERGE_MESSAGE"], var.merge_commit_title)
     error_message = "merge_commit_title must be one of PR_TITLE or MERGE_MESSAGE."
@@ -338,6 +340,7 @@ variable "squash_merge_commit_message" {
   description = "Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true."
   type        = string
   default     = "COMMIT_MESSAGES"
+  nullable    = false
   validation {
     condition     = var.squash_merge_commit_message == null ? true : contains(["PR_BODY", "COMMIT_MESSAGES", "BLANK"], var.squash_merge_commit_message)
     error_message = "squash_merge_commit_message must be one of PR_BODY, COMMIT_MESSAGES or BLANK."
@@ -348,6 +351,7 @@ variable "squash_merge_commit_title" {
   description = "Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true."
   type        = string
   default     = "COMMIT_OR_PR_TITLE"
+  nullable    = false
   validation {
     condition     = var.squash_merge_commit_title == null ? true : contains(["PR_TITLE", "COMMIT_OR_PR_TITLE"], var.squash_merge_commit_title)
     error_message = "squash_merge_commit_title must be one of PR_TITLE or COMMIT_OR_PR_TITLE."

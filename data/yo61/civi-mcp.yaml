@@ -6,5 +6,36 @@ visibility: public
 has_issues: true
 has_projects: true
 has_wiki: true
+allow_auto_merge: true
 allow_update_branch: false
+# Merge gate: green CI plus an approving review. lastlight already reviews here
+# (it approved civi-mcp#9), so this is satisfied by review rather than by the
+# admin bypass — the failure mode 2026-08-06-unifi-mcp-ci-only-gate rejected.
+default_branch_ruleset_required_approving_review_count: 1
+dependabot_security_updates: true
+security_and_analysis:
+  secret_scanning: true
+  secret_scanning_push_protection: true
 vulnerability_alerts: true
+additional_rulesets:
+  required_status_checks:
+    enforcement: active
+    name: Required status checks
+    target: branch
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - ~DEFAULT_BRANCH
+    rules:
+      - creation: false
+        deletion: false
+        non_fast_forward: false
+        required_signatures: false
+        update: false
+        update_allows_fetch_and_merge: false
+        required_status_checks:
+          strict_required_status_checks_policy: false
+          required_check:
+            - context: lint
+            - context: secrets

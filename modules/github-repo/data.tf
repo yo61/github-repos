@@ -1,4 +1,20 @@
 locals {
+  # Secret scanning and push protection are free on public repos and require
+  # GHAS on private ones, where the API returns 422. Default them on for public
+  # repos so a new repo is protected without having to remember, and leave
+  # private repos unmanaged. An explicit security_and_analysis in the repo's
+  # YAML still wins.
+  #
+  # Push protection is the part worth having: it blocks a secret at push time,
+  # which no CI job can do — a scanner only reports what is already pushed.
+  security_and_analysis_default = var.visibility == "public" ? {
+    advanced_security               = null
+    secret_scanning                 = true
+    secret_scanning_push_protection = true
+  } : null
+
+  security_and_analysis = var.security_and_analysis != null ? var.security_and_analysis : local.security_and_analysis_default
+
   branch_protection_rules_default = {
     allows_deletions                = false
     allows_force_pushes             = false

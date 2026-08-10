@@ -22,7 +22,8 @@ additional_rulesets:
             - context: check (node 22)
             - context: check (node 24)
             - context: Conventional Commits
-            - context: zizmor
+            - context: lint
+            - context: secrets
             - context: osv-scanner
             - context: sbom-scan
 allow_auto_merge: true

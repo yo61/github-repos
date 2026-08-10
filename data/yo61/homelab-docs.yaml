@@ -20,6 +20,8 @@ additional_rulesets:
           strict_required_status_checks_policy: false
           required_check:
             - context: build
+            - context: lint
+            - context: secrets
 allow_auto_merge: true
 collaborators:
   users:

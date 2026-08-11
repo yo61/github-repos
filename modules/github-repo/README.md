@@ -269,7 +269,7 @@ module "repo" {
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_github"></a> [github](#provider\_github) | 6.12.1 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.13.0 |
 
 ## Modules
 

@@ -1,0 +1,19 @@
+---
+allow_update_branch: false
+description: "Patterns for using Claude Agent Teams"
+has_issues: true
+has_projects: true
+has_wiki: true
+# The fork inherited upstream's eirwin.github.io URL. Ours, not theirs — but it
+# 404s until GitHub Pages is enabled on this repo (see the `pages` variable).
+homepage_url: "https://yo61.github.io/agent-team-topologies/"
+name: agent-team-topologies
+# The repo carries a Jekyll site (_config.yml, _includes); upstream publishes it
+# from main at the root. Enabling Pages here is what makes homepage_url resolve.
+pages:
+  build_type: legacy
+  source:
+    branch: main
+    path: "/"
+visibility: public
+vulnerability_alerts: true

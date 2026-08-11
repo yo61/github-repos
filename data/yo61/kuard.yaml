@@ -1,4 +1,30 @@
 ---
+additional_rulesets:
+  required_status_checks:
+    enforcement: active
+    name: Required status checks
+    target: branch
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - ~DEFAULT_BRANCH
+    rules:
+      - creation: false
+        deletion: false
+        non_fast_forward: false
+        required_signatures: false
+        update: false
+        update_allows_fetch_and_merge: false
+        required_status_checks:
+          strict_required_status_checks_policy: false
+          # ci.yaml's three pull_request jobs. build-kuard.yaml is push-only,
+          # so it cannot back a required check. No Conventional Commits entry:
+          # this fork has no commitlint job and does not enforce the format.
+          required_check:
+            - context: go tests
+            - context: client tests
+            - context: image builds
 builtin_ruleset_names:
   - default_branch
 collaborators:

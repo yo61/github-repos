@@ -111,8 +111,17 @@ for repo in "${repos[@]}"; do
     emit 'github_repository_vulnerability_alerts.this["this"]' "${repo}"
   has_value dependabot_security_updates &&
     emit 'github_repository_dependabot_security_updates.this["this"]' "${repo}"
-  has_value pages &&
-    emit 'github_repository_pages.this["pages"]' "${repo}"
+  # Only importable once the site exists. A repo that declares `pages:` for the
+  # first time has none yet, and an import block for a resource GitHub cannot
+  # return fails the plan — so probe, and let Terraform create it otherwise.
+  # Same treatment as a missing ruleset above.
+  if has_value pages; then
+    if gh api "repos/${ORG}/${repo}/pages" > /dev/null 2>&1; then
+      emit 'github_repository_pages.this["pages"]' "${repo}"
+    else
+      echo "warn: ${repo}: GitHub Pages not enabled; will be created, not imported" >&2
+    fi
+  fi
 
   if [[ "$(field create_default_branch)" == "true" ]]; then
     branch=$(field default_branch)

@@ -1,0 +1,9 @@
+---
+allow_update_branch: false
+delete_branch_on_merge: false
+description: "Lints Pull Request commits with commitlint"
+has_issues: true
+has_projects: true
+has_wiki: true
+name: commitlint-github-action
+visibility: public

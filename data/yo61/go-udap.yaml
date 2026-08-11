@@ -36,6 +36,7 @@ collaborators:
       username: robinbowes
 create_default_branch: true
 default_branch: main
+default_branch_ruleset_required_approving_review_count: 1
 delete_branch_on_merge: true
 dependabot_security_updates: true
 has_issues: true

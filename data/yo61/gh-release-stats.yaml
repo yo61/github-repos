@@ -27,6 +27,7 @@ allow_auto_merge: true
 allow_update_branch: false
 default_branch_ruleset_required_approving_review_count: 1
 delete_branch_on_merge: true
+dependabot_security_updates: true
 description: "Print GitHub release-asset download stats as a text table or JSON."
 has_projects: true
 has_wiki: true

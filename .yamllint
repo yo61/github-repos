@@ -4,3 +4,11 @@ extends: default
 rules:
   line-length:
     max: 120
+  truthy:
+    # `on:` in .github/workflows is the Actions trigger key, not a boolean.
+    allowed-values: ["true", "false", "on"]
+  comments:
+    # yamlfmt normalises a trailing comment to one space from the content and
+    # runs after this hook, so demanding the default two makes the two tools
+    # rewrite each other forever.
+    min-spaces-from-content: 1

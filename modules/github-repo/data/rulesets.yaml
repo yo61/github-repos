@@ -13,7 +13,6 @@ default_branch:
       deletion: true
       non_fast_forward: true
       pull_request:
-        dismiss_stale_reviews_on_push: true
         require_code_owner_review: false
         required_review_thread_resolution: false
       required_signatures: true

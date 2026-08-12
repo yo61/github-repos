@@ -26,6 +26,13 @@ variable "default_branch_ruleset_non_fork_bypass_actors" {
   nullable = false
 }
 
+variable "default_branch_ruleset_dismiss_stale_reviews_on_push" {
+  description = "Org-wide default for whether pushing to a PR branch dismisses existing approvals. Defaults to true. Per-repo YAML can override, for repos whose release automation pushes after review."
+  type        = bool
+  default     = true
+  nullable    = false
+}
+
 variable "default_branch_ruleset_require_last_push_approval" {
   description = "Org-wide default for whether the most recent reviewable push must be approved by someone other than the pusher. Defaults to false so solo authors aren't blocked even when the pull_request rule is active. Per-repo YAML can override."
   type        = bool

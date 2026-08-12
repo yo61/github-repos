@@ -166,6 +166,13 @@ variable "default_branch_ruleset_bypass_actors" {
   nullable = false
 }
 
+variable "default_branch_ruleset_dismiss_stale_reviews_on_push" {
+  description = "Whether pushing to a PR branch dismisses existing approvals. Defaults to true. Set false on repos whose release automation pushes a commit after review (e.g. a bottle commit), where the rule would otherwise dismiss the approval the automation is about to merge on."
+  type        = bool
+  default     = true
+  nullable    = false
+}
+
 variable "default_branch_ruleset_require_last_push_approval" {
   description = "Whether the most recent reviewable push must be approved by someone other than the pusher. With required_approving_review_count = 0 and this = true, solo authors are still blocked. Defaults to false."
   type        = bool

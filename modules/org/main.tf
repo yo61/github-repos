@@ -40,6 +40,9 @@ module "repo" {
       contains(local.non_fork_names, each.key) ? var.default_branch_ruleset_non_fork_bypass_actors : []
     )
   )
+  default_branch_ruleset_dismiss_stale_reviews_on_push = lookup(
+    each.value, "default_branch_ruleset_dismiss_stale_reviews_on_push", var.default_branch_ruleset_dismiss_stale_reviews_on_push
+  )
   default_branch_ruleset_require_last_push_approval = lookup(
     each.value, "default_branch_ruleset_require_last_push_approval", var.default_branch_ruleset_require_last_push_approval
   )

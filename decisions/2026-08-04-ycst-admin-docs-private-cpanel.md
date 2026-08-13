@@ -66,5 +66,7 @@ content was public-facing and this content is not.
 ## Update 2026-08-13
 
 The repo moved to `ycst-org-uk/board-docs`; admin is now granted through the
-`admins` team rather than a named collaborator. The private-visibility reasoning
+`admins` team rather than a named collaborator. The site it documents was
+renamed too, from `admin.ycst.org.uk` to `board.ycst.org.uk` — the old host has
+no DNS record, so `homepage_url` was corrected to match. The private-visibility reasoning
 here is unchanged. See `decisions/2026-08-13-ycst-org-uk-migration.md`.

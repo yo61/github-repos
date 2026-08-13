@@ -62,3 +62,9 @@ repos: `vulnerability_alerts` and `dependabot_security_updates`.
 `decisions/2026-07-15-homelab-docs-pages-repo.md`, which reached the opposite
 conclusion (public + Pages) from the same free-tier constraint, because that
 content was public-facing and this content is not.
+
+## Update 2026-08-13
+
+The repo moved to `ycst-org-uk/board-docs`; admin is now granted through the
+`admins` team rather than a named collaborator. The private-visibility reasoning
+here is unchanged. See `decisions/2026-08-13-ycst-org-uk-migration.md`.

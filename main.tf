@@ -23,3 +23,13 @@ module "org_yo61" {
     github = github.yo61
   }
 }
+
+module "org_ycst_org_uk" {
+  source = "./modules/org"
+
+  org = "ycst-org-uk"
+
+  providers = {
+    github = github.ycst_org_uk
+  }
+}

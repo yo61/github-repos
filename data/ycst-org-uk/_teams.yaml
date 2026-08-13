@@ -1,0 +1,6 @@
+---
+admins:
+  description: Administrators for York City Supporters Trust repositories
+  members:
+    - robinbowes
+    - PlanetSeth

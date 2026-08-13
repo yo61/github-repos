@@ -1,8 +1,12 @@
 ---
 auto_init: true
 builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
 dependabot_security_updates: true
 has_issues: true
-name: ycst-website-testing
+name: website-testing
 visibility: private
 vulnerability_alerts: true

@@ -1,7 +1,10 @@
 # `ycst-org-uk` — second managed org, team-based admin, repo migration
 
 Date: 2026-08-12
-Status: Design, pending implementation plan
+Status: Implemented 2026-08-13. See `decisions/2026-08-13-ycst-org-uk-migration.md`.
+Finding 1 below is incomplete: `moved` cannot carry a **rename**, because
+`github_repository`'s ID is the repo name. The migration recovered with
+`terraform state rm` plus `import` blocks. The decision record has the detail.
 
 ## Goal
 

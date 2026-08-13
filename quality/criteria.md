@@ -110,12 +110,23 @@ deleted.
 
     - Run `task plan` and read the diff before `task apply`. Use the
       `Taskfile` wrappers, not the underlying CLI.
-    - A plan proposing to *create* resources that already exist means the
-      backend is misconfigured, not that the infrastructure is missing.
-      Stop and fix the backend; do not apply.
-    - An instance address change produces destroy+create. Stategraph ignores
-      HCL `moved`/`removed` blocks and has no `state mv`/`rm`. Confirm that
-      is intended before applying.
+    - A plan proposing to *create* resources that already exist means either
+      the backend is misconfigured or a resource's ID no longer resolves.
+      Both look identical in the plan. Check the backend first, then check
+      whether refresh can still reach the object under the ID in state. Do
+      not apply either way.
+    - An instance address change needs a `moved` block, and its plan must
+      show the move rather than a destroy+create. Under the native CLI
+      against the HTTP backend `moved` is honoured, including across
+      provider aliases and renamed `for_each` keys in one block. The
+      retired `stategraph tf` wrapper ignored it.
+    - A `moved` block cannot carry a **rename** when the resource ID is the
+      name — as it is for `github_repository` and everything keyed on it.
+      Terraform rewrites the address and the provider binding but never the
+      ID, so refresh looks for the old name under the new owner, 404s, and
+      plans a create. Use `terraform state rm` plus `import` blocks instead;
+      both work against the HTTP backend. `removed` blocks cannot substitute
+      for the `state rm` — they reject instance keys.
     - Plan files may contain sensitive values and are gitignored. Never
       commit one.
     - Never echo a credential to verify it is set. Test with `${VAR:+set}`,
@@ -125,10 +136,23 @@ deleted.
 ## Severity: blocking
 
 ## Source: `CLAUDE.md`; Stategraph state-mutation gaps;
-`decisions/2026-08-04-native-terraform-http-backend.md`
+`decisions/2026-08-04-native-terraform-http-backend.md`;
+`decisions/2026-08-13-ycst-org-uk-migration.md`
 
-## Last triggered: 2026-08-04 — a gitignored backend file meant a clone
-without it would silently use local state and plan to recreate all 130
+## Last triggered: 2026-08-13 — the `ycst-org-uk` migration. `moved` blocks
+rebound both repos to the new provider but left the old names as IDs, so the
+plan proposed to create two repos that already existed. The create-vs-exists
+criterion caught it and nothing was applied; the backend was fine, which is
+why that criterion now names the second cause. Recovered with
+`terraform state rm` plus `import` blocks. Also 2026-08-13, second trigger of
+the credential criterion: `${GITHUB_TOKEN:+yes}${GITHUB_TOKEN:-no}` printed a
+PAT in full — the `:+` guard was written correctly and then undone by a `:-`
+fallback on the same line. Token rotated. One more trigger promotes it to an
+automated check; consider a hook matching `\$\{[A-Z_]*(TOKEN|PASSWORD|KEY|
+SECRET)[A-Z_]*:-`.
+
+## Last triggered (prior): 2026-08-04 — a gitignored backend file meant a
+clone without it would silently use local state and plan to recreate all 130
 instances; and `TF_HTTP_PASSWORD` was printed in full by a `${VAR:-}` check.
 
 ---

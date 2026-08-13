@@ -1,0 +1,12 @@
+---
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "Must-use WordPress plugins for www.ycst.org.uk, and their tooling."
+has_issues: true
+name: wp-mu-plugins
+visibility: private
+vulnerability_alerts: true

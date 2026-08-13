@@ -507,14 +507,18 @@ since this PR merged.
 Expected: **3 to add, 0 to change, 0 to destroy** —
 `module.org_ycst_org_uk.github_team.this["admins"]`,
 `module.org_ycst_org_uk.github_team_members.this["admins"]` with two `members`
-blocks, and `module.org_ycst_org_uk.terraform_data.validations`. This count is
-a prediction, not an observation carried from an earlier run: the branch was
-never planned in its final form — the last real `task plan` ran after Task 1's
-commit, before Task 2's org and Task 3's Taskfile change existed, and Tasks 2
-and 3 verified with `terraform validate` and `task --dry` only. This is the
-first time the whole branch is planned against the live backend. Any destroy,
-or any `module.org_yo61.*` address in the plan, means the targeting did not
-hold — stop and diagnose.
+blocks, and `module.org_ycst_org_uk.terraform_data.validations`.
+
+This count is an observation, not a prediction. The branch was planned against
+the live backend on 2026-08-13 at commit `883708c`, before merge, both scoped
+and unscoped. Both runs returned `3 to add, 0 to change, 0 to destroy` — the
+unscoped run is the stronger result, because it proves `yo61`'s 154 existing
+instances produce zero diff and neither org's `check "unmanaged_repos"` warns.
+Re-running here after merge should reproduce it exactly; a different count
+means something changed between that run and the merge.
+
+Any destroy, or any `module.org_yo61.*` address in the plan, means the
+targeting did not hold — stop and diagnose.
 
 - [ ] **Step 6: Apply**
 

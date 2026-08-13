@@ -7,8 +7,13 @@ locals {
   # is invoked from the repo root, which is the convention in this project.
   data_dir = "data/${var.org}"
 
+  # Optional per-org metadata. Absent file means the org manages no teams, so
+  # its existing teams are left alone rather than adopted or destroyed.
+  teams_file = "${local.data_dir}/_teams.yaml"
+  teams      = fileexists(local.teams_file) ? coalesce(yamldecode(file(local.teams_file)), {}) : {}
+
   # Repo files: every *.yaml in the org's directory excluding leading-underscore
-  # reserved names (e.g. _teams.yaml in the future).
+  # reserved names (e.g. _teams.yaml).
   repo_files = toset([
     for f in fileset(local.data_dir, "*.yaml") : f
     if !startswith(f, "_")
@@ -40,6 +45,17 @@ locals {
   configured_names = toset([for stem, _ in local.raw_repo_data : stem])
   non_fork_names   = toset(data.github_repositories.non_fork.names)
   missing_configs  = setsubtract(local.non_fork_names, local.configured_names)
+
+  # Team slugs a repo grants to that this org does not manage. Without this
+  # check the `lookup(var.team_ids, slug, slug)` fallback in
+  # modules/github-repo/main.tf sends the bare slug to the API, and a typo
+  # surfaces as an opaque apply-time error instead of a named plan failure.
+  unknown_team_refs = flatten([
+    for name, collab in local.collaborators : [
+      for team in coalesce(lookup(collab, "teams", []), []) : "${name}: ${team.slug}"
+      if !contains(keys(local.teams), team.slug)
+    ]
+  ])
 }
 
 # Anchors the fatal name-mismatch validation. terraform_data is a no-op resource;
@@ -49,6 +65,11 @@ resource "terraform_data" "validations" {
     precondition {
       condition     = length(local.name_mismatches) == 0
       error_message = "Org ${var.org}: YAML files where filename stem differs from `name:` field: ${jsonencode(local.name_mismatches)}"
+    }
+
+    precondition {
+      condition     = length(local.unknown_team_refs) == 0
+      error_message = "Org ${var.org}: repos grant to team slugs absent from ${local.teams_file}: ${jsonencode(local.unknown_team_refs)}"
     }
   }
 }

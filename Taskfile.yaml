@@ -49,6 +49,20 @@ tasks:
           fi
         fi
 
+  # An unmatched -target is only a soft warning, and the resulting empty plan
+  # reads like "nothing to do". A data directory doesn't prove module.org_<org>
+  # exists, but it's a cheap proxy that catches a plain typo in ORG before
+  # terraform silently no-ops.
+  org-guard:
+    internal: true
+    silent: true
+    cmds:
+      - |
+        if [ -n "{{.ORG}}" ] && [ ! -d "data/{{.ORG}}" ]; then
+          echo "ERROR: no data/{{.ORG}} directory; ORG must name a managed org." >&2
+          exit 1
+        fi
+
   init:
     desc: Initialise terraform against the Stategraph HTTP backend
     deps: [preflight]
@@ -56,10 +70,12 @@ tasks:
       - terraform init
 
   plan:
-    desc: Generate a plan file via `terraform plan -out {{.PLAN_FILE}}` (read-only)
-    deps: [preflight]
+    desc: Generate a plan file via `terraform plan` (ORG=<org> scopes it to one org)
+    deps: [preflight, org-guard]
+    vars:
+      TARGET: '{{if .ORG}}-target=module.org_{{.ORG | replace "-" "_"}}{{end}}'
     cmds:
-      - terraform plan -out={{.PLAN_FILE}}
+      - terraform plan -out={{.PLAN_FILE}} {{.TARGET}}
 
   apply:
     desc: Apply the previously generated plan file

@@ -158,8 +158,13 @@ resource "github_repository_collaborators" "this" {
     # allow teams to be omitted from the collaborators structure
     for_each = toset(coalesce(var.collaborators.teams, []))
 
-    # we can speed things up by passing in a map of team_ids, indexed on team slug
-    # if no id is found for the slug, pass in the slug instead
+    # team_ids carries the id for a slug. Passing the id rather than the slug is
+    # what creates the dependency edge: this resource references var.team_ids
+    # unconditionally, so terraform orders team creation before the grant even
+    # on the fallback path below — a slug-only map built from local.teams would
+    # drop the edge silently. The fallback itself only survives for direct
+    # callers of this module: modules/org adds a precondition asserting every
+    # slug is a key of local.teams, making the fallback unreachable there.
     content {
       permission = team.value.permission
       team_id    = lookup(var.team_ids, team.value.slug, team.value.slug)

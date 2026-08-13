@@ -12,7 +12,9 @@ files.
 
 ## Repository layout
 
-- `data/<org>/*.yaml` — one file per managed repo (the source of truth)
+- `data/<org>/*.yaml` — one file per managed repo (the source of truth);
+  `data/<org>/_teams.yaml` is optional per-org metadata, and leading-underscore
+  filenames are reserved for it rather than read as repos
 - `modules/github-repo/` — the reusable repo module; `variables.tf` lists
   every supported field and its default
 - `modules/org/` — iterates an org's `data/` files
@@ -45,6 +47,14 @@ files.
 - **Private repos on the free-tier personal org:** rulesets and secret
   scanning are paywalled — omit them. Keep `vulnerability_alerts` and
   `dependabot_security_updates`.
+- **Teams are optional and per-org.** `data/<org>/_teams.yaml` is a map keyed
+  by team slug, each with `description`, `members`, and an optional `privacy`
+  (default `closed`). The key is used verbatim as the team name, and GitHub
+  derives the slug from it, so keys must be lowercase and hyphenated for the
+  two to agree. Membership is authoritative — a member added in the UI is
+  removed on the next apply. A repo grants to a team with
+  `collaborators.teams: [{permission: admin, slug: admins}]`; a slug with no
+  team in the same org's `_teams.yaml` fails the plan.
 
 ## Applying changes
 
@@ -72,6 +82,11 @@ task init    # terraform init                    (once per clone)
 task plan    # terraform plan -out tfplan        (read-only)
 task apply   # terraform apply tfplan            (only after reviewing the plan)
 ```
+
+`task plan ORG=<org>` scopes the plan to one org
+(`-target=module.org_<org>`, hyphens become underscores). Targeting skips the
+excluded org's `check "unmanaged_repos"` and its filename/`name:` validation,
+so it is for scoping a known change; unscoped `task plan` stays the default.
 
 Inspect state with `task state:list` (all instance addresses) and
 `task state:show REPO=<name>` (one repo's instances). Always review the plan

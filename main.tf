@@ -33,3 +33,18 @@ module "org_ycst_org_uk" {
     github = github.ycst_org_uk
   }
 }
+
+# The repos were transferred and renamed on GitHub out of band; github_repository
+# takes its owner from the provider, so terraform cannot do the move itself.
+# One block per repo carries all four of that repo's instances across both the
+# provider alias and the renamed for_each key, preserving the resource ID.
+# Delete these once applied — a spent moved block is a no-op.
+moved {
+  from = module.org_yo61.module.repo["ycst-admin-docs"]
+  to   = module.org_ycst_org_uk.module.repo["board-docs"]
+}
+
+moved {
+  from = module.org_yo61.module.repo["ycst-website-testing"]
+  to   = module.org_ycst_org_uk.module.repo["website-testing"]
+}

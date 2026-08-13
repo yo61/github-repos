@@ -1,13 +1,13 @@
 ---
 builtin_ruleset_names: []
 collaborators:
-  users:
+  teams:
     - permission: admin
-      username: PlanetSeth
+      slug: admins
 dependabot_security_updates: true
 description: "Board admin hub and docs for York City Supporters Trust."
 has_issues: true
 homepage_url: https://admin.ycst.org.uk
-name: ycst-admin-docs
+name: board-docs
 visibility: private
 vulnerability_alerts: true

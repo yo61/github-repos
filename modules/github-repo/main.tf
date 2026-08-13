@@ -158,8 +158,10 @@ resource "github_repository_collaborators" "this" {
     # allow teams to be omitted from the collaborators structure
     for_each = toset(coalesce(var.collaborators.teams, []))
 
-    # we can speed things up by passing in a map of team_ids, indexed on team slug
-    # if no id is found for the slug, pass in the slug instead
+    # team_ids carries the id for a slug. Passing the id rather than the slug is
+    # a dependency edge, not an optimisation: it is what makes terraform create
+    # a team before granting a repo to it. The fallback covers a slug naming a
+    # team this repository does not manage.
     content {
       permission = team.value.permission
       team_id    = lookup(var.team_ids, team.value.slug, team.value.slug)

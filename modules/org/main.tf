@@ -65,6 +65,7 @@ module "repo" {
   security_and_analysis       = lookup(each.value, "security_and_analysis", null)
   squash_merge_commit_message = lookup(each.value, "squash_merge_commit_message", null)
   squash_merge_commit_title   = lookup(each.value, "squash_merge_commit_title", null)
+  team_ids                    = { for slug, team in github_team.this : slug => team.id }
   template                    = lookup(each.value, "template", null)
   visibility                  = lookup(each.value, "visibility", null)
   vulnerability_alerts        = lookup(each.value, "vulnerability_alerts", null)

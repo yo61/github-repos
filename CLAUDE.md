@@ -48,13 +48,21 @@ files.
   scanning are paywalled — omit them. Keep `vulnerability_alerts` and
   `dependabot_security_updates`.
 - **Teams are optional and per-org.** `data/<org>/_teams.yaml` is a map keyed
-  by team slug, each with `description`, `members`, and an optional `privacy`
-  (default `closed`). The key is used verbatim as the team name, and GitHub
-  derives the slug from it, so keys must be lowercase and hyphenated for the
-  two to agree. Membership is authoritative — a member added in the UI is
-  removed on the next apply. A repo grants to a team with
+  by team slug, each with `description`, `members`, `maintainers`, and an
+  optional `privacy` (default `closed`). The key is used verbatim as the team
+  name, and GitHub derives the slug from it, so keys must be lowercase and
+  hyphenated for the two to agree. Membership is authoritative — a member added
+  in the UI is removed on the next apply. A repo grants to a team with
   `collaborators.teams: [{permission: admin, slug: admins}]`; a slug with no
   team in the same org's `_teams.yaml` fails the plan.
+- **List a new team's creator under `maintainers`.** GitHub makes whoever
+  creates a team its maintainer, so a team whose YAML lists only `members`
+  shows a standing diff demoting them. See
+  `decisions/2026-08-13-team-member-roles.md`.
+- **Team usernames go in lowercase.** `github_team_members` lowercases them
+  into state and compares case-sensitively, so `PlanetSeth` under a team is a
+  standing diff. This is specific to team membership — `collaborators.users`
+  takes GitHub's display case and does not drift.
 
 ## Applying changes
 

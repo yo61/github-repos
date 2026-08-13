@@ -1,6 +1,9 @@
 ---
 admins:
   description: Administrators for York City Supporters Trust repositories
-  members:
+  maintainers:
     - robinbowes
-    - PlanetSeth
+  members:
+    # Lowercase: github_team_members lowercases usernames into state and
+    # compares case-sensitively, so `PlanetSeth` here is a standing diff.
+    - planetseth

@@ -480,26 +480,49 @@ gh pr merge --squash --delete-branch
 git checkout main && git pull
 ```
 
-- [ ] **Step 4: Plan the apply, scoped to the new org**
+- [ ] **Step 4: Check the token can administer `ycst-org-uk`**
 
 ```bash
+gh api /user/memberships/orgs/ycst-org-uk --jq .role
+```
+
+Expected: `admin`. `ycst-org-uk` was created 2026-08-12, and both provider
+blocks rely on one ambient `GITHUB_TOKEN`; a fine-grained PAT, or a classic PAT
+under a new org's token policy, would 403 on `github_team` creation mid-apply
+rather than at this gate. `gh`'s token and Terraform's `GITHUB_TOKEN` may
+differ, so this proves the account's role rather than the exact credential
+Terraform will use — it catches the common case early and costs one call.
+
+- [ ] **Step 5: Plan the apply, scoped to the new org**
+
+```bash
+direnv exec . task init
 direnv exec . task plan ORG=ycst-org-uk
 ```
+
+`task init` is a no-op if modules are already installed; the new
+`module "org_ycst_org_uk"` needs installing in a clone that has not re-init'd
+since this PR merged.
 
 Expected: **3 to add, 0 to change, 0 to destroy** —
 `module.org_ycst_org_uk.github_team.this["admins"]`,
 `module.org_ycst_org_uk.github_team_members.this["admins"]` with two `members`
-blocks, and `module.org_ycst_org_uk.terraform_data.validations`. Any destroy,
+blocks, and `module.org_ycst_org_uk.terraform_data.validations`. This count is
+a prediction, not an observation carried from an earlier run: the branch was
+never planned in its final form — the last real `task plan` ran after Task 1's
+commit, before Task 2's org and Task 3's Taskfile change existed, and Tasks 2
+and 3 verified with `terraform validate` and `task --dry` only. This is the
+first time the whole branch is planned against the live backend. Any destroy,
 or any `module.org_yo61.*` address in the plan, means the targeting did not
 hold — stop and diagnose.
 
-- [ ] **Step 5: Apply**
+- [ ] **Step 6: Apply**
 
 ```bash
 direnv exec . task apply
 ```
 
-- [ ] **Step 6: Verify the team exists with both members**
+- [ ] **Step 7: Verify the team exists with both members**
 
 ```bash
 gh api /orgs/ycst-org-uk/teams --jq '.[] | {slug, privacy}'
@@ -509,7 +532,7 @@ gh api /orgs/ycst-org-uk/teams/admins/members --jq '.[].login'
 Expected: one team, `slug: admins`, `privacy: closed`; members `robinbowes` and
 `PlanetSeth`.
 
-- [ ] **Step 7: Confirm both orgs plan clean unscoped**
+- [ ] **Step 8: Confirm both orgs plan clean unscoped**
 
 ```bash
 direnv exec . task plan
@@ -845,6 +868,14 @@ direnv exec . task plan
 Expected: `No changes.` and no unmanaged-repo warning from either org —
 `yo61`'s configured set no longer names the two repos, and `ycst-org-uk`'s now
 does.
+
+`modules/org/data.tf`'s `check "unmanaged_repos"` queries GitHub's **search**
+API (`data.github_repositories`), and that index lags for freshly transferred
+repos. Immediately post-transfer, `yo61`'s check may still list
+`ycst-admin-docs`/`ycst-website-testing` and warn even though the transfer
+succeeded. That is a stale search index, not drift — re-run the plan rather
+than diagnose it; do not halt a correct migration over a warning that clears
+itself.
 
 ---
 

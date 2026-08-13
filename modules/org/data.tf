@@ -10,7 +10,7 @@ locals {
   # Optional per-org metadata. Absent file means the org manages no teams, so
   # its existing teams are left alone rather than adopted or destroyed.
   teams_file = "${local.data_dir}/_teams.yaml"
-  teams      = fileexists(local.teams_file) ? yamldecode(file(local.teams_file)) : {}
+  teams      = fileexists(local.teams_file) ? coalesce(yamldecode(file(local.teams_file)), {}) : {}
 
   # Repo files: every *.yaml in the org's directory excluding leading-underscore
   # reserved names (e.g. _teams.yaml).
@@ -52,7 +52,7 @@ locals {
   # surfaces as an opaque apply-time error instead of a named plan failure.
   unknown_team_refs = flatten([
     for name, collab in local.collaborators : [
-      for team in lookup(collab, "teams", []) : "${name}: ${team.slug}"
+      for team in coalesce(lookup(collab, "teams", []), []) : "${name}: ${team.slug}"
       if !contains(keys(local.teams), team.slug)
     ]
   ])

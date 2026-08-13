@@ -50,7 +50,9 @@ tasks:
         fi
 
   # An unmatched -target is only a soft warning, and the resulting empty plan
-  # reads like "nothing to do". Fail on a slug with no data directory instead.
+  # reads like "nothing to do". A data directory doesn't prove module.org_<org>
+  # exists, but it's a cheap proxy that catches a plain typo in ORG before
+  # terraform silently no-ops.
   org-guard:
     internal: true
     silent: true

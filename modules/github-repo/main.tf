@@ -159,9 +159,12 @@ resource "github_repository_collaborators" "this" {
     for_each = toset(coalesce(var.collaborators.teams, []))
 
     # team_ids carries the id for a slug. Passing the id rather than the slug is
-    # a dependency edge, not an optimisation: it is what makes terraform create
-    # a team before granting a repo to it. The fallback covers a slug naming a
-    # team this repository does not manage.
+    # what creates the dependency edge: this resource references var.team_ids
+    # unconditionally, so terraform orders team creation before the grant even
+    # on the fallback path below — a slug-only map built from local.teams would
+    # drop the edge silently. The fallback itself only survives for direct
+    # callers of this module: modules/org adds a precondition asserting every
+    # slug is a key of local.teams, making the fallback unreachable there.
     content {
       permission = team.value.permission
       team_id    = lookup(var.team_ids, team.value.slug, team.value.slug)

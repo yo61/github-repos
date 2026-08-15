@@ -64,6 +64,46 @@ files.
   standing diff. This is specific to team membership — `collaborators.users`
   takes GitHub's display case and does not drift.
 
+## The auto-merge policy depends on an approver that does not exist
+
+The review-gated auto-merge policy (`decisions/2026-07-30-reportlab-pdf-automerge-review.md`,
+`decisions/2026-08-03-plugin-repos-review-gated-automerge.md`) sets
+`default_branch_ruleset_required_approving_review_count: 1` and treats
+**lastlight's approval as the "vetted" clause** — the thing that separates a
+bot bump from a stranger's PR.
+
+lastlight does not approve pull requests. Its `dependabot-pr-merge` workflow
+(`yo61/lastlight`, `apps/server/workflows/`) only *enables auto-merge*; its
+prompt says it "pre-empts no review", and the repo exposes no approve
+capability at all (no `github_approve`, `approve_pull_request`, or
+`submitReview` in the codebase). The workflow's repo-write profile grants
+`github_enable_auto_merge`, `github_add_issue_comment`, and
+`github_add_labels` — there is no review tool in it.
+
+So a green Dependabot PR ends up **armed for auto-merge and one approval
+short, forever**. Observed 2026-08-15 across `yo61`: 26 open Dependabot PRs,
+all `MERGEABLE` with every check green, auto-merge armed on 21 of them, and
+`reviews=0` on all 26.
+
+Two consequences when reading this repo's config:
+
+- **A repo can be fully compliant with the policy and still never merge a bot
+  PR.** `unifictl` has both rulesets, the review count, the required checks,
+  and `allow_auto_merge: true` — and five stranded PRs. Compliance is not
+  evidence the pipeline works.
+- **This is not the stale-verdict failure** from
+  `decisions/2026-08-10-post-apply-pr-reevaluation.md`. That one has an
+  approval present and a cached blocker, and re-arming auto-merge clears it.
+  Here the approval never happened, so toggling auto-merge changes nothing.
+  Same symptom, different cause; check `reviews` before reaching for the
+  re-arm.
+
+Unresolved — the fix belongs in `yo61/lastlight` (add an approve step) or in
+this repo (drop the review count and let the no-bypass status-checks ruleset
+carry the gate alone). Choosing between those is a decision, not yet made.
+`yo61/lastlight` is a fork of `nearform/lastlight` with issues disabled, so
+there is no issue tracking this yet.
+
 ## Applying changes
 
 State lives in Stategraph, reached through its **HTTP backend** using the

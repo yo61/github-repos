@@ -64,7 +64,7 @@ files.
   standing diff. This is specific to team membership — `collaborators.users`
   takes GitHub's display case and does not drift.
 
-## The auto-merge policy depends on an approver that does not exist
+## The auto-merge policy is waiting on an approval lastlight stopped giving
 
 The review-gated auto-merge policy (`decisions/2026-07-30-reportlab-pdf-automerge-review.md`,
 `decisions/2026-08-03-plugin-repos-review-gated-automerge.md`) sets
@@ -72,18 +72,33 @@ The review-gated auto-merge policy (`decisions/2026-07-30-reportlab-pdf-automerg
 **lastlight's approval as the "vetted" clause** — the thing that separates a
 bot bump from a stranger's PR.
 
-lastlight does not approve pull requests. Its `dependabot-pr-merge` workflow
-(`yo61/lastlight`, `apps/server/workflows/`) only *enables auto-merge*; its
-prompt says it "pre-empts no review", and the repo exposes no approve
-capability at all (no `github_approve`, `approve_pull_request`, or
-`submitReview` in the codebase). The workflow's repo-write profile grants
-`github_enable_auto_merge`, `github_add_issue_comment`, and
-`github_add_labels` — there is no review tool in it.
+lastlight can approve, and used to. `claude-plugin-reportlab-pdf#18` carries
+`yo61-lastlight: APPROVED` dated 2026-07-30, with a review body in the
+dependency-assessment agent's own voice ("Trivial and low-risk"), and the
+capability is present in `packages/agentic-pi/src/extensions/github/client.ts`
+(`pulls.createReview` with `event: "APPROVE"`).
+
+It no longer does so for dependency PRs. The current `dependabot-pr-merge`
+workflow (`yo61/lastlight`, `apps/server/workflows/`) runs under a repo-write
+profile granting `github_enable_auto_merge`, `github_add_issue_comment`, and
+`github_add_labels` — no review tool. Its prompt says it "pre-empts no
+review". The router sends dependency PRs to `DEPENDABOTPRMERGE` and reserves
+`REVIEW` (the path that does approve) for non-dependency PRs, so a bump never
+reaches an approver.
 
 So a green Dependabot PR ends up **armed for auto-merge and one approval
 short, forever**. Observed 2026-08-15 across `yo61`: 26 open Dependabot PRs,
 all `MERGEABLE` with every check green, auto-merge armed on 21 of them, and
-`reviews=0` on all 26.
+`reviews=0` on all 26 — against a working approval on the same repo two weeks
+earlier. Something between 2026-07-30 and 2026-08-11 moved the dependency path
+from "approve, then merge" to "arm auto-merge only".
+
+When checking this yourself, **do not use `gh search code` against
+`yo61/lastlight`** — it is a fork of `nearform/lastlight`, and GitHub excludes
+forks from the code index, so every query returns zero hits whether or not the
+code is there. That false negative is what first made this look like a missing
+capability rather than a regression. Grep the local clone, or search
+`nearform/lastlight`.
 
 Two consequences when reading this repo's config:
 
@@ -98,11 +113,19 @@ Two consequences when reading this repo's config:
   Same symptom, different cause; check `reviews` before reaching for the
   re-arm.
 
-Unresolved — the fix belongs in `yo61/lastlight` (add an approve step) or in
-this repo (drop the review count and let the no-bypass status-checks ruleset
-carry the gate alone). Choosing between those is a decision, not yet made.
-`yo61/lastlight` is a fork of `nearform/lastlight` with issues disabled, so
-there is no issue tracking this yet.
+Confirmed empirically on 2026-08-15: after the apply that set
+`allow_auto_merge: true` on `claude-plugin-reportlab-pdf`, all four of its
+open Dependabot PRs were re-armed per
+`decisions/2026-08-10-post-apply-pr-reevaluation.md` and all four stayed
+`BLOCKED` at `reviews=0`. The flag was never the binding constraint.
+
+Unresolved — the fix belongs in `yo61/lastlight` (restore approval on the
+dependency path) or in this repo (drop the review count and let the no-bypass
+status-checks ruleset carry the gate alone). Choosing between those is a
+decision, not yet made. Since lastlight approved correctly two weeks ago, the
+first is a regression to find rather than a feature to build, which argues for
+fixing it there. `yo61/lastlight` is a fork with issues disabled, so nothing
+tracks this yet.
 
 ## Applying changes
 

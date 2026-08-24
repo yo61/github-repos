@@ -1,0 +1,47 @@
+---
+additional_rulesets:
+  required_status_checks:
+    enforcement: active
+    name: Required status checks
+    target: branch
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - ~DEFAULT_BRANCH
+    rules:
+      - creation: false
+        deletion: false
+        non_fast_forward: false
+        required_signatures: false
+        update: false
+        update_allows_fetch_and_merge: false
+        required_status_checks:
+          strict_required_status_checks_policy: false
+          required_check:
+            # `test` is an aggregator job gating lint, the pytest matrix and
+            # the bootstrap smoke test, so the matrix can grow without
+            # touching this ruleset. The docs workflow's `build`/`deploy`
+            # are deliberately absent: they only run on docs/site changes,
+            # so requiring them would block every other PR.
+            - context: test
+            - context: commitlint
+            - context: zizmor
+allow_auto_merge: true
+collaborators:
+  users:
+    - permission: admin
+      username: robinbowes
+create_default_branch: true
+default_branch_ruleset_required_approving_review_count: 1
+dependabot_security_updates: true
+has_issues: true
+is_template: true
+name: python-template
+pages:
+  build_type: workflow
+security_and_analysis:
+  secret_scanning: true
+  secret_scanning_push_protection: true
+visibility: public
+vulnerability_alerts: true

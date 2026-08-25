@@ -158,6 +158,13 @@ deleted.
       plans a create. Use `terraform state rm` plus `import` blocks instead;
       both work against the HTTP backend. `removed` blocks cannot substitute
       for the `state rm` — they reject instance keys.
+    - A diff that reappears after being applied is a provider `Read`/`Update`
+      asymmetry, not drift. Read the provider source for that field before
+      applying it a second time — a field `Update` never sends, on a resource
+      whose `Update` ends by calling `Read`, can never converge. Applying
+      repeatedly is the failure mode: it looks like progress and changes
+      nothing. Fix it by making config match reality, by `ignore_changes`, or
+      by changing the underlying object — not by re-applying.
     - Plan files may contain sensitive values and are gitignored. Never
       commit one.
     - Never echo a credential to verify it is set. Test with `${VAR:+set}`,
@@ -170,11 +177,20 @@ deleted.
 `decisions/2026-08-04-native-terraform-http-backend.md`;
 `decisions/2026-08-13-ycst-org-uk-migration.md`
 
-## Last triggered: 2026-08-13 — the `ycst-org-uk` migration. `moved` blocks
-rebound both repos to the new provider but left the old names as IDs, so the
-plan proposed to create two repos that already existed. The create-vs-exists
-criterion caught it and nothing was applied; the backend was fine, which is
-why that criterion now names the second cause. Recovered with
+## Last triggered: 2026-08-25 — `python-template` (PR #77). Its `template`
+block had been diffing on every plan. Applying the removal was tested and the
+diff returned on the next plan: provider v6.13.0 `Read` sets `template` from
+the API unconditionally, `Update` never sends it, and `Update` ends by calling
+`Read`. `template_repository` is immutable server-side, so the repo was
+recreated. The read-the-plan criterion also carried the reconciliation — the
+plan showed the swap needed no `state rm`, contrary to what had been planned.
+This category's new first criterion was written from this.
+
+## Last triggered (prior): 2026-08-13 — the `ycst-org-uk` migration. `moved`
+blocks rebound both repos to the new provider but left the old names as IDs,
+so the plan proposed to create two repos that already existed. The
+create-vs-exists criterion caught it and nothing was applied; the backend was
+fine, which is why that criterion now names the second cause. Recovered with
 `terraform state rm` plus `import` blocks. Also 2026-08-13, second trigger of
 the credential criterion: `${GITHUB_TOKEN:+yes}${GITHUB_TOKEN:-no}` printed a
 PAT in full — the `:+` guard was written correctly and then undone by a `:-`
@@ -208,8 +224,13 @@ instances; and `TF_HTTP_PASSWORD` was printed in full by a `${VAR:-}` check.
 `decisions/2026-08-04-gate-apply-ordering-and-classic-protection-drift.md`;
 PR #40
 
-## Last triggered: 2026-08-04 — `unifi-mcp` #31/#32/#33 sat approved and
-unmerged after the gate went live; PR #40 recorded "apply is blocked" when
+## Last triggered: 2026-08-25 — the `python-template` swap (PR #77) was
+confirmed against the GitHub API (`template_repository: null`, both rulesets
+active, Pages at the original URL, `main` SHA matching the backup) rather than
+by re-reading the config that produced it.
+
+## Last triggered (prior): 2026-08-04 — `unifi-mcp` #31/#32/#33 sat approved
+and unmerged after the gate went live; PR #40 recorded "apply is blocked" when
 the apply had in fact landed. Also 2026-08-04, PR #46 — the stale-record
 criterion fired outside a post-apply context: adding a second admin to
 `ycst-admin-docs` invalidated the "single maintainer" premise its decision
@@ -238,7 +259,12 @@ moving that criterion to its own category if it keeps triggering here.
 ## Source: global `CLAUDE.md` decision-journal rules; the `decisions/`
 convention in this repo.
 
-## Last triggered: 2026-08-04 — `CLAUDE.md` documented `stategraph tf`
+## Last triggered: 2026-08-25 — two records logged for PR #77 (the archived
+exclusion and the `python-template` recreation), and `CLAUDE.md` plus the
+`default_branch_ruleset_non_fork_bypass_actors` description were updated in the
+same PR that changed the query they describe.
+
+## Last triggered (prior): 2026-08-04 — `CLAUDE.md` documented `stategraph tf`
 wrappers whose write path had been failing since 2026-08-02.
 
 ---

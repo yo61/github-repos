@@ -63,6 +63,14 @@ files.
   into state and compares case-sensitively, so `PlanetSeth` under a team is a
   standing diff. This is specific to team membership — `collaborators.users`
   takes GitHub's display case and does not drift.
+- **Archived repos sit outside drift detection.** The `modules/org` query is
+  `fork:false archived:false`, so an archived repo with no data file is not
+  reported by `check "unmanaged_repos"`. Archiving a repo that *is* managed is
+  the trap: its data file keeps being rendered, so the plan proposes
+  `archived: true -> false` and tries to un-archive it. Set `archived: true`
+  in the data file, and expect writes to its rulesets and collaborators to
+  fail — GitHub rejects them on archived repos. See
+  `decisions/2026-08-25-exclude-archived-from-drift-detection.md`.
 
 ## The auto-merge policy is waiting on an approval lastlight stopped giving
 

@@ -10,7 +10,6 @@ default_branch_ruleset_bypass_actors: []
 # already exist on the release). See homebrew-tap#104.
 default_branch_ruleset_dismiss_stale_reviews_on_push: false
 default_branch_ruleset_required_approving_review_count: 1
-delete_branch_on_merge: true
 dependabot_security_updates: true
 description: "Homebrew tap for yo61 tools"
 has_issues: true

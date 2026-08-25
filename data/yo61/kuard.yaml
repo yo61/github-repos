@@ -33,7 +33,6 @@ collaborators:
       username: robinbowes
 create_default_branch: true
 default_branch: main
-delete_branch_on_merge: true
 dependabot_security_updates: true
 description: "Demo app for Kubernetes Up and Running book"
 has_issues: true

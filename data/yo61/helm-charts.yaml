@@ -1,0 +1,11 @@
+---
+collaborators:
+  users:
+    - permission: admin
+      username: robinbowes
+dependabot_security_updates: true
+description: "Helm charts published by yo61."
+has_issues: true
+name: helm-charts
+visibility: public
+vulnerability_alerts: true

@@ -19,8 +19,13 @@ adding them silently.
 ## Criteria:
 
     - Every key states a deviation from the module default. Cross-check each
-      key against `modules/github-repo/variables.tf`; delete any key whose
-      value already equals that default.
+      key against `modules/github-repo/variables.tf` **and** the computed
+      defaults in `modules/github-repo/data.tf`; delete any key whose value
+      already equals that default. `variables.tf` alone is not enough:
+      `security_and_analysis` defaults to `null` there, but `data.tf` turns
+      that into `secret_scanning` + `secret_scanning_push_protection` for
+      every `visibility: public` repo, so declaring them restates the
+      effective default.
     - `name:` matches the filename stem. *(automated: `repo-yaml-name-check`)*
     - A brand-new repo omits `create_default_branch`. It builds a
       `github_branch` needing a source commit, so it fails on an empty repo;
@@ -37,9 +42,29 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-08-04 — `ycst-admin-docs`. The free-tier private-repo
-criterion determined the whole file: rulesets, the review gate, secret
-scanning, and Pages were all dropped from the `homelab-docs` shape it was
+## Last triggered: 2026-08-25 — `helm-charts` (PR #76), twice. First on the
+sweep below. Then again in review: the new file declared
+`security_and_analysis`, which `data.tf` already supplies for public repos.
+It was missed because the criterion named only `variables.tf`, where the
+default is `null` — the criterion has been widened to name `data.tf` too.
+Six existing public repos (`unifictl`, `kuard`, `go-udap`, `homelab-docs`,
+`python-template`, `civi-mcp`) restate the same block and are untouched so
+far.
+
+## Last triggered (same PR): 2026-08-25 — `helm-charts` (PR #76). The
+brand-new-repo criterion kept `create_default_branch` out of the file, and the
+deviations-only criterion drove a sweep of the existing data: eight files
+restated `delete_branch_on_merge: true`, already the module default at
+`modules/github-repo/variables.tf:190`. Removing it planned as a no-op —
+`modules/org` passes `lookup(..., null)` for an absent key and the child
+variable is `nullable = false`, so Terraform substitutes the default.
+`commitlint-github-action`'s `delete_branch_on_merge: false` is a real
+deviation and was kept. Two `default_branch: main` restatements (`kuard`,
+`go-udap`) were found and left for a separate PR.
+
+## Last triggered (prior): 2026-08-04 — `ycst-admin-docs`. The free-tier
+private-repo criterion determined the whole file: rulesets, the review gate,
+secret scanning, and Pages were all dropped from the `homelab-docs` shape it was
 modelled on. Confirmed post-apply — `GET /rulesets` returns 403, so declaring
 any ruleset would have failed the apply. `auto_init` was also omitted so the
 repo was created empty for the initial push. One deliberate departure:
@@ -72,9 +97,15 @@ it is the fact the access-control design rests on; see
 ## Source: `decisions/2026-08-03-ci-baseline-two-tier-policy.md`;
 `decisions/2026-07-30-reportlab-pdf-automerge-review.md`
 
-## Last triggered: 2026-08-03 — `homebrew-tap` deferred because its CI is
-`paths:`-filtered; `reportlab-pdf` and `claude-skills` held back from Tier 2
-for lacking a behavioural check.
+## Last triggered: 2026-08-25 — `helm-charts` (PR #76) declared no
+`required_status_checks` ruleset. The repo is created empty, so any context
+named now would sit `Expected` forever and block its first PR. The gate
+follows once CI exists, matching the Phase 2 sequencing in the two-tier
+policy.
+
+## Last triggered (prior): 2026-08-03 — `homebrew-tap` deferred because its
+CI is `paths:`-filtered; `reportlab-pdf` and `claude-skills` held back from
+Tier 2 for lacking a behavioural check.
 
 ---
 

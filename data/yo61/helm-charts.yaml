@@ -7,8 +7,5 @@ dependabot_security_updates: true
 description: "Helm charts published by yo61."
 has_issues: true
 name: helm-charts
-security_and_analysis:
-  secret_scanning: true
-  secret_scanning_push_protection: true
 visibility: public
 vulnerability_alerts: true

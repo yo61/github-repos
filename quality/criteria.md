@@ -19,8 +19,13 @@ adding them silently.
 ## Criteria:
 
     - Every key states a deviation from the module default. Cross-check each
-      key against `modules/github-repo/variables.tf`; delete any key whose
-      value already equals that default.
+      key against `modules/github-repo/variables.tf` **and** the computed
+      defaults in `modules/github-repo/data.tf`; delete any key whose value
+      already equals that default. `variables.tf` alone is not enough:
+      `security_and_analysis` defaults to `null` there, but `data.tf` turns
+      that into `secret_scanning` + `secret_scanning_push_protection` for
+      every `visibility: public` repo, so declaring them restates the
+      effective default.
     - `name:` matches the filename stem. *(automated: `repo-yaml-name-check`)*
     - A brand-new repo omits `create_default_branch`. It builds a
       `github_branch` needing a source commit, so it fails on an empty repo;
@@ -37,8 +42,17 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-08-25 — `helm-charts` (PR #76). The brand-new-repo
-criterion kept `create_default_branch` out of the file, and the
+## Last triggered: 2026-08-25 — `helm-charts` (PR #76), twice. First on the
+sweep below. Then again in review: the new file declared
+`security_and_analysis`, which `data.tf` already supplies for public repos.
+It was missed because the criterion named only `variables.tf`, where the
+default is `null` — the criterion has been widened to name `data.tf` too.
+Six existing public repos (`unifictl`, `kuard`, `go-udap`, `homelab-docs`,
+`python-template`, `civi-mcp`) restate the same block and are untouched so
+far.
+
+## Last triggered (same PR): 2026-08-25 — `helm-charts` (PR #76). The
+brand-new-repo criterion kept `create_default_branch` out of the file, and the
 deviations-only criterion drove a sweep of the existing data: eight files
 restated `delete_branch_on_merge: true`, already the module default at
 `modules/github-repo/variables.tf:190`. Removing it planned as a no-op —

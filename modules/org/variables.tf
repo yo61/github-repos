@@ -16,7 +16,7 @@ variable "default_branch_ruleset_bypass_actors" {
 }
 
 variable "default_branch_ruleset_non_fork_bypass_actors" {
-  description = "Extra bypass actors appended to the default_branch ruleset on NON-FORK repos only (fork status comes from the github_repositories fork:false query, so it tracks GitHub without a hand-maintained flag). Intended for the repository Admin role (actor_id 5, RepositoryRole) so maintainers can bypass the review requirement on their own repos while forks stay untouched. A per-repo `default_branch_ruleset_bypass_actors` override still replaces the whole list."
+  description = "Extra bypass actors appended to the default_branch ruleset on NON-FORK repos only (the set comes from the github_repositories `fork:false archived:false` query, so it tracks GitHub without a hand-maintained flag; archived repos are excluded because GitHub rejects writes to them, making the bypass inert). Intended for the repository Admin role (actor_id 5, RepositoryRole) so maintainers can bypass the review requirement on their own repos while forks stay untouched. A per-repo `default_branch_ruleset_bypass_actors` override still replaces the whole list."
   type = list(object({
     actor_id    = number
     actor_type  = string

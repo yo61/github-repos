@@ -37,9 +37,20 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-08-04 — `ycst-admin-docs`. The free-tier private-repo
-criterion determined the whole file: rulesets, the review gate, secret
-scanning, and Pages were all dropped from the `homelab-docs` shape it was
+## Last triggered: 2026-08-25 — `helm-charts` (PR #76). The brand-new-repo
+criterion kept `create_default_branch` out of the file, and the
+deviations-only criterion drove a sweep of the existing data: eight files
+restated `delete_branch_on_merge: true`, already the module default at
+`modules/github-repo/variables.tf:190`. Removing it planned as a no-op —
+`modules/org` passes `lookup(..., null)` for an absent key and the child
+variable is `nullable = false`, so Terraform substitutes the default.
+`commitlint-github-action`'s `delete_branch_on_merge: false` is a real
+deviation and was kept. Two `default_branch: main` restatements (`kuard`,
+`go-udap`) were found and left for a separate PR.
+
+## Last triggered (prior): 2026-08-04 — `ycst-admin-docs`. The free-tier
+private-repo criterion determined the whole file: rulesets, the review gate,
+secret scanning, and Pages were all dropped from the `homelab-docs` shape it was
 modelled on. Confirmed post-apply — `GET /rulesets` returns 403, so declaring
 any ruleset would have failed the apply. `auto_init` was also omitted so the
 repo was created empty for the initial push. One deliberate departure:
@@ -72,9 +83,15 @@ it is the fact the access-control design rests on; see
 ## Source: `decisions/2026-08-03-ci-baseline-two-tier-policy.md`;
 `decisions/2026-07-30-reportlab-pdf-automerge-review.md`
 
-## Last triggered: 2026-08-03 — `homebrew-tap` deferred because its CI is
-`paths:`-filtered; `reportlab-pdf` and `claude-skills` held back from Tier 2
-for lacking a behavioural check.
+## Last triggered: 2026-08-25 — `helm-charts` (PR #76) declared no
+`required_status_checks` ruleset. The repo is created empty, so any context
+named now would sit `Expected` forever and block its first PR. The gate
+follows once CI exists, matching the Phase 2 sequencing in the two-tier
+policy.
+
+## Last triggered (prior): 2026-08-03 — `homebrew-tap` deferred because its
+CI is `paths:`-filtered; `reportlab-pdf` and `claude-skills` held back from
+Tier 2 for lacking a behavioural check.
 
 ---
 

@@ -1,0 +1,13 @@
+---
+auto_init: true
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "Operational scripts for the Trust websites: CiviCRM cron, clone provisioning, mail sandboxing."
+has_issues: true
+name: ops
+visibility: private
+vulnerability_alerts: true

@@ -1,0 +1,37 @@
+---
+additional_rulesets:
+  required_status_checks:
+    enforcement: active
+    name: Required status checks
+    target: branch
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - ~DEFAULT_BRANCH
+    rules:
+      - creation: false
+        deletion: false
+        non_fast_forward: false
+        required_signatures: false
+        update: false
+        update_allows_fetch_and_merge: false
+        required_status_checks:
+          do_not_enforce_on_create: true
+          strict_required_status_checks_policy: false
+          required_check:
+            - context: Conventional Commits
+            - context: plugin.json validation
+            - context: lint
+allow_auto_merge: true
+allow_update_branch: false
+default_branch_ruleset_required_approving_review_count: 1
+dependabot_security_updates: true
+description: "Claude Code plugin: deterministic PreToolUse guardrails for the Bash tool. Blocks known-wrong
+  shell commands and bash-only syntax that breaks under zsh, handing back the correct form."
+has_issues: true
+has_projects: true
+has_wiki: true
+name: claude-plugin-guardrails
+visibility: public
+vulnerability_alerts: true

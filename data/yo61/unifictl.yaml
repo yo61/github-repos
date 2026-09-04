@@ -22,6 +22,8 @@ additional_rulesets:
             - context: "Lint, typecheck, test"
             - context: Conventional Commits
 allow_auto_merge: true
+allow_merge_commit: false
+allow_squash_merge: false
 collaborators:
   users:
     - permission: admin

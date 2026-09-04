@@ -24,7 +24,7 @@ Not new: `unifi-mcp` v0.2.1 shipped with two duplicated pairs, and the same patt
 
   There is no merge-commit configuration that avoids duplication while PR titles are conventional.
 - **Stop writing conventional-commit PR titles.** Rejected: the titles are useful in the PR list, and this relies on every future contributor and agent remembering.
-- **Disable merge commits (`allow_merge_commit: false`).** Rejected as heavier than needed, and it removes a method that is occasionally the right one. Revisit if squashing is forgotten repeatedly.
+- **Disable merge commits (`allow_merge_commit: false`).** Rejected as heavier than needed, and it removes a method that is occasionally the right one. Revisit if squashing is forgotten repeatedly. (Amended 2026-09-04: done on `unifictl`, alongside `allow_squash_merge: false`, but not for the reason reserved here. Squash was not forgotten there — it was used correctly and still dropped a `feat:` commit from the 0.5.4 changelog, because release-please parses only the squashed subject. See `decisions/2026-09-04-unifictl-rebase-only-merge-buttons.md`. `unifi-mcp` and `claude-skills` keep squash.)
 - **Squash-merge.** Chosen. It is the only mechanism that works, and `jobhound` already demonstrates it.
 
 ## Reasoning: Squashing produces one commit on `main` per PR, so there is nothing to duplicate. It also yields the `(#N)` cross-references that make history navigable, which the merge-commit repos lack.
@@ -66,3 +66,5 @@ Audited the remaining `lookup(..., null)` pass-throughs in `modules/org`. The ot
 - `nullable = false` makes Terraform start managing four attributes it previously ignored. Verified as a no-op today, but a repo whose merge settings are changed by hand in future will now be reverted on the next apply. That is the intended behaviour of managing them.
 
 ## Supersedes: none. No prior decision covers merge strategy; `decisions/` was checked before proposing this.
+
+## Superseded in part: `decisions/2026-09-04-unifictl-rebase-only-merge-buttons.md`, for `unifictl` only. The squash choice still stands for `unifi-mcp` and `claude-skills`, and the `nullable = false` finding below is untouched.

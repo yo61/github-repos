@@ -144,9 +144,10 @@ deleted.
 ## Last triggered (stale-side): 2026-09-04 — `unifictl`. The plan proposed
 `allow_merge_commit`/`allow_squash_merge` `false -> true`, which reads as
 drift to revert. `unifictl`'s own
-`decisions/2026-09-03-rebase-only-merge-policy.md` had turned both off the
-previous day. Applying would have undone it. Added because the existing
-criteria all assume the managed repo is the side that drifted.
+`decisions/2026-09-03-rebase-only-merge-policy.md` adopted rebase-only the
+day before, and the live settings matched it. Applying would have undone it.
+Added because the existing criteria all assume the managed repo is the side
+that drifted.
 
 ---
 

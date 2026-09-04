@@ -123,15 +123,31 @@ Tier 2 for lacking a behavioural check.
       differently-shaped drift resource into state.
     - Confirm a deletion actually happened by re-querying, not by assuming
       the out-of-band step was performed.
+    - Establish which side is stale before reconciling a plan diff. A diff
+      is not automatically drift to revert: the managed repo may have
+      adopted the value deliberately, making this repo the stale side.
+      Check the target repo's own `decisions/` and `CLAUDE.md`, and its
+      commit log around the setting, before applying. If it was decided
+      there, record the value in the data file instead.
 
 ## Severity: blocking
 
 ## Source:
-`decisions/2026-08-04-gate-apply-ordering-and-classic-protection-drift.md`
+`decisions/2026-08-04-gate-apply-ordering-and-classic-protection-drift.md`;
+the stale-side criterion from
+`decisions/2026-09-04-unifictl-rebase-only-merge-buttons.md`.
 
 ## Last triggered: 2026-08-04 — classic protection found on `unifi-mcp`
 (3 undeclared contexts) and `claude-skills` (fully redundant); both since
 deleted.
+
+## Last triggered (stale-side): 2026-09-04 — `unifictl`. The plan proposed
+`allow_merge_commit`/`allow_squash_merge` `false -> true`, which reads as
+drift to revert. `unifictl`'s own
+`decisions/2026-09-03-rebase-only-merge-policy.md` adopted rebase-only the
+day before, and the live settings matched it. Applying would have undone it.
+Added because the existing criteria all assume the managed repo is the side
+that drifted.
 
 ---
 

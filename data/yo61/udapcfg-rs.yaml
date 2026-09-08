@@ -1,0 +1,11 @@
+---
+collaborators:
+  users:
+    - permission: admin
+      username: robinbowes
+dependabot_security_updates: true
+description: "Rust port of go-udap: discover and configure Squeezebox devices over UDAP."
+has_issues: true
+name: udapcfg-rs
+visibility: public
+vulnerability_alerts: true

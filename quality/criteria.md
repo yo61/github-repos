@@ -87,17 +87,33 @@ it is the fact the access-control design rests on; see
     - `allow_auto_merge: true` is set only where a *behavioural* check exists
       — a test suite, a real build, or a validator that exercises what the
       repo produces. Lint plus metadata validation is not sufficient.
-    - The `required_status_checks` ruleset carries no bypass. The review
-      requirement lives on the built-in `default_branch` ruleset. Never fold
-      CI contexts into a ruleset that has a bypass actor, or that actor
-      skips CI too.
+    - The `required_status_checks` ruleset carries the org-wide admin bypass
+      and nothing else. It is inherited from `additional_ruleset_bypass_actors`
+      in `main.tf`, never restated per repo; put `bypass_actors` in a data
+      file only to opt one ruleset out with `[]`. Any *other* actor added
+      there skips CI too, which is still the thing to avoid.
+    - Never expect a bypass actor to make auto-merge work. Auto-merge ignores
+      bypasses — a PR whose only unmet requirement is one the merger could
+      bypass by hand stays `BLOCKED` indefinitely. To make bot PRs merge
+      themselves the requirement must be *absent*, not bypassable.
 
 ## Severity: blocking
 
 ## Source: `decisions/2026-08-03-ci-baseline-two-tier-policy.md`;
-`decisions/2026-07-30-reportlab-pdf-automerge-review.md`
+`decisions/2026-07-30-reportlab-pdf-automerge-review.md`; the bypass criteria
+rewritten by `decisions/2026-09-13-admin-override-all-rulesets.md`
 
-## Last triggered: 2026-08-25 — `helm-charts` (PR #76) declared no
+## Last triggered: 2026-09-13 — the no-bypass criterion was **contradicted**,
+not met. lastlight was switched off, leaving `required_approving_review_count:
+1` unsatisfiable on fifteen repos, and the chosen fix put an admin bypass on
+the status-checks rulesets the criterion protected. Demoted and rewritten
+rather than violated silently; see
+`decisions/2026-09-13-admin-override-all-rulesets.md` for what was traded. The
+auto-merge criterion above was added in the same pass, from the observation
+that `claude-plugin-reportlab-pdf`'s four Dependabot PRs stayed `BLOCKED` at
+`reviews=0` while the admin bypass was already live.
+
+## Last triggered (prior): 2026-08-25 — `helm-charts` (PR #76) declared no
 `required_status_checks` ruleset. The repo is created empty, so any context
 named now would sit `Expected` forever and block its first PR. The gate
 follows once CI exists, matching the Phase 2 sequencing in the two-tier

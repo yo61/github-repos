@@ -8,10 +8,6 @@ has_projects: true
 has_wiki: true
 allow_auto_merge: true
 allow_update_branch: false
-# Merge gate: green CI plus an approving review. lastlight already reviews here
-# (it approved civi-mcp#9), so this is satisfied by review rather than by the
-# admin bypass — the failure mode 2026-08-06-unifi-mcp-ci-only-gate rejected.
-default_branch_ruleset_required_approving_review_count: 1
 dependabot_security_updates: true
 security_and_analysis:
   secret_scanning: true

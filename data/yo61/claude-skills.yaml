@@ -25,7 +25,6 @@ additional_rulesets:
             - context: Check plugin source refs resolve
 allow_auto_merge: true
 allow_update_branch: false
-default_branch_ruleset_required_approving_review_count: 1
 dependabot_security_updates: true
 has_issues: true
 has_projects: true

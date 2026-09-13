@@ -25,7 +25,6 @@ additional_rulesets:
             - context: zizmor
 allow_auto_merge: true
 allow_update_branch: false
-default_branch_ruleset_required_approving_review_count: 1
 dependabot_security_updates: true
 description: "Print GitHub release-asset download stats as a text table or JSON."
 has_issues: true

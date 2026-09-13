@@ -28,7 +28,6 @@ collaborators:
   users:
     - permission: admin
       username: robinbowes
-default_branch_ruleset_required_approving_review_count: 1
 dependabot_security_updates: true
 description: "Command-line tool for managing UniFi devices"
 has_issues: true

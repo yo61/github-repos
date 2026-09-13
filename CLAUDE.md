@@ -72,68 +72,82 @@ files.
   fail — GitHub rejects them on archived repos. See
   `decisions/2026-08-25-exclude-archived-from-drift-detection.md`.
 
-## The auto-merge policy is waiting on an approval lastlight stopped giving
+## Merges are gated by CI alone, and an admin can override that
 
-The review-gated auto-merge policy (`decisions/2026-07-30-reportlab-pdf-automerge-review.md`,
-`decisions/2026-08-03-plugin-repos-review-gated-automerge.md`) sets
-`default_branch_ruleset_required_approving_review_count: 1` and treats
-**lastlight's approval as the "vetted" clause** — the thing that separates a
-bot bump from a stranger's PR.
+As of `decisions/2026-09-13-admin-override-all-rulesets.md` there is **no
+human-approval requirement anywhere in the fleet**, and the repository Admin
+role (`RepositoryRole` id 5, `bypass_mode: always`) can bypass **every**
+ruleset in both orgs.
 
-lastlight can approve, and used to. `claude-plugin-reportlab-pdf#18` carries
-`yo61-lastlight: APPROVED` dated 2026-07-30, with a review body in the
-dependency-assessment agent's own voice ("Trivial and low-risk"), and the
-capability is present in `packages/agentic-pi/src/extensions/github/client.ts`
-(`pulls.createReview` with `event: "APPROVE"`).
+lastlight was switched off for cost. It was the only approver, so
+`default_branch_ruleset_required_approving_review_count: 1` — then set on
+fifteen repos — became unsatisfiable. Both halves of the fix matter:
 
-It no longer does so for dependency PRs. The current `dependabot-pr-merge`
-workflow (`yo61/lastlight`, `apps/server/workflows/`) runs under a repo-write
-profile granting `github_enable_auto_merge`, `github_add_issue_comment`, and
-`github_add_labels` — no review tool. Its prompt says it "pre-empts no
-review". The router sends dependency PRs to `DEPENDABOTPRMERGE` and reserves
-`REVIEW` (the path that does approve) for non-dependency PRs, so a bump never
-reaches an approver.
+- **The review counts were dropped**, not merely made bypassable. The counts
+  are gone from the data files and fall back to the module default of `0`.
+- **The admin bypass was widened** from the `default_branch` ruleset on
+  non-forks to every ruleset on every repo, including each repo's
+  `required_status_checks`.
 
-So a green Dependabot PR ends up **armed for auto-merge and one approval
-short, forever**. Observed 2026-08-15 across `yo61`: 26 open Dependabot PRs,
-all `MERGEABLE` with every check green, auto-merge armed on 21 of them, and
-`reviews=0` on all 26 — against a working approval on the same repo two weeks
-earlier. Something between 2026-07-30 and 2026-08-11 moved the dependency path
-from "approve, then merge" to "arm auto-merge only".
+### Bypass does not make auto-merge work
 
-When checking this yourself, **do not use `gh search code` against
-`yo61/lastlight`** — it is a fork of `nearform/lastlight`, and GitHub excludes
-forks from the code index, so every query returns zero hits whether or not the
-code is there. That false negative is what first made this look like a missing
-capability rather than a regression. Grep the local clone, or search
-`nearform/lastlight`.
+This is the trap, and it is why dropping the review counts was necessary
+rather than optional. **GitHub's auto-merge ignores bypass actors.** A PR
+whose only unmet requirement is one you personally could bypass still sits
+`BLOCKED` forever; the bypass lets *you* click merge, it does not let GitHub
+merge on your behalf.
 
-Two consequences when reading this repo's config:
-
-- **A repo can be fully compliant with the policy and still never merge a bot
-  PR.** `unifictl` has both rulesets, the review count, the required checks,
-  and `allow_auto_merge: true` — and five stranded PRs. Compliance is not
-  evidence the pipeline works.
-- **This is not the stale-verdict failure** from
-  `decisions/2026-08-10-post-apply-pr-reevaluation.md`. That one has an
-  approval present and a cached blocker, and re-arming auto-merge clears it.
-  Here the approval never happened, so toggling auto-merge changes nothing.
-  Same symptom, different cause; check `reviews` before reaching for the
-  re-arm.
-
-Confirmed empirically on 2026-08-15: after the apply that set
-`allow_auto_merge: true` on `claude-plugin-reportlab-pdf`, all four of its
-open Dependabot PRs were re-armed per
+Confirmed here on 2026-08-15: `claude-plugin-reportlab-pdf`'s four open
+Dependabot PRs were re-armed for auto-merge per
 `decisions/2026-08-10-post-apply-pr-reevaluation.md` and all four stayed
-`BLOCKED` at `reviews=0`. The flag was never the binding constraint.
+`BLOCKED` at `reviews=0` — while the org-wide admin bypass had been live since
+2026-07-30. If bot PRs need to merge themselves, the requirement has to be
+absent, not bypassable.
 
-Unresolved — the fix belongs in `yo61/lastlight` (restore approval on the
-dependency path) or in this repo (drop the review count and let the no-bypass
-status-checks ruleset carry the gate alone). Choosing between those is a
-decision, not yet made. Since lastlight approved correctly two weeks ago, the
-first is a regression to find rather than a feature to build, which argues for
-fixing it there. `yo61/lastlight` is a fork with issues disabled, so nothing
-tracks this yet.
+### Where the bypass is declared
+
+In `main.tf`, once, as `local.admin_bypass_actors`, fed to both orgs through
+two module variables:
+
+- `default_branch_ruleset_bypass_actors` — the built-in `default_branch`
+  ruleset. On `yo61` it is concatenated with the semantic-release-pusher
+  Integration actor (`3654569`).
+- `additional_ruleset_bypass_actors` — defaulted onto every ruleset a repo
+  declares under `additional_rulesets`.
+
+Don't restate the actor in a data file. A per-repo
+`default_branch_ruleset_bypass_actors` **replaces** the org default rather
+than extending it, which is how `homebrew-tap`'s config spent two months
+asking for no bypass at all: PR #25 set `[]` on 2026-07-14 to drop the
+Integration actor, and when the admin role became an org default two weeks
+later that same `[]` excluded it too. Live had the admin actor anyway — added
+out of band — so the config was proposing to remove it on every plan. That
+file now names the admin role explicitly, which both keeps #25's exclusion and
+matches live. It is the one repo where restating the actor is correct.
+
+To opt out, match the key to the ruleset — the two are not interchangeable.
+For one of a repo's `additional_rulesets`, give that ruleset `bypass_actors:
+[]`; an explicitly declared list, empty or not, is kept verbatim. For the
+built-in `default_branch` ruleset the key is the top-level
+`default_branch_ruleset_bypass_actors: []`.
+
+A top-level `bypass_actors:` is **not** a module input and is dropped without
+error. `modules/org/main.tf` forwards only the keys it names, and nothing
+validates unknown ones — `scripts/check_repo_yaml_name.sh` checks `name:` and
+yamllint has no schema. So that edit looks like it removed an admin bypass from
+a security control, and produces no plan diff and no error.
+
+### What still binds
+
+Required status checks still run, still report, and still block anyone who is
+not a repo admin — including outside contributors. For a maintainer, CI is
+advisory. The `default_branch` rules (`deletion`, `non_fast_forward`,
+`required_signatures`) are likewise admin-bypassable. Treat the fleet as
+having no enforced gate against yourself.
+
+If an approver is ever reintroduced, the review counts must come back with it;
+the two only make sense together, per
+`decisions/2026-08-06-unifi-mcp-ci-only-gate.md`.
 
 ## Applying changes
 

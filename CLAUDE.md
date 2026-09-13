@@ -117,13 +117,25 @@ two module variables:
 
 Don't restate the actor in a data file. A per-repo
 `default_branch_ruleset_bypass_actors` **replaces** the org default rather
-than extending it, which is exactly how `homebrew-tap` lost its admin bypass
-for two months: PR #25 set `[]` to drop the Integration actor in July, before
-the admin role became an org default. That file now names the admin role
-explicitly — the one repo where restating it is correct.
+than extending it, which is how `homebrew-tap`'s config spent two months
+asking for no bypass at all: PR #25 set `[]` on 2026-07-14 to drop the
+Integration actor, and when the admin role became an org default two weeks
+later that same `[]` excluded it too. Live had the admin actor anyway — added
+out of band — so the config was proposing to remove it on every plan. That
+file now names the admin role explicitly, which both keeps #25's exclusion and
+matches live. It is the one repo where restating the actor is correct.
 
-To opt a ruleset out, give it `bypass_actors: []` in YAML; an explicitly
-declared list, empty or not, is kept verbatim.
+To opt out, match the key to the ruleset — the two are not interchangeable.
+For one of a repo's `additional_rulesets`, give that ruleset `bypass_actors:
+[]`; an explicitly declared list, empty or not, is kept verbatim. For the
+built-in `default_branch` ruleset the key is the top-level
+`default_branch_ruleset_bypass_actors: []`.
+
+A top-level `bypass_actors:` is **not** a module input and is dropped without
+error. `modules/org/main.tf` forwards only the keys it names, and nothing
+validates unknown ones — `scripts/check_repo_yaml_name.sh` checks `name:` and
+yamllint has no schema. So that edit looks like it removed an admin bypass from
+a security control, and produces no plan diff and no error.
 
 ### What still binds
 

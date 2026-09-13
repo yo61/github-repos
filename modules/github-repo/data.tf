@@ -66,9 +66,20 @@ locals {
     if contains(var.builtin_ruleset_names, name)
   }
 
+  # Default the org-wide bypass actors onto each user-supplied ruleset that does
+  # not name its own, so the admin override is declared once rather than
+  # restated in every data file. A ruleset carrying `bypass_actors` in YAML —
+  # including an empty list — keeps it untouched.
+  additional_rulesets = {
+    for name, ruleset in var.additional_rulesets :
+    name => merge(ruleset, {
+      bypass_actors = try(ruleset.bypass_actors, var.additional_ruleset_bypass_actors)
+    })
+  }
+
   # merge the selected built-in rulesets and any additional rulesets into one map
   rulesets = merge(
     local.selected_builtin_rulesets,
-    var.additional_rulesets
+    local.additional_rulesets
   )
 }

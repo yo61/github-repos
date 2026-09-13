@@ -19,6 +19,9 @@ module "repo" {
 
   for_each = local.repo_data
 
+  additional_ruleset_bypass_actors = lookup(
+    each.value, "additional_ruleset_bypass_actors", var.additional_ruleset_bypass_actors
+  )
   additional_rulesets              = lookup(each.value, "additional_rulesets", null)
   allow_auto_merge                 = lookup(each.value, "allow_auto_merge", null)
   allow_merge_commit               = lookup(each.value, "allow_merge_commit", null)
@@ -34,11 +37,7 @@ module "repo" {
   create_default_branch            = lookup(each.value, "create_default_branch", null)
   default_branch                   = lookup(each.value, "default_branch", null)
   default_branch_ruleset_bypass_actors = lookup(
-    each.value, "default_branch_ruleset_bypass_actors",
-    concat(
-      var.default_branch_ruleset_bypass_actors,
-      contains(local.non_fork_names, each.key) ? var.default_branch_ruleset_non_fork_bypass_actors : []
-    )
+    each.value, "default_branch_ruleset_bypass_actors", var.default_branch_ruleset_bypass_actors
   )
   default_branch_ruleset_dismiss_stale_reviews_on_push = lookup(
     each.value, "default_branch_ruleset_dismiss_stale_reviews_on_push", var.default_branch_ruleset_dismiss_stale_reviews_on_push

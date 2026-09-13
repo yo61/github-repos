@@ -4,8 +4,8 @@ variable "org" {
   nullable    = false
 }
 
-variable "default_branch_ruleset_bypass_actors" {
-  description = "Org-wide default for the default_branch ruleset's bypass actors, applied to every repo (forks included). Per-repo YAML can override."
+variable "additional_ruleset_bypass_actors" {
+  description = "Org-wide default bypass actors for every ruleset a repo declares under `additional_rulesets`, applied to every repo. A ruleset that names its own `bypass_actors` in YAML keeps that list verbatim, so `bypass_actors: []` on one ruleset is the opt-out."
   type = list(object({
     actor_id    = number
     actor_type  = string
@@ -15,8 +15,8 @@ variable "default_branch_ruleset_bypass_actors" {
   nullable = false
 }
 
-variable "default_branch_ruleset_non_fork_bypass_actors" {
-  description = "Extra bypass actors appended to the default_branch ruleset on NON-FORK repos only (the set comes from the github_repositories `fork:false archived:false` query, so it tracks GitHub without a hand-maintained flag; archived repos are excluded because GitHub rejects writes to them, making the bypass inert). Intended for the repository Admin role (actor_id 5, RepositoryRole) so maintainers can bypass the review requirement on their own repos while forks stay untouched. A per-repo `default_branch_ruleset_bypass_actors` override still replaces the whole list."
+variable "default_branch_ruleset_bypass_actors" {
+  description = "Org-wide default for the default_branch ruleset's bypass actors, applied to every repo (forks included). Per-repo YAML can override."
   type = list(object({
     actor_id    = number
     actor_type  = string

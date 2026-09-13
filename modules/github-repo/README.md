@@ -293,6 +293,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_additional_ruleset_bypass_actors"></a> [additional\_ruleset\_bypass\_actors](#input\_additional\_ruleset\_bypass\_actors) | Default bypass actors for every ruleset in `additional_rulesets`. A ruleset<br/>that names its own `bypass_actors` keeps that list verbatim, so an explicit<br/>`bypass_actors: []` is the per-ruleset opt-out.<br/><br/>Bypass lets the actor merge a pull request that does not meet the ruleset's<br/>requirements. It does not satisfy GitHub's auto-merge, which ignores bypass<br/>actors entirely. | <pre>list(object({<br/>    actor_id    = number<br/>    actor_type  = string<br/>    bypass_mode = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_additional_rulesets"></a> [additional\_rulesets](#input\_additional\_rulesets) | User-supplied rulesets | `any` | `{}` | no |
 | <a name="input_allow_auto_merge"></a> [allow\_auto\_merge](#input\_allow\_auto\_merge) | Set to true to allow auto-merging pull requests on the repository. | `bool` | `false` | no |
 | <a name="input_allow_merge_commit"></a> [allow\_merge\_commit](#input\_allow\_merge\_commit) | Set to false to disable merge commits on the repository. | `bool` | `true` | no |

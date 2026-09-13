@@ -1,15 +1,20 @@
 ---
 allow_auto_merge: true
 allow_update_branch: false
-default_branch_ruleset_bypass_actors: []
+# Admin only. The org default also carries the semantic-release-pusher
+# Integration actor (3654569), which PR #25 deliberately removed here; a
+# per-repo list replaces the org default rather than extending it, so the
+# admin role has to be restated to keep it.
+default_branch_ruleset_bypass_actors:
+  - actor_id: 5
+    actor_type: RepositoryRole
+    bypass_mode: always
 # publish-bottles.yaml pushes the bottle commit to the bump PR branch and then
-# squash-merges it. With dismissal on, that push dismisses lastlight's approval
-# — the very approval the merge needs — and the merge fails on "At least 1
-# approving review is required". Re-approval takes ~2min, well past the
-# workflow's retry window, and its retry path is not idempotent (bottle assets
-# already exist on the release). See homebrew-tap#104.
+# squash-merges it. Dismissal on that push used to drop the approval the merge
+# needed, failing it on "At least 1 approving review is required"; see
+# homebrew-tap#104. No review is required any more, so this is inert — kept so
+# the behaviour does not change if a reviewer is reintroduced.
 default_branch_ruleset_dismiss_stale_reviews_on_push: false
-default_branch_ruleset_required_approving_review_count: 1
 dependabot_security_updates: true
 description: "Homebrew tap for yo61 tools"
 has_issues: true

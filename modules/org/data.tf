@@ -33,17 +33,18 @@ locals {
 
 # Drift detection: implicitly uses the aliased github provider bound by the caller.
 # Repos in the org that are expected to carry local config. Fork and archive
-# status are GitHub's source of truth. Drives two things: scoping the
-# admin-role bypass, and drift detection.
+# status are GitHub's source of truth.
 #
 # Forks are intentionally unmanaged. Archived repos are frozen — GitHub rejects
-# writes to them, so a data file could not be applied even if one existed, and
-# the bypass would be inert. Excluding both keeps `missing_configs` to repos
-# that can actually be managed.
+# writes to them, so a data file could not be applied even if one existed.
+# Excluding both keeps `missing_configs` to repos that can actually be managed.
 #
-# The name stays `non_fork` because `default_branch_ruleset_non_fork_bypass_actors`
-# is part of this module's public interface; the set is now narrower than the
-# name suggests.
+# This query once had a second job, scoping the admin-role bypass to non-forks;
+# 2026-09-13-admin-override-all-rulesets made that bypass unconditional, so
+# drift detection is all that is left. The name is now wider than the set it
+# describes in both directions — kept anyway, per the reasoning in
+# 2026-08-25-exclude-archived-from-drift-detection, because renaming a data
+# source is churn for a cosmetic gain.
 data "github_repositories" "non_fork" {
   query           = "org:${var.org} fork:false archived:false"
   include_repo_id = false

@@ -1,3 +1,22 @@
+variable "additional_ruleset_bypass_actors" {
+  description = <<-EOT
+    Default bypass actors for every ruleset in `additional_rulesets`. A ruleset
+    that names its own `bypass_actors` keeps that list verbatim, so an explicit
+    `bypass_actors: []` is the per-ruleset opt-out.
+
+    Bypass lets the actor merge a pull request that does not meet the ruleset's
+    requirements. It does not satisfy GitHub's auto-merge, which ignores bypass
+    actors entirely.
+  EOT
+  type = list(object({
+    actor_id    = number
+    actor_type  = string
+    bypass_mode = string
+  }))
+  default  = []
+  nullable = false
+}
+
 variable "additional_rulesets" {
   description = "User-supplied rulesets"
   type        = any

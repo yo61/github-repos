@@ -1,0 +1,9 @@
+---
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "System of record for infrastructure change — what changed, when, and to what, as one replayable
+  timeline."
+has_issues: true
+name: horopter
+visibility: private
+vulnerability_alerts: true

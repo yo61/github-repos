@@ -4,5 +4,9 @@ default_branch: master
 has_projects: true
 has_wiki: true
 name: puppet-demo-roles-profiles
+topics:
+  - puppet
+  - roles-and-profiles
+  - example
 visibility: public
 vulnerability_alerts: true

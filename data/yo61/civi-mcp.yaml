@@ -2,6 +2,12 @@
 name: civi-mcp
 description: "Model Context Protocol server for CiviCRM (APIv4). Phase 1: read-only with four generic
   tools."
+topics:
+  - mcp
+  - model-context-protocol
+  - civicrm
+  - typescript
+  - crm
 visibility: public
 has_issues: true
 has_projects: true

@@ -4,5 +4,9 @@ dependabot_security_updates: true
 description: "Specs, plans and design docs for the horopter project."
 has_issues: true
 name: horopter-internal
+topics:
+  - documentation
+  - design-docs
+  - specifications
 visibility: private
 vulnerability_alerts: true

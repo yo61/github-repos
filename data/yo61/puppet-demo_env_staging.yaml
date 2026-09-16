@@ -4,5 +4,10 @@ default_branch: master
 has_projects: true
 has_wiki: true
 name: puppet-demo_env_staging
+topics:
+  - puppet
+  - r10k
+  - puppet-environment
+  - example
 visibility: public
 vulnerability_alerts: true

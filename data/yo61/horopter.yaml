@@ -5,5 +5,10 @@ description: "System of record for infrastructure change — what changed, when,
   timeline."
 has_issues: true
 name: horopter
+topics:
+  - infrastructure
+  - change-management
+  - audit-trail
+  - go
 visibility: private
 vulnerability_alerts: true

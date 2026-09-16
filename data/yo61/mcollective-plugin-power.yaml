@@ -5,5 +5,10 @@ description: "Mcollective Power function plugin"
 has_projects: true
 has_wiki: true
 name: mcollective-plugin-power
+topics:
+  - mcollective
+  - puppet
+  - ruby
+  - automation
 visibility: public
 vulnerability_alerts: true

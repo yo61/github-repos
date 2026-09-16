@@ -31,5 +31,11 @@ dependabot_security_updates: true
 description: "Rust port of go-udap: discover and configure Squeezebox devices over UDAP."
 has_issues: true
 name: udapcfg-rs
+topics:
+  - rust
+  - udap
+  - squeezebox
+  - cli
+  - networking
 visibility: public
 vulnerability_alerts: true

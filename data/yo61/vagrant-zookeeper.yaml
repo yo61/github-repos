@@ -5,5 +5,10 @@ description: "Bring up a zookeeper stack in vagrant"
 has_projects: true
 has_wiki: true
 name: vagrant-zookeeper
+topics:
+  - vagrant
+  - zookeeper
+  - puppet
+  - example
 visibility: public
 vulnerability_alerts: true

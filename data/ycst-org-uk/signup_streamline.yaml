@@ -8,5 +8,10 @@ dependabot_security_updates: true
 description: "CiviCRM extension that streamlines York City Supporters Trust membership signup."
 has_issues: true
 name: signup_streamline
+topics:
+  - civicrm
+  - civicrm-extension
+  - php
+  - membership
 visibility: private
 vulnerability_alerts: true

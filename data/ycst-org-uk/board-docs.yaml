@@ -9,5 +9,8 @@ description: "Board admin hub and docs for York City Supporters Trust."
 has_issues: true
 homepage_url: https://board.ycst.org.uk
 name: board-docs
+topics:
+  - documentation
+  - github-pages
 visibility: private
 vulnerability_alerts: true

@@ -6,5 +6,9 @@ description: "Vagrant config to deploy a four-node puppet cluster consisting of 
 has_projects: true
 has_wiki: true
 name: vagrant-puppet-cluster
+topics:
+  - vagrant
+  - puppet
+  - example
 visibility: public
 vulnerability_alerts: true

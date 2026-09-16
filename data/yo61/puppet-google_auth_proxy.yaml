@@ -5,5 +5,10 @@ description: "Puppet module to install and manage google auth proxy instances wi
 has_projects: true
 has_wiki: true
 name: puppet-google_auth_proxy
+topics:
+  - puppet
+  - puppet-module
+  - oauth
+  - reverse-proxy
 visibility: public
 vulnerability_alerts: true

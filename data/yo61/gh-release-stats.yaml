@@ -31,5 +31,10 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: gh-release-stats
+topics:
+  - github-api
+  - cli
+  - python
+  - release-management
 visibility: public
 vulnerability_alerts: true

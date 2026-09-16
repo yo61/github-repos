@@ -32,5 +32,11 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: claude-plugin-lastlight-pr-gate
+topics:
+  - claude-code
+  - claude-code-plugin
+  - hooks
+  - code-review
+  - pull-request
 visibility: public
 vulnerability_alerts: true

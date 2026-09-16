@@ -7,5 +7,9 @@ dependabot_security_updates: true
 description: "Helm charts published by yo61."
 has_issues: true
 name: helm-charts
+topics:
+  - helm
+  - helm-charts
+  - kubernetes
 visibility: public
 vulnerability_alerts: true

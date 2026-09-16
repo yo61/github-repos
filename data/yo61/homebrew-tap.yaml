@@ -21,5 +21,10 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: homebrew-tap
+topics:
+  - homebrew
+  - homebrew-tap
+  - macos
+  - packaging
 visibility: public
 vulnerability_alerts: true

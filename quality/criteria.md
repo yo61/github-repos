@@ -42,10 +42,20 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-16 — `horopter-internal` (PR #88). Third recorded
-trigger of the free-tier private-repo criterion, which meets this file's own
-threshold for promotion to an automated check. The file took the same shape as
-`horopter` the day before: `builtin_ruleset_names: []`, no
+## Last triggered: 2026-09-16 — `civicrm-ycst-theme` (PR #91). Fourth recorded
+trigger of the free-tier private-repo criterion, and the first in
+`ycst-org-uk` since the threshold was reached. The file takes
+`signup_streamline`'s shape — `builtin_ruleset_names: []`, no
+`security_and_analysis`, admin through the `admins` team — and the
+brand-new-repo criterion kept `create_default_branch` and `auto_init` out,
+because a local history already exists to push into the empty repo. Plan was
+4 to add, 0 to change, 0 to destroy. The automated check is still due, and
+still wants the decision record described below.
+
+## Last triggered (prior): 2026-09-16 — `horopter-internal` (PR #88). Third
+recorded trigger of the free-tier private-repo criterion, which meets this
+file's own threshold for promotion to an automated check. The file took the
+same shape as `horopter` the day before: `builtin_ruleset_names: []`, no
 `additional_rulesets`, no `security_and_analysis`. The invariant now holds
 across all eight private files in both orgs, and both orgs report
 `plan.name: free`, so a static check is well-founded.
@@ -57,7 +67,7 @@ instead would put a network call in a pre-commit hook. That trade-off wants a
 decision record and its own PR, so it is logged as due rather than silently
 skipped.
 
-## Last triggered (prior): 2026-09-15 — `horopter` (PR #87). The free-tier
+## Last triggered (earlier): 2026-09-15 — `horopter` (PR #87). The free-tier
 private-repo criterion shaped the whole file, its second recorded trigger:
 `builtin_ruleset_names: []` because the module default `["default_branch"]`
 makes the rulesets API return 403 on a private repo in this org, no

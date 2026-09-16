@@ -400,6 +400,30 @@ variable "template" {
   default = null
 }
 
+variable "topics" {
+  description = <<-EOT
+    The list of topics on the repository. Authoritative: the default of []
+    removes any topic not listed, so a repo's topics must be declared in its
+    data file to survive an apply. The provider marks the attribute
+    optional+computed, so [] means "manage it, and it is empty" rather than
+    "leave it alone" -- which is the point, since it makes the data file the
+    source of truth for topics as it is for every other repo setting.
+  EOT
+  type        = set(string)
+  default     = []
+  nullable    = false
+  validation {
+    condition = alltrue([
+      for topic in var.topics : can(regex("^[a-z0-9][a-z0-9-]{0,49}$", topic))
+    ])
+    error_message = "Each topic must be 1-50 characters of lowercase letters, numbers and hyphens, starting with a letter or number."
+  }
+  validation {
+    condition     = length(var.topics) <= 20
+    error_message = "GitHub allows at most 20 topics on a repository."
+  }
+}
+
 variable "visibility" {
   description = "Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter."
   type        = string

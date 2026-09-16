@@ -27,6 +27,7 @@ resource "github_repository" "this" {
       repository           = var.template.repository
     }
   }
+  topics     = var.topics
   visibility = var.visibility
 
   dynamic "security_and_analysis" {

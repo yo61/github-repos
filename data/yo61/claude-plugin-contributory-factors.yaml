@@ -31,5 +31,10 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: claude-plugin-contributory-factors
+topics:
+  - claude-code
+  - claude-code-plugin
+  - incident-analysis
+  - systems-thinking
 visibility: public
 vulnerability_alerts: true

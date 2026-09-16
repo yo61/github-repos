@@ -63,6 +63,12 @@ files.
   into state and compares case-sensitively, so `PlanetSeth` under a team is a
   standing diff. This is specific to team membership — `collaborators.users`
   takes GitHub's display case and does not drift.
+- **Topics are authoritative.** `topics:` in a data file is the complete list
+  for that repo. The module default is `[]`, so a topic added in the UI is
+  removed on the next apply, exactly as with team membership, and an omitted
+  key means "no topics" rather than "leave them alone". Add a topic by editing
+  the data file. See
+  `decisions/2026-09-16-topics-authoritative-empty-default.md`.
 - **Archived repos sit outside drift detection.** The `modules/org` query is
   `fork:false archived:false`, so an archived repo with no data file is not
   reported by `check "unmanaged_repos"`. Archiving a repo that *is* managed is

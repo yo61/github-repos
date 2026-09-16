@@ -1,0 +1,18 @@
+---
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "CiviCRM front-end theme for York City Supporters Trust: a Riverlea stream built on Walbrook."
+has_issues: true
+name: civicrm-ycst-theme
+topics:
+  - civicrm
+  - civicrm-extension
+  - riverlea
+  - theme
+  - php
+visibility: private
+vulnerability_alerts: true

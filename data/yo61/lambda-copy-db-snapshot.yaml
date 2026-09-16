@@ -5,5 +5,9 @@ description: "AWS Lambda function to copy a DB snapshot"
 has_projects: true
 has_wiki: true
 name: lambda-copy-db-snapshot
+topics:
+  - aws-lambda
+  - cloudwatch-events
+  - nodejs
 visibility: public
 vulnerability_alerts: true

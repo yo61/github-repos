@@ -31,5 +31,11 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: claude-plugin-reportlab-pdf
+topics:
+  - claude-code
+  - claude-code-plugin
+  - markdown
+  - pdf-generation
+  - reportlab
 visibility: public
 vulnerability_alerts: true

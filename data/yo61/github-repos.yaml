@@ -5,5 +5,10 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: github-repos
+topics:
+  - terraform
+  - infrastructure-as-code
+  - github-api
+  - stategraph
 visibility: public
 vulnerability_alerts: true

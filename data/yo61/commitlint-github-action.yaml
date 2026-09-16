@@ -6,4 +6,9 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: commitlint-github-action
+topics:
+  - github-actions
+  - commitlint
+  - conventional-commits
+  - continuous-integration
 visibility: public

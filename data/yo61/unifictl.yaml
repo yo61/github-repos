@@ -35,5 +35,10 @@ name: unifictl
 security_and_analysis:
   secret_scanning: true
   secret_scanning_push_protection: true
+topics:
+  - unifi
+  - cli
+  - python
+  - networking
 visibility: public
 vulnerability_alerts: true

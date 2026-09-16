@@ -8,5 +8,11 @@ collaborators:
 dependabot_security_updates: true
 has_issues: true
 name: website-testing
+topics:
+  - testing
+  - end-to-end-testing
+  - playwright
+  - wordpress
+  - civicrm
 visibility: private
 vulnerability_alerts: true

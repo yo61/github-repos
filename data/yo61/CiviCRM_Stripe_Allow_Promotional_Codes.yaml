@@ -5,5 +5,11 @@ description: "Wordpress Plugin to set allow_promotional_codes to true for Stripe
 has_projects: true
 has_wiki: true
 name: CiviCRM_Stripe_Allow_Promotional_Codes
+topics:
+  - civicrm
+  - wordpress
+  - wordpress-plugin
+  - stripe
+  - php
 visibility: public
 vulnerability_alerts: true

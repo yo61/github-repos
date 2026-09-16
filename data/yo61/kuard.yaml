@@ -40,5 +40,9 @@ name: kuard
 security_and_analysis:
   secret_scanning: true
   secret_scanning_push_protection: true
+topics:
+  - kubernetes
+  - demo
+  - go
 visibility: public
 vulnerability_alerts: true

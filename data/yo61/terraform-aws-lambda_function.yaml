@@ -5,5 +5,11 @@ description: "Terraform module to create a lambda function"
 has_projects: true
 has_wiki: true
 name: terraform-aws-lambda_function
+topics:
+  - terraform
+  - terraform-module
+  - aws
+  - aws-lambda
+  - infrastructure-as-code
 visibility: public
 vulnerability_alerts: true

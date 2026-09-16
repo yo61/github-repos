@@ -30,5 +30,10 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: claude-skills
+topics:
+  - claude-code
+  - claude-code-plugin
+  - plugin-marketplace
+  - ai-agents
 visibility: public
 vulnerability_alerts: true

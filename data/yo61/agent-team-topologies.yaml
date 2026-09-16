@@ -15,5 +15,11 @@ pages:
   source:
     branch: main
     path: "/"
+topics:
+  - claude-code
+  - claude-code-plugin
+  - ai-agents
+  - multi-agent
+  - software-architecture
 visibility: public
 vulnerability_alerts: true

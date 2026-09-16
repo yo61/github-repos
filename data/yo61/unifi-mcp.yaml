@@ -34,5 +34,11 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: unifi-mcp
+topics:
+  - mcp
+  - model-context-protocol
+  - unifi
+  - typescript
+  - networking
 visibility: public
 vulnerability_alerts: true

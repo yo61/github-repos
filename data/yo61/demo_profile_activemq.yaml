@@ -5,5 +5,10 @@ description: "Example of a puppet profile class wrapping a 3rd-party activemq mo
 has_projects: true
 has_wiki: true
 name: demo_profile_activemq
+topics:
+  - puppet
+  - activemq
+  - infrastructure-as-code
+  - example
 visibility: public
 vulnerability_alerts: true

@@ -30,5 +30,11 @@ has_issues: true
 has_projects: true
 has_wiki: true
 name: jobhound
+topics:
+  - cli
+  - python
+  - cyclopts
+  - job-search
+  - productivity
 visibility: public
 vulnerability_alerts: true

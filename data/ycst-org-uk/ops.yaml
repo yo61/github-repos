@@ -9,5 +9,10 @@ dependabot_security_updates: true
 description: "Operational scripts for the Trust websites: CiviCRM cron, clone provisioning, mail sandboxing."
 has_issues: true
 name: ops
+topics:
+  - operations
+  - automation
+  - civicrm
+  - wordpress
 visibility: private
 vulnerability_alerts: true

@@ -8,5 +8,10 @@ dependabot_security_updates: true
 description: "Must-use WordPress plugins for www.ycst.org.uk, and their tooling."
 has_issues: true
 name: wp-mu-plugins
+topics:
+  - wordpress
+  - wordpress-plugin
+  - php
+  - civicrm
 visibility: private
 vulnerability_alerts: true

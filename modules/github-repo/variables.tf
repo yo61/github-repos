@@ -400,6 +400,29 @@ variable "template" {
   default = null
 }
 
+variable "topics" {
+  description = <<-EOT
+    The list of topics on the repository. Leave null (the default) to leave the
+    attribute unmanaged, so a repo whose topics were set outside Terraform sees
+    no drift. An explicit [] is NOT the same thing: the provider marks topics
+    optional+computed, so null means "leave alone" while [] means "manage it,
+    and it is empty" -- which removes every existing topic.
+  EOT
+  type        = set(string)
+  default     = null
+  nullable    = true
+  validation {
+    condition = var.topics == null ? true : alltrue([
+      for topic in var.topics : can(regex("^[a-z0-9][a-z0-9-]{0,49}$", topic))
+    ])
+    error_message = "Each topic must be 1-50 characters of lowercase letters, numbers and hyphens, starting with a letter or number."
+  }
+  validation {
+    condition     = var.topics == null ? true : length(var.topics) <= 20
+    error_message = "GitHub allows at most 20 topics on a repository."
+  }
+}
+
 variable "visibility" {
   description = "Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter."
   type        = string

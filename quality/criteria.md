@@ -42,7 +42,22 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-15 — `horopter` (PR #87). The free-tier
+## Last triggered: 2026-09-16 — `horopter-internal` (PR #88). Third recorded
+trigger of the free-tier private-repo criterion, which meets this file's own
+threshold for promotion to an automated check. The file took the same shape as
+`horopter` the day before: `builtin_ruleset_names: []`, no
+`additional_rulesets`, no `security_and_analysis`. The invariant now holds
+across all eight private files in both orgs, and both orgs report
+`plan.name: free`, so a static check is well-founded.
+
+Promotion is deliberately NOT done here. A hook reading `visibility: private`
+as implying paywalled features hard-codes the current plan tier and would need
+revising the day either org moves to Pro or Team; keying it to the live plan
+instead would put a network call in a pre-commit hook. That trade-off wants a
+decision record and its own PR, so it is logged as due rather than silently
+skipped.
+
+## Last triggered (prior): 2026-09-15 — `horopter` (PR #87). The free-tier
 private-repo criterion shaped the whole file, its second recorded trigger:
 `builtin_ruleset_names: []` because the module default `["default_branch"]`
 makes the rulesets API return 403 on a private repo in this org, no
@@ -53,7 +68,7 @@ restates the unmanaged default. The brand-new-repo criterion kept
 the first push establishes `main`. `visibility: private` was again kept as the
 documented exception below. Plan was 4 to add, 0 to change, 0 to destroy.
 
-## Last triggered (prior): 2026-08-25 — `helm-charts` (PR #76), twice. First
+## Last triggered (earlier): 2026-08-25 — `helm-charts` (PR #76), twice. First
 on the sweep below. Then again in review: the new file declared
 `security_and_analysis`, which `data.tf` already supplies for public repos.
 It was missed because the criterion named only `variables.tf`, where the
@@ -62,7 +77,7 @@ Six existing public repos (`unifictl`, `kuard`, `go-udap`, `homelab-docs`,
 `python-template`, `civi-mcp`) restate the same block and are untouched so
 far.
 
-## Last triggered (prior, same PR): 2026-08-25 — `helm-charts` (PR #76). The
+## Last triggered (earlier, same PR): 2026-08-25 — `helm-charts` (PR #76). The
 brand-new-repo criterion kept `create_default_branch` out of the file, and the
 deviations-only criterion drove a sweep of the existing data: eight files
 restated `delete_branch_on_merge: true`, already the module default at
@@ -73,7 +88,7 @@ variable is `nullable = false`, so Terraform substitutes the default.
 deviation and was kept. Two `default_branch: main` restatements (`kuard`,
 `go-udap`) were found and left for a separate PR.
 
-## Last triggered (earlier): 2026-08-04 — `ycst-admin-docs`. The free-tier
+## Last triggered (earliest): 2026-08-04 — `ycst-admin-docs`. The free-tier
 private-repo criterion determined the whole file: rulesets, the review gate,
 secret scanning, and Pages were all dropped from the `homelab-docs` shape it was
 modelled on. Confirmed post-apply — `GET /rulesets` returns 403, so declaring

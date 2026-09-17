@@ -42,8 +42,19 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-16 — `civicrm-ycst-theme` (PR #91). Fourth recorded
-trigger of the free-tier private-repo criterion, and the first in
+## Last triggered: 2026-09-17 — `civicrm-uk-address-cleanup`. Fifth recorded
+trigger of the free-tier private-repo criterion, and the first time a file was
+moved from one org's shape into the other. It follows `signup_streamline` in
+`ycst-org-uk`, with one change: the `collaborators.teams` grant to `admins` was
+removed, because `data/yo61/` has no `_teams.yaml`. The `unknown_team_refs`
+check in `modules/org/data.tf` would have failed the plan, so no new criterion
+is needed. As with `horopter`, admin comes from org ownership. The file keeps
+`builtin_ruleset_names: []` and leaves out `create_default_branch` so a local
+history can be pushed into the empty repo. Plan was 4 to add, 0 to change, 0 to
+destroy. The automated check is still due.
+
+## Last triggered (prior): 2026-09-16 — `civicrm-ycst-theme` (PR #91). Fourth
+recorded trigger of the free-tier private-repo criterion, and the first in
 `ycst-org-uk` since the threshold was reached. The file takes
 `signup_streamline`'s shape — `builtin_ruleset_names: []`, no
 `security_and_analysis`, admin through the `admins` team — and the
@@ -52,7 +63,7 @@ because a local history already exists to push into the empty repo. Plan was
 4 to add, 0 to change, 0 to destroy. The automated check is still due, and
 still wants the decision record described below.
 
-## Last triggered (prior): 2026-09-16 — `horopter-internal` (PR #88). Third
+## Last triggered (earlier): 2026-09-16 — `horopter-internal` (PR #88). Third
 recorded trigger of the free-tier private-repo criterion, which meets this
 file's own threshold for promotion to an automated check. The file took the
 same shape as `horopter` the day before: `builtin_ruleset_names: []`, no

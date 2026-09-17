@@ -1,0 +1,15 @@
+---
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "CiviCRM extension that cleans stored UK addresses against Royal Mail's Postcode Address
+  File."
+has_issues: true
+name: civicrm-uk-address-cleanup
+topics:
+  - civicrm
+  - civicrm-extension
+  - php
+  - royal-mail
+  - data-quality
+visibility: private
+vulnerability_alerts: true

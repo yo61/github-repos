@@ -64,3 +64,25 @@ module "org_horopter_dev" {
     github = github.horopter_dev
   }
 }
+
+# horopter and horopter-internal were transferred from yo61 to horopter-dev on
+# GitHub out of band; github_repository takes its owner from the provider, so
+# terraform cannot do the move itself. One block per repo carries all four of
+# that repo's instances across the provider alias.
+#
+# `moved` is usable here precisely because the names did not change. It failed
+# for the ycst migration because those repos were renamed as well as
+# transferred, and moved cannot rewrite a resource ID — for github_repository
+# the ID *is* the repo name, so refresh asked for the old name under the new
+# owner and got 404. See decisions/2026-08-13-ycst-org-uk-migration.md.
+#
+# Delete these once applied — a spent moved block is a no-op.
+moved {
+  from = module.org_yo61.module.repo["horopter"]
+  to   = module.org_horopter_dev.module.repo["horopter"]
+}
+
+moved {
+  from = module.org_yo61.module.repo["horopter-internal"]
+  to   = module.org_horopter_dev.module.repo["horopter-internal"]
+}

@@ -1,0 +1,12 @@
+---
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "Infrastructure definitions for the horopter project."
+has_issues: true
+name: infrastructure
+topics:
+  - infrastructure
+  - iac
+  - terraform
+visibility: private
+vulnerability_alerts: true

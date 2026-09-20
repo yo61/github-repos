@@ -51,3 +51,16 @@ module "org_ycst_org_uk" {
     github = github.ycst_org_uk
   }
 }
+
+module "org_horopter_dev" {
+  source = "./modules/org"
+
+  org = "horopter-dev"
+
+  additional_ruleset_bypass_actors     = local.admin_bypass_actors
+  default_branch_ruleset_bypass_actors = local.admin_bypass_actors
+
+  providers = {
+    github = github.horopter_dev
+  }
+}

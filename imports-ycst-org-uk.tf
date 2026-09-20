@@ -104,20 +104,3 @@ import {
   to = module.org_ycst_org_uk.module.repo["ycst-protected-files"].github_repository_dependabot_security_updates.this["this"]
   id = "ycst-protected-files"
 }
-# ycst-wp-dev
-import {
-  to = module.org_ycst_org_uk.module.repo["ycst-wp-dev"].github_repository.this
-  id = "ycst-wp-dev"
-}
-import {
-  to = module.org_ycst_org_uk.module.repo["ycst-wp-dev"].github_repository_collaborators.this
-  id = "ycst-wp-dev"
-}
-import {
-  to = module.org_ycst_org_uk.module.repo["ycst-wp-dev"].github_repository_vulnerability_alerts.this["this"]
-  id = "ycst-wp-dev"
-}
-import {
-  to = module.org_ycst_org_uk.module.repo["ycst-wp-dev"].github_repository_dependabot_security_updates.this["this"]
-  id = "ycst-wp-dev"
-}

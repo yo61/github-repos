@@ -44,9 +44,11 @@ files.
       - permission: admin
         username: robinbowes
   ```
-- **Private repos on the free-tier personal org:** rulesets and secret
-  scanning are paywalled — omit them. Keep `vulnerability_alerts` and
-  `dependabot_security_updates`.
+- **Private repos on a free-plan org:** rulesets and secret scanning are
+  paywalled — omit them. Keep `vulnerability_alerts` and
+  `dependabot_security_updates`. This applies to every org managed here: all
+  three (`yo61`, `ycst-org-uk`, `horopter-dev`) report `plan.name: free`, so
+  the rule is not specific to the personal account.
 - **Teams are optional and per-org.** `data/<org>/_teams.yaml` is a map keyed
   by team slug, each with `description`, `members`, `maintainers`, and an
   optional `privacy` (default `closed`). The key is used verbatim as the team
@@ -83,7 +85,7 @@ files.
 As of `decisions/2026-09-13-admin-override-all-rulesets.md` there is **no
 human-approval requirement anywhere in the fleet**, and the repository Admin
 role (`RepositoryRole` id 5, `bypass_mode: always`) can bypass **every**
-ruleset in both orgs.
+ruleset in all three orgs.
 
 lastlight was switched off for cost. It was the only approver, so
 `default_branch_ruleset_required_approving_review_count: 1` — then set on
@@ -112,8 +114,8 @@ absent, not bypassable.
 
 ### Where the bypass is declared
 
-In `main.tf`, once, as `local.admin_bypass_actors`, fed to both orgs through
-two module variables:
+In `main.tf`, once, as `local.admin_bypass_actors`, fed to all three orgs
+through two module variables:
 
 - `default_branch_ruleset_bypass_actors` — the built-in `default_branch`
   ruleset. On `yo61` it is concatenated with the semantic-release-pusher

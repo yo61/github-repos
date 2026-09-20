@@ -1,0 +1,18 @@
+---
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "WordPress plugin letting a logged-in member re-download their Passcreator digital membership
+  card."
+has_issues: true
+name: ycst-member-card
+topics:
+  - wordpress
+  - wordpress-plugin
+  - php
+  - membership
+visibility: private
+vulnerability_alerts: true

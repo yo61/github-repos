@@ -42,7 +42,21 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-17 — `civicrm-uk-address-cleanup`. Fifth recorded
+## Last triggered: 2026-09-21 — `infrastructure`, the first repo in the new
+`horopter-dev` org (PR #93). Sixth recorded trigger of the free-tier
+private-repo criterion, and the first in a third org: `horopter-dev` reports
+`plan.name: free` like the other two, so the file takes the established private
+shape — `builtin_ruleset_names: []`, no `security_and_analysis`, keeping
+`vulnerability_alerts` and `dependabot_security_updates`. The brand-new-repo
+criterion kept `create_default_branch` out, so the repo was created empty and
+the first push establishes `main`. No `collaborators`: admin comes from org
+ownership, as with `horopter`. `visibility: private` was again kept as the
+documented exception. Plan was 5 to add — the four repo instances plus the new
+org's `terraform_data.validations` — 0 to change, 0 to destroy. The automated
+check is still due, and the free-plan invariant now spans three orgs rather
+than two, which widens the hard-coding problem that has been deferring it.
+
+## Last triggered (prior): 2026-09-17 — `civicrm-uk-address-cleanup`. Fifth recorded
 trigger of the free-tier private-repo criterion, and the first time a file was
 moved from one org's shape into the other. It follows `signup_streamline` in
 `ycst-org-uk`, with one change: the `collaborators.teams` grant to `admins` was
@@ -256,7 +270,21 @@ that drifted.
 `decisions/2026-08-04-native-terraform-http-backend.md`;
 `decisions/2026-08-13-ycst-org-uk-migration.md`
 
-## Last triggered: 2026-08-25 — `python-template` (PR #77). Its `template`
+## Last triggered: 2026-09-21 — the `horopter-dev` transfers (PR #94), where the
+two `moved` criteria were **met rather than violated**, and the rename
+criterion's scope was confirmed as exact rather than conservative. `horopter`
+and `horopter-internal` were transferred between orgs *without* being renamed,
+so the resource ID — the repo name — stayed valid, refresh resolved
+`horopter-dev/horopter` directly, and two module-instance `moved` blocks
+produced 8 moves, 0 to add, 0 to change, 0 to destroy, every one a `no-op`. The
+`state rm` plus `import` fallback was pre-authorised and never needed. Two
+mechanics worth keeping: one block per *module instance* carries resources a
+hand-written list of four would miss, and `previous_address` is the only field
+in the plan JSON that evidences a move, since a move is not an action — filter
+on `actions != ["no-op"]` alone and eight moves report as "0 changes". See
+`decisions/2026-09-21-horopter-dev-org.md`.
+
+## Last triggered (prior): 2026-08-25 — `python-template` (PR #77). Its `template`
 block had been diffing on every plan. Applying the removal was tested and the
 diff returned on the next plan: provider v6.13.0 `Read` sets `template` from
 the API unconditionally, `Update` never sends it, and `Update` ends by calling
@@ -303,7 +331,17 @@ instances; and `TF_HTTP_PASSWORD` was printed in full by a `${VAR:-}` check.
 `decisions/2026-08-04-gate-apply-ordering-and-classic-protection-drift.md`;
 PR #40
 
-## Last triggered: 2026-08-25 — the `python-template` swap (PR #77) was
+## Last triggered: 2026-09-21 — `horopter-dev/infrastructure` confirmed against
+the GitHub API after apply (private, issues on, the three topics, description,
+`vulnerability-alerts` 204) rather than by re-reading the data file that
+produced it. The transfers were verified on both sides before planning — the
+repos resolving directly under the new owner, their security settings intact —
+and afterwards with `terraform state list`, which also confirmed the negative:
+nothing left under `module.org_yo61`. A move leaves no trace in apply output
+(`0 added, 0 changed, 0 destroyed` is what success looks like), so the state
+listing is the only evidence it happened.
+
+## Last triggered (prior): 2026-08-25 — the `python-template` swap (PR #77) was
 confirmed against the GitHub API (`template_repository: null`, both rulesets
 active, Pages at the original URL, `main` SHA matching the backup) rather than
 by re-reading the config that produced it.
@@ -338,7 +376,20 @@ moving that criterion to its own category if it keeps triggering here.
 ## Source: global `CLAUDE.md` decision-journal rules; the `decisions/`
 convention in this repo.
 
-## Last triggered: 2026-08-25 — two records logged for PR #77 (the archived
+## Last triggered: 2026-09-21 — `decisions/2026-09-21-horopter-dev-org.md`
+logged for the third org, and three stale org-count claims corrected in the same
+PR that made them false: `CLAUDE.md` said the admin bypass covered "both orgs"
+and was "fed to both orgs", and the `local.admin_bypass_actors` comment in
+`main.tf` said "in both orgs". A fourth correction came with them —
+`CLAUDE.md`'s free-tier convention was scoped to "the free-tier personal org"
+when the paywall applies to all three, none of which is a personal account
+except `yo61`. The existing-decisions criterion fired before any code was
+written: `2026-08-13-ycst-org-uk-migration.md` supplied the whole transfer
+procedure, and reading it closely is what showed its `moved` conclusion was
+scoped to *renames* rather than to transfers — new information that narrowed a
+prior decision rather than invalidating it.
+
+## Last triggered (prior): 2026-08-25 — two records logged for PR #77 (the archived
 exclusion and the `python-template` recreation), and `CLAUDE.md` plus the
 `default_branch_ruleset_non_fork_bypass_actors` description were updated in the
 same PR that changed the query they describe.

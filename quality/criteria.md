@@ -40,13 +40,50 @@ adding them silently.
       preference, the data file says so in a comment and names the record.
       `builtin_ruleset_names: []` is the case that keeps recurring: it reads as
       an oversight, and the paywall that forces it is invisible in the YAML.
+    - When many files override the same module default identically, suspect the
+      **default**, not the files. A majority overriding it also makes the
+      default undiscoverable from the data, so the config starts teaching the
+      wrong thing. Two sweeps have come from this: 8 files restating
+      `delete_branch_on_merge: true` (PR #76) and 25 restating
+      `has_projects: true` (PR #100).
+    - A module default can only be `null` — "leave the setting unmanaged" — if
+      the provider marks that attribute **`computed`**. Check with
+      `terraform providers schema -json` before proposing one. `computed=true`:
+      `vulnerability_alerts`, `dependabot_security_updates`. `computed=false`,
+      so null plans a change rather than a no-op: `has_projects`, `has_issues`,
+      `has_wiki`, `has_downloads`.
 
 ## Severity: blocking
 
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-21 — `horopter-dev/infrastructure`, where branch
+## Last triggered: 2026-09-21 — the `has_projects` default (PR #100), which is
+the deviations-only criterion turned on the module instead of on a data file.
+25 of `data/yo61`'s 34 files overrode `default = false` with
+`has_projects: true`; the default moved to `true` and all 25 lines went, leaving
+no data file mentioning the key. Applied: 0 added, 24 changed, 0 destroyed —
+every change `has_projects: false -> true`, 9 `yo61`, 12 `ycst-org-uk`,
+3 `horopter-dev`, verified against the API afterwards. Both new criteria above
+came from it.
+
+The `null` default that was wanted instead is impossible, and the experiment is
+the part worth keeping: with `default = null`, dropping a declaration from a
+repo that was live `true` planned `has_projects = true -> null` — an active
+change. `has_projects` is `optional=true computed=false`, and only a computed
+attribute can represent absence. Nothing was applied, so the permanent-diff
+risk in the plan-and-apply category (config `null` against an API reporting
+`false`) was avoided rather than discovered.
+
+Two consequences recorded in
+`decisions/2026-09-21-has-projects-default-true.md`: the org-level
+`has_repository_projects` switch is now **unsafe** — every repo sends
+`has_projects = true`, and GitHub errors if that arrives while an org has repo
+projects disabled, where under the old default it was a no-op — and
+`decisions/2026-09-21-ycst-adopt-unmanaged.md` needed amending, since six repos
+it deliberately switched off hours earlier were switched back on.
+
+## Last triggered (prior): 2026-09-21 — `horopter-dev/infrastructure`, where branch
 protection was **requested and declined**. Thirteenth trigger of the free-tier
 private-repo criterion, and the first time it answered a feature request rather
 than shaping a new file: `GET /repos/horopter-dev/infrastructure/rulesets`

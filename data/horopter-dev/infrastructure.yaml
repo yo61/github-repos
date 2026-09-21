@@ -1,4 +1,11 @@
 ---
+# Empty, not omitted: the module default is ["default_branch"], and the rulesets
+# API 403s on a private repo in a free-plan org — "Upgrade to GitHub Pro or make
+# this repository public to enable this feature." Declaring any ruleset would
+# render a resource the plan accepts and the apply fails on. Branch protection
+# was asked for and declined on those grounds; see
+# decisions/2026-09-21-infrastructure-branch-protection-declined.md for the
+# alternatives, which apply equally to horopter and horopter-internal.
 builtin_ruleset_names: []
 dependabot_security_updates: true
 description: "Infrastructure definitions for the horopter project."

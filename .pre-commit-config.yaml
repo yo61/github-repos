@@ -20,6 +20,25 @@ repos:
     hooks:
       - id: yamlfmt
 
+  # Pinned rather than run from the environment: ubuntu-24.04 runners ship
+  # shellcheck 0.9.0 and no shfmt at all, so a `system` hook would lint against
+  # a different version in CI than locally.
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+
+  # args is not decoration: the hook's own default is `[--write]` alone, which
+  # formats to shfmt's defaults rather than the house style. These four flags
+  # are the same set ALE is configured with, so a file formatted on save passes
+  # here unchanged — `-i 2` two-space indent, `-bn` binary operators may start a
+  # line, `-ci` case arms indented under the case, `-sr` space after redirects.
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.14.1-1
+    hooks:
+      - id: shfmt
+        args: [-i, '2', -bn, -ci, -sr, -w]
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.109.1
     hooks:

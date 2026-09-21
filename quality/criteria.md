@@ -36,13 +36,30 @@ adding them silently.
       `dependabot_security_updates`.
     - Collaborators use block style, not flow style.
     - File passes yamllint (120 col) and yamlfmt (100 col). *(automated)*
+    - Where a value exists only because of a platform limit rather than a
+      preference, the data file says so in a comment and names the record.
+      `builtin_ruleset_names: []` is the case that keeps recurring: it reads as
+      an oversight, and the paywall that forces it is invisible in the YAML.
 
 ## Severity: blocking
 
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-21 — the six adopted `ycst-org-uk` repos (PR #96).
+## Last triggered: 2026-09-21 — `horopter-dev/infrastructure`, where branch
+protection was **requested and declined**. Thirteenth trigger of the free-tier
+private-repo criterion, and the first time it answered a feature request rather
+than shaping a new file: `GET /repos/horopter-dev/infrastructure/rulesets`
+returns `403 Upgrade to GitHub Pro or make this repository public`. This is what
+added the new comment-the-platform-limit criterion above — `builtin_ruleset_names:
+[]` had been correct on fifteen files for months while reading as an oversight on
+every one of them, and it took someone asking for the missing feature to notice
+that the file never says why. See
+`decisions/2026-09-21-infrastructure-branch-protection-declined.md`. Note the
+trap it records: declaring a ruleset anyway plans clean and fails mid-apply,
+because Terraform cannot know the endpoint 403s.
+
+## Last triggered (prior): 2026-09-21 — the six adopted `ycst-org-uk` repos (PR #96).
 Seventh through twelfth triggers of the free-tier private-repo criterion, and
 the first time it applied to repos being *adopted* rather than created: all six
 took `builtin_ruleset_names: []` and no `security_and_analysis`, and their
@@ -443,6 +460,13 @@ wrappers whose write path had been failing since 2026-08-02.
     - `git branch --show-current` returns neither `main` nor `master` before
       committing.
     - `prek run --files <changed>` passes before committing.
+    - Shell scripts pass `shellcheck` and `shfmt -i 2 -bn -ci -sr`.
+      *(automated: `shellcheck`, `shfmt`)* Both hook repos are pinned rather
+      than run from the environment: `ubuntu-24.04` ships shellcheck 0.9.0 and
+      no shfmt, so a `system` hook would lint a different version in CI than
+      locally. The `shfmt` hook's own default `args` are `[--write]` alone,
+      which formats to shfmt's defaults rather than these four flags — the
+      override is what makes prek, CI and ALE agree.
     - Subject is conventional, imperative, and ≤72 characters; one logical
       change per commit.
     - The PR describes what the diff does now — not discarded approaches or
@@ -454,4 +478,16 @@ wrappers whose write path had been failing since 2026-08-02.
 
 ## Source: global `CLAUDE.md` git workflow; project `CLAUDE.md`.
 
-## Last triggered: never
+## Last triggered: 2026-09-21 — the shell criterion, added by PR #98 and its
+first entry here. It was written from a real miss: `generate_import_blocks.sh`
+had drifted from the four-flag standard and nothing caught it, because `prek`
+configured no shell hooks at all. Two scripts needed three lines of whitespace;
+shellcheck already passed on both, so the gap was formatting-only. The hooks were
+verified by breaking a script deliberately — shellcheck reported `SC2086` on an
+unquoted expansion, shfmt reported un-indented `case` arms — rather than by
+observing a green run, since a hook with a wrong `types:` or `files:` pattern
+passes silently while checking nothing.
+
+The rest of this category is still never-triggered, which is expected: it
+describes habits followed by default rather than checks that catch things. Not a
+pruning candidate on that basis alone.

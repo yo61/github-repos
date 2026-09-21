@@ -170,9 +170,17 @@ They live in `.envrc` in this directory, loaded by direnv (`direnv allow`
 once per clone):
 
 ```bash
-export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<state-uuid>"
+export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<group-id>"
 export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
 ```
+
+The UUID is the state's **`group_id`**, not its `id`. `stategraph states list`
+shows both: this state's `id` is `9083e232-…` and appears in no config
+anywhere, while the address uses the `group_id` `29835210-…`. The gitignored
+`stategraph.json` holds exactly that value, so treat it as the address book.
+Getting it wrong does not fail at `task init` — init configures the backend
+from whatever address it is given — so confirm with `task plan`, which
+actually fetches state.
 
 `.envrc` is machine-specific and untracked. Like editor config, it belongs in
 a global ignore (`~/.gitignore`) rather than this repo's `.gitignore`. Any

@@ -42,7 +42,21 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-21 — `infrastructure`, the first repo in the new
+## Last triggered: 2026-09-21 — the six adopted `ycst-org-uk` repos (PR #96).
+Seventh through twelfth triggers of the free-tier private-repo criterion, and
+the first time it applied to repos being *adopted* rather than created: all six
+took `builtin_ruleset_names: []` and no `security_and_analysis`, and their
+`vulnerability_alerts`/`dependabot_security_updates` were **off live** and are
+now on. That is the criterion earning its keep in a direction it had not before
+— it usually prevents declaring a paywalled feature; here it added the two
+free-tier features that were missing. The deviations-only criterion also drove a
+real decision: live `has_projects: true` was *not* restated, so Projects were
+switched off on all six to match the org. A new observation worth watching: all
+25 `data/yo61` files declare `has_projects: true`, which is a module default
+overridden identically 25 times and may mean the default is wrong rather than
+the files.
+
+## Last triggered (prior): 2026-09-21 — `infrastructure`, the first repo in the new
 `horopter-dev` org (PR #93). Sixth recorded trigger of the free-tier
 private-repo criterion, and the first in a third org: `horopter-dev` reports
 `plan.name: free` like the other two, so the file takes the established private
@@ -270,7 +284,20 @@ that drifted.
 `decisions/2026-08-04-native-terraform-http-backend.md`;
 `decisions/2026-08-13-ycst-org-uk-migration.md`
 
-## Last triggered: 2026-09-21 — the `horopter-dev` transfers (PR #94), where the
+## Last triggered: 2026-09-21 — the `ycst-org-uk` adoption (PR #96), where the
+create-vs-exists criterion fired **before** a plan rather than after one, and
+found a cause it does not name. `scripts/generate_yo61_configs.sh` emitted
+`module.org_${ORG}` verbatim, so `ycst-org-uk` produced
+`module.org_ycst-org-uk` — hyphens are invalid in a module label, the import
+blocks would not have resolved, and the plan would have proposed creating six
+repos that already exist. The criterion sends you to the backend or to a
+resource ID that no longer resolves; here it was neither, but a generated
+address that was never valid. Widened in spirit: **when a plan proposes creating
+what exists, verify the address as well as the backend and the ID.** The fix
+also made `ORG` required rather than defaulted, since a default silently
+generates the right-shaped blocks for the wrong org.
+
+## Last triggered (prior): 2026-09-21 — the `horopter-dev` transfers (PR #94), where the
 two `moved` criteria were **met rather than violated**, and the rename
 criterion's scope was confirmed as exact rather than conservative. `horopter`
 and `horopter-internal` were transferred between orgs *without* being renamed,
@@ -331,7 +358,17 @@ instances; and `TF_HTTP_PASSWORD` was printed in full by a `${VAR:-}` check.
 `decisions/2026-08-04-gate-apply-ordering-and-classic-protection-drift.md`;
 PR #40
 
-## Last triggered: 2026-09-21 — `horopter-dev/infrastructure` confirmed against
+## Last triggered: 2026-09-21 — the six adopted ycst repos verified against the
+GitHub API after apply, not against the data files: `has_projects` false,
+`delete_branch_on_merge` true, descriptions and topics set, `admins` team
+holding admin, **no direct collaborators left**, and `vulnerability-alerts` 204
+plus `automated-security-fixes` true on all six. The outcome-not-config
+criterion mattered most on access: the apply removed `PlanetSeth`'s direct
+grant, and only
+`GET /repos/.../collaborators/PlanetSeth/permission` returning `admin` proves
+the team grant actually replaced it rather than simply deleting his access.
+
+## Last triggered (prior): 2026-09-21 — `horopter-dev/infrastructure` confirmed against
 the GitHub API after apply (private, issues on, the three topics, description,
 `vulnerability-alerts` 204) rather than by re-reading the data file that
 produced it. The transfers were verified on both sides before planning — the

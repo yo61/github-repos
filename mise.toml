@@ -1,2 +1,6 @@
+# terraform-docs is here as well as in CI: the terraform_docs prek hook shells
+# out to it, so without it a local `prek run` fails on any .tf change while CI
+# passes.
 [tools]
 terraform = "1.15"
+terraform-docs = "0.24"

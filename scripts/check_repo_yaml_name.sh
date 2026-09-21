@@ -8,8 +8,8 @@ status=0
 for file in "$@"; do
   base="$(basename "$file" .yaml)"
   case "$base" in
-  _*) continue ;;
-  *) ;;
+    _*) continue ;;
+    *) ;;
   esac
   name="$(awk -F': *' '/^name:/ { print $2; exit }' "$file" || true)"
   name="${name%\"}"

@@ -30,13 +30,23 @@ jobs:
           terraform_version: 1.15.8
           terraform_wrapper: false
 
+      # The tarball is verified against a checksum pinned here, not one fetched
+      # beside it: a checksum from the same host as the artefact is re-signed by
+      # whoever replaces the artefact. This is the same reason the actions above
+      # are pinned to commit SHAs. Bump both together — the value comes from
+      # terraform-docs-<version>.sha256sum in the release.
       - name: Install terraform-docs
         env:
           VERSION: v0.24.0
+          SHA256: 9005daf969de0b50134493a2c00078b49f5f5b39d021cda7c89bf4d4f3d776d3
         run: |
           set -euo pipefail
-          curl -fsSL "https://terraform-docs.io/dl/${VERSION}/terraform-docs-${VERSION}-linux-amd64.tar.gz" \
-            | tar -xz -C /usr/local/bin terraform-docs
+          tarball="terraform-docs-${VERSION}-linux-amd64.tar.gz"
+          curl -fsSL -o "$tarball" \
+            "https://github.com/terraform-docs/terraform-docs/releases/download/${VERSION}/${tarball}"
+          echo "${SHA256}  ${tarball}" | sha256sum -c -
+          tar -xzf "$tarball" -C /usr/local/bin terraform-docs
+          rm -f "$tarball"
           chmod +x /usr/local/bin/terraform-docs
           terraform-docs --version
 

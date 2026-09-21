@@ -2,7 +2,6 @@
 allow_update_branch: false
 default_branch: master
 description: "Mcollective Power function plugin"
-has_projects: true
 has_wiki: true
 name: mcollective-plugin-power
 topics:

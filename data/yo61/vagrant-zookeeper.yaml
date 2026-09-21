@@ -2,7 +2,6 @@
 allow_update_branch: false
 default_branch: master
 description: "Bring up a zookeeper stack in vagrant"
-has_projects: true
 has_wiki: true
 name: vagrant-zookeeper
 topics:

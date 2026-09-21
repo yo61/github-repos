@@ -247,9 +247,25 @@ variable "has_issues" {
 }
 
 variable "has_projects" {
-  description = "Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error."
+  description = <<-EOT
+    Set to true to enable the GitHub Projects features on the repository.
+    Defaults to true, matching GitHub's own behaviour for a repo in an org that
+    permits repository projects.
+
+    `nullable = false` is deliberate and cannot be relaxed. `has_projects` is
+    optional-but-NOT-computed in the provider schema, unlike
+    `vulnerability_alerts` — so there is no representation of "absent" for it and
+    passing null is read as "unset it", which plans as a change rather than
+    leaving the setting alone. A null default was tried and rejected on that
+    evidence; see decisions/2026-09-21-has-projects-default-true.md.
+
+    Consequence of the true default: every repo now sends `has_projects = true`.
+    GitHub errors if that is sent while the org has disabled repository projects
+    (`has_repository_projects: false`), so turning that org setting off would
+    break every apply in this repository. All three orgs currently have it on.
+  EOT
   type        = bool
-  default     = false
+  default     = true
   nullable    = false
 }
 

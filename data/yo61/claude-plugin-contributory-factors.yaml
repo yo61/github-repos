@@ -28,7 +28,6 @@ dependabot_security_updates: true
 description: "Claude Code plugin: replaces 'root cause' thinking with contributory factors analysis (London
   Protocol 2024, Yorkshire Contributory Factors Framework)."
 has_issues: true
-has_projects: true
 has_wiki: true
 name: claude-plugin-contributory-factors
 topics:

@@ -2,7 +2,6 @@
 allow_update_branch: false
 description: "Patterns for using Claude Agent Teams"
 has_issues: true
-has_projects: true
 has_wiki: true
 # The fork inherited upstream's eirwin.github.io URL. Ours, not theirs — but it
 # 404s until GitHub Pages is enabled on this repo (see the `pages` variable).

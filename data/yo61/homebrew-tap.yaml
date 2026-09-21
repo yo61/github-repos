@@ -18,7 +18,6 @@ default_branch_ruleset_dismiss_stale_reviews_on_push: false
 dependabot_security_updates: true
 description: "Homebrew tap for yo61 tools"
 has_issues: true
-has_projects: true
 has_wiki: true
 name: homebrew-tap
 topics:

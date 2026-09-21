@@ -28,7 +28,6 @@ allow_update_branch: false
 dependabot_security_updates: true
 description: "Print GitHub release-asset download stats as a text table or JSON."
 has_issues: true
-has_projects: true
 has_wiki: true
 name: gh-release-stats
 topics:

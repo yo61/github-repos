@@ -27,7 +27,6 @@ allow_update_branch: false
 dependabot_security_updates: true
 description: "Action-based CLI for tracking a job hunt"
 has_issues: true
-has_projects: true
 has_wiki: true
 name: jobhound
 topics:

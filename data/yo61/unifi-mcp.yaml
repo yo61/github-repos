@@ -31,7 +31,6 @@ allow_update_branch: false
 dependabot_security_updates: true
 description: "Model Context Protocol server for UniFi."
 has_issues: true
-has_projects: true
 has_wiki: true
 name: unifi-mcp
 topics:

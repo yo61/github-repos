@@ -28,7 +28,6 @@ dependabot_security_updates: true
 description: "Claude Code plugin: ReportLab-based PDF generation. Programmatic Platypus PDFs (CVs, invoices,
   reports) and a markdown-to-PDF renderer (mistune + Platypus)."
 has_issues: true
-has_projects: true
 has_wiki: true
 name: claude-plugin-reportlab-pdf
 topics:

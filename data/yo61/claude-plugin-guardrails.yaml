@@ -29,7 +29,6 @@ dependabot_security_updates: true
 description: "Claude Code plugin: deterministic PreToolUse guardrails for the Bash tool. Blocks known-wrong
   shell commands and bash-only syntax that breaks under zsh, handing back the correct form."
 has_issues: true
-has_projects: true
 has_wiki: true
 name: claude-plugin-guardrails
 topics:

@@ -8,6 +8,15 @@ Six repos that `check "unmanaged_repos"` had been reporting are now managed:
 
 Applied 2026-09-21: **24 imported, 0 added, 24 changed, 0 destroyed.**
 
+> **Amended the same day.** The `has_projects` decision below was reversed
+> hours later by `decisions/2026-09-21-has-projects-default-true.md`, which moved
+> the module default from `false` to `true`. These six repos, which this record
+> switched off, were switched back on — they declare nothing, so they follow the
+> default. Everything else here stands. The reasoning below is left as written
+> rather than rewritten, because the reversal came from a question this record's
+> own observation prompted: a default overridden identically by 25 files is
+> usually the wrong default.
+
 ## Context
 
 The seven repos had been warning on every plan since `ycst-org-uk` came under
@@ -70,7 +79,9 @@ block.
   is to answer the question, not to adopt the repo.
 - **Projects were switched off on six live repos.** Reversible by declaring
   `has_projects: true`, but the boards, if any held content, are not restored by
-  re-enabling.
+  re-enabling. *(Reversed the same day — see the amendment note above. No boards
+  existed: `GET /repos/{owner}/{repo}/projects` returns 404 on every repo and on
+  the org.)*
 - **`scripts/generate_yo61_configs.sh` was renamed and changed** as part of a
   feature PR rather than its own. It became `generate_import_blocks.sh`: `ORG` is
   now required rather than hardcoded, and the module address applies the

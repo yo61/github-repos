@@ -1,0 +1,17 @@
+---
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "WordPress plugin serving member-only files through PHP so they cannot be downloaded directly."
+has_issues: true
+name: ycst-protected-files
+topics:
+  - wordpress
+  - wordpress-plugin
+  - php
+  - access-control
+visibility: private
+vulnerability_alerts: true

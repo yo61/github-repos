@@ -1,0 +1,18 @@
+---
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "WordPress plugin for the monthly members-only governance report: one post per edition, rendered
+  by a shortcode."
+has_issues: true
+name: ycst-governance-report
+topics:
+  - wordpress
+  - wordpress-plugin
+  - php
+  - governance
+visibility: private
+vulnerability_alerts: true

@@ -65,10 +65,12 @@ written with a bare `builtin_ruleset_names: []`, copying the shape of
 that criterion, first on a new file, and it fired one week after being added —
 which is the evidence that the key really does read as an oversight, since the
 same session that could quote the paywall in a PR description still omitted the
-comment from the YAML. `horopter` and `horopter-internal` remain uncommented;
-`infrastructure.yaml` carries the long version and the other three lean on it,
-so the gap is now visible rather than fixed. Fourteenth trigger of the
-free-tier private-repo criterion.
+comment from the YAML. Closed for the org in PR #106: `horopter` and
+`horopter-internal` were uncommented too, and now carry the same three lines,
+so all four `horopter-dev` files state why the key is empty.
+`infrastructure.yaml` keeps the long version, since it also records the
+declined branch-protection request specific to that repo. Fourteenth trigger of
+the free-tier private-repo criterion.
 
 Also caught: `infrastructure.yaml`'s comment ended "which apply equally to
 horopter and horopter-internal", an enumeration a fourth private repo in the

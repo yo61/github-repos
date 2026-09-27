@@ -1,0 +1,19 @@
+---
+# Empty, not omitted: rulesets are paywalled on a private repo in this
+# free-plan org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-09-21-infrastructure-branch-protection-declined.md.
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "Helm charts for the horopter project."
+has_issues: true
+name: helm-charts
+topics:
+  - helm
+  - helm-charts
+  - kubernetes
+visibility: private
+vulnerability_alerts: true

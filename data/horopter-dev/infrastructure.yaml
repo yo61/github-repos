@@ -5,8 +5,12 @@
 # render a resource the plan accepts and the apply fails on. Branch protection
 # was asked for and declined on those grounds; see
 # decisions/2026-09-21-infrastructure-branch-protection-declined.md for the
-# alternatives, which apply equally to horopter and horopter-internal.
+# alternatives, which apply equally to the other private repos in this org.
 builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
 dependabot_security_updates: true
 description: "Infrastructure definitions for the horopter project."
 has_issues: true

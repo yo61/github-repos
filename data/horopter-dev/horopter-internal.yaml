@@ -1,5 +1,9 @@
 ---
 builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
 dependabot_security_updates: true
 description: "Specs, plans and design docs for the horopter project."
 has_issues: true

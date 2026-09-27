@@ -58,7 +58,24 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-21 — the `has_projects` default (PR #100), which is
+## Last triggered: 2026-09-27 — `horopter-dev/helm-charts` (PR #104). The
+comment-the-platform-limit criterion caught its own first miss: the file was
+written with a bare `builtin_ruleset_names: []`, copying the shape of
+`horopter` and `horopter-internal`, which also carry it bare. Second trigger of
+that criterion, first on a new file, and it fired one week after being added —
+which is the evidence that the key really does read as an oversight, since the
+same session that could quote the paywall in a PR description still omitted the
+comment from the YAML. `horopter` and `horopter-internal` remain uncommented;
+`infrastructure.yaml` carries the long version and the other three lean on it,
+so the gap is now visible rather than fixed. Fourteenth trigger of the
+free-tier private-repo criterion.
+
+Also caught: `infrastructure.yaml`'s comment ended "which apply equally to
+horopter and horopter-internal", an enumeration a fourth private repo in the
+org made incomplete. Rewritten to "the other private repos in this org" so it
+cannot go stale again on the fifth.
+
+## Last triggered (prior): 2026-09-21 — the `has_projects` default (PR #100), which is
 the deviations-only criterion turned on the module instead of on a data file.
 25 of `data/yo61`'s 34 files overrode `default = false` with
 `has_projects: true`; the default moved to `true` and all 25 lines went, leaving
@@ -467,7 +484,18 @@ moving that criterion to its own category if it keeps triggering here.
 ## Source: global `CLAUDE.md` decision-journal rules; the `decisions/`
 convention in this repo.
 
-## Last triggered: 2026-09-21 — `decisions/2026-09-21-horopter-dev-org.md`
+## Last triggered: 2026-09-27 — `decisions/2026-09-27-horopter-dev-admins-team.md`
+(PR #104). The existing-decisions criterion fired before the PR was opened, not
+after: `2026-09-21-horopter-dev-org.md` had accepted "**No `_teams.yaml`.** Sole
+ownership makes admin implicit" as a trade-off six days earlier, and this change
+reverses it. Not an invalidation — that record predicted the reversal would be
+"purely additive and needs no state surgery", and the plan bore it out — but
+without a record amending it the `decisions/` folder would have contradicted the
+config it describes. The `Supersedes` heading names the amendment rather than
+claiming a supersession, matching how `2026-09-21-horopter-dev-org.md` itself
+amended the ycst migration record.
+
+## Last triggered (prior): 2026-09-21 — `decisions/2026-09-21-horopter-dev-org.md`
 logged for the third org, and three stale org-count claims corrected in the same
 PR that made them false: `CLAUDE.md` said the admin bypass covered "both orgs"
 and was "fed to both orgs", and the `local.admin_bypass_actors` comment in

@@ -5,12 +5,12 @@ collaborators:
     - permission: admin
       slug: admins
 dependabot_security_updates: true
-description: "Specs, plans and design docs for the horopter project."
+description: "Helm charts for the horopter project."
 has_issues: true
-name: horopter-internal
+name: helm-charts
 topics:
-  - documentation
-  - design-docs
-  - specifications
+  - helm
+  - helm-charts
+  - kubernetes
 visibility: private
 vulnerability_alerts: true

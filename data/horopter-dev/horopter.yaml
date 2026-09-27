@@ -1,5 +1,9 @@
 ---
 builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
 dependabot_security_updates: true
 description: "System of record for infrastructure change — what changed, when, and to what, as one replayable
   timeline."

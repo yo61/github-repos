@@ -10,6 +10,14 @@ three repos live there.
 | `yo61/horopter-internal` | `horopter-dev/horopter-internal` |
 | — | `horopter-dev/infrastructure` (new) |
 
+> **Amended 2026-09-27.** Two of the trade-offs below no longer describe the
+> org. `horopter-dev/helm-charts` was added as a fourth repo, and the
+> "No `_teams.yaml`" entry was reversed by
+> `decisions/2026-09-27-horopter-dev-admins-team.md`: an `admins` team now
+> holds admin on all four repos. Everything else here stands. The entry is
+> left as written because its prediction held — creating the team applied as
+> 6 added, 3 changed, 0 destroyed, with no state surgery.
+
 The two existing repos were transferred on GitHub out of band and then re-adopted
 into state with **`moved` blocks** — the mechanism
 `decisions/2026-08-13-ycst-org-uk-migration.md` had to abandon. It worked here
@@ -104,7 +112,8 @@ ycst migration's unexpected creates immediately instead of by eye.
   rather than silently ending at two.
 - **No `_teams.yaml`.** Sole ownership makes admin implicit, as on `yo61`. An
   org with no `_teams.yaml` manages no teams, so adding one later is purely
-  additive and needs no state surgery.
+  additive and needs no state surgery. *(Reversed 2026-09-27 — see the
+  amendment note above. The "purely additive" prediction held.)*
 - **`infrastructure` restates `visibility: private`**, which equals the module
   default. Kept as the documented exception every private data file here takes —
   10 of 10 before this one — on the grounds that a repo's visibility is the fact

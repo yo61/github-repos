@@ -3,8 +3,8 @@
 #
 # The empty list is forced by the rulesets API returning 403 on a private repo in a
 # free-plan org. Nothing in the YAML says so, which is why the key has repeatedly
-# read as an oversight. The comment must sit directly above the key, with no blank
-# line between, and cite a `decisions/*.md` path.
+# read as an oversight. The citation may sit in a comment block directly above the
+# key, with no blank line between, or in a trailing comment on the key line itself.
 
 set -euo pipefail
 
@@ -15,7 +15,9 @@ for file in "$@"; do
 
   key=-1
   for i in "${!lines[@]}"; do
-    if [[ ${lines[i]} =~ ^builtin_ruleset_names:[[:space:]]*\[[[:space:]]*\][[:space:]]*$ ]]; then
+    # The trailing-comment branch is required, not cosmetic: without it a key line
+    # carrying any inline comment fails to match, and the file is skipped silently.
+    if [[ ${lines[i]} =~ ^builtin_ruleset_names:[[:space:]]*\[[[:space:]]*\][[:space:]]*(#.*)?$ ]]; then
       key=$i
       break
     fi
@@ -24,14 +26,14 @@ for file in "$@"; do
   # No key, or a non-empty list: the paywall is not what put it there.
   [[ $key -ge 0 ]] || continue
 
-  comment=""
+  comment="${BASH_REMATCH[1]:-}"
   for ((i = key - 1; i >= 0; i--)); do
     [[ ${lines[i]} =~ ^[[:space:]]*# ]] || break
     comment="${lines[i]}${comment}"
   done
 
   if [[ -z "$comment" ]]; then
-    echo "ERROR: $file sets \`builtin_ruleset_names: []\` with no comment above it." >&2
+    echo "ERROR: $file sets \`builtin_ruleset_names: []\` with no comment." >&2
     echo "       Say why the list is empty and cite the decisions/ record." >&2
     status=1
   elif [[ ! "$comment" =~ decisions/[^[:space:]]+\.md ]]; then

@@ -40,6 +40,11 @@ adding them silently.
       preference, the data file says so in a comment and names the record.
       `builtin_ruleset_names: []` is the case that keeps recurring: it reads as
       an oversight, and the paywall that forces it is invisible in the YAML.
+      *(automated for that key: `ruleset-paywall-comment`)* The hook requires a
+      comment directly above the key, with no blank line between, citing a
+      `decisions/*.md` path. It checks for an explanation, not for a policy, so
+      unlike a hook keyed on `visibility` it needs no revision if an org moves
+      off the free plan.
     - When many files override the same module default identically, suspect the
       **default**, not the files. A majority overriding it also makes the
       default undiscoverable from the data, so the config starts teaching the
@@ -58,7 +63,26 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-27 — `horopter-dev/helm-charts` (PR #104). The
+## Last triggered: 2026-09-28 — the first system review promoted the
+comment-the-platform-limit criterion to an automated check
+(`scripts/check_ruleset_paywall_comment.sh`), on the rule that a criterion
+triggered 3+ times should run rather than be listed. Promotion found a backlog
+the manual criterion never had: 14 of the 18 files carrying
+`builtin_ruleset_names: []` were uncommented, across `ycst-org-uk` and `yo61`,
+not just the two `horopter-dev` files known at the time. All 14 now cite
+`decisions/2026-08-10-private-repos-manual-review-gate.md`, the record whose
+decision line established the convention.
+
+Two things the review noted and did **not** act on. The 18 files setting the
+key are exactly the 18 `visibility: private` files — a 1:1 identity that the
+suspect-the-default criterion would normally answer with a computed default in
+`data.tf`, as `security_and_analysis_default` already does. Keeping the
+per-file comments was chosen deliberately over that sweep. Separately,
+`go-udap.yaml` and `kuard.yaml` restate `builtin_ruleset_names:
+["default_branch"]`, which equals the module default and is a deviations-only
+violation still outstanding.
+
+## Last triggered (prior): 2026-09-27 — `horopter-dev/helm-charts` (PR #104). The
 comment-the-platform-limit criterion caught its own first miss: the file was
 written with a bare `builtin_ruleset_names: []`, copying the shape of
 `horopter` and `horopter-internal`, which also carry it bare. Second trigger of

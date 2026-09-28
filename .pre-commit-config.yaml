@@ -53,3 +53,14 @@ repos:
         entry: scripts/check_repo_yaml_name.sh
         language: script
         files: ^data/[^/]+/[^/]+\.yaml$
+      - id: ruleset-paywall-comment
+        name: "Verify builtin_ruleset_names: [] cites the record that forces it"
+        entry: scripts/check_ruleset_paywall_comment.sh
+        language: script
+        files: ^data/[^/]+/[^/]+\.yaml$
+      - id: ruleset-paywall-comment-test
+        name: Test the ruleset-paywall-comment guard against its fixtures
+        entry: scripts/test_check_ruleset_paywall_comment.sh
+        language: script
+        pass_filenames: false
+        files: ^scripts/(test_)?check_ruleset_paywall_comment\.sh$

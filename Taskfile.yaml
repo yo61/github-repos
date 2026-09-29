@@ -2,6 +2,7 @@
 # https://taskfile.dev
 
 version: '3'
+silent: true
 
 set: [errexit, nounset, pipefail]
 
@@ -13,14 +14,12 @@ tasks:
     desc: List available tasks
     cmds:
       - task --list-all
-    silent: true
 
   # backend.tf is a partial config: the http backend reads its address and
   # credentials from the environment. Fail with a usable message rather than
   # letting terraform prompt for a missing address or 401 on a missing key.
   preflight:
     internal: true
-    silent: true
     cmds:
       - |
         if [ -z "${TF_HTTP_ADDRESS:-}" ]; then
@@ -56,7 +55,6 @@ tasks:
   # terraform silently no-ops.
   org-guard:
     internal: true
-    silent: true
     cmds:
       - |
         if [ -n "{{.ORG}}" ] && [ ! -d "data/{{.ORG}}" ]; then

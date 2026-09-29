@@ -10,8 +10,9 @@ vars:
 
 tasks:
   default:
+    desc: List available tasks
     cmds:
-      - task --list
+      - task --list-all
     silent: true
 
   # backend.tf is a partial config: the http backend reads its address and

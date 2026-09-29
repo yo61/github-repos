@@ -64,12 +64,23 @@ tasks:
 
   init:
     desc: Initialise terraform against the Stategraph HTTP backend
+    summary: >-
+      Runs terraform init against the Stategraph HTTP backend. backend.tf is a partial config on purpose
+      — it names no address — so TF_HTTP_ADDRESS and TF_HTTP_PASSWORD must be exported first, the password
+      being the Stategraph API key used as HTTP Basic auth. The preflight guard checks both and prints
+      the exact exports rather than letting terraform prompt for an address or 401 mid-plan.
     deps: [preflight]
     cmds:
       - terraform init
 
   plan:
     desc: Generate a plan file via `terraform plan` (ORG=<org> scopes it to one org)
+    summary: >-
+      Writes a plan to tfplan for apply to consume. ORG=<org> narrows it to one organisation by turning
+      into -target=module.org_<org>, with hyphens converted to underscores. That path is guarded: an unmatched
+      -target is only a soft warning in terraform, so a typo in ORG would otherwise produce an empty plan
+      that reads like "nothing to do". The guard checks the module's data directory exists first — a cheap
+      proxy, not proof, but it catches the typo.
     deps: [preflight, org-guard]
     vars:
       TARGET: '{{if .ORG}}-target=module.org_{{.ORG | replace "-" "_"}}{{end}}'
@@ -78,18 +89,28 @@ tasks:
 
   apply:
     desc: Apply the previously generated plan file
+    summary: >-
+      Applies the plan file tfplan produced by `task plan`, so it applies exactly what was planned rather
+      than re-planning. Run plan first; terraform refuses a saved plan whose state has moved on underneath
+      it.
     deps: [preflight]
     cmds:
       - terraform apply {{.PLAN_FILE}}
 
   state:list:
     desc: List resource instance addresses in state
+    summary: >-
+      Lists every resource instance address in state — the raw addresses, for finding what to look at.
+      state:show narrows it to one repo.
     deps: [preflight]
     cmds:
       - terraform state list
 
   state:show:
     desc: Show all resource instances for one repo (REPO=<name>)
+    summary: >-
+      Filters the state address list down to one repo's instances, and fails with a clear message rather
+      than empty output when REPO names nothing in state. It reports addresses, not attribute values.
     deps: [preflight]
     requires:
       vars: [REPO]
@@ -102,6 +123,10 @@ tasks:
 
   lockfile:sync:
     desc: Sync the lockfile for all supported platforms
+    summary: >-
+      Regenerates .terraform.lock.hcl with provider hashes for all four platforms this repo is used from:
+      linux and darwin, amd64 and arm64. Without every platform present, terraform refuses to run wherever
+      the hash is missing — which is how a lockfile written on a Mac breaks CI.
     cmds:
       - |
         terraform providers lock \

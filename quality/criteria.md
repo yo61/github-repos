@@ -63,7 +63,18 @@ adding them silently.
 ## Source: `CLAUDE.md` conventions; free-tier licensing limits found while
 onboarding private repos.
 
-## Last triggered: 2026-09-28 — the first system review promoted the
+## Last triggered: 2026-10-02 — `yo61/homelab-infrastructure`. Fifteenth
+trigger of the free-tier private-repo criterion, and the first new private file
+since the `ruleset-paywall-comment` hook was added: the file arrived with the
+three-line comment already above `builtin_ruleset_names: []` and the hook
+passed first time. It takes `civicrm-uk-address-cleanup`'s shape — no
+`security_and_analysis`, no `collaborators`, no `create_default_branch` — and
+keeps `visibility: private` as the documented exception. Verified against the
+API after apply rather than against the file: private, empty, issues on, four
+topics, `vulnerability-alerts` 204, `automated-security-fixes` enabled,
+`GET /rulesets` 403. `task plan ORG=yo61` reports no changes.
+
+## Last triggered (prior): 2026-09-28 — the first system review promoted the
 comment-the-platform-limit criterion to an automated check
 (`scripts/check_ruleset_paywall_comment.sh`), on the rule that a criterion
 triggered 3+ times should run rather than be listed. Promotion found a backlog

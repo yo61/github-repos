@@ -1,4 +1,6 @@
 ---
+allow_merge_commit: false
+allow_rebase_merge: false
 # Empty, not omitted: rulesets are paywalled on a private repo in this
 # free-plan org, so declaring any would plan clean and fail mid-apply. See
 # decisions/2026-09-21-infrastructure-branch-protection-declined.md.

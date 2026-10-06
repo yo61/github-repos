@@ -68,3 +68,5 @@ Audited the remaining `lookup(..., null)` pass-throughs in `modules/org`. The ot
 ## Supersedes: none. No prior decision covers merge strategy; `decisions/` was checked before proposing this.
 
 ## Superseded in part: `decisions/2026-09-04-unifictl-rebase-only-merge-buttons.md`, for `unifictl` only. The squash choice still stands for `unifi-mcp` and `claude-skills`, and the `nullable = false` finding below is untouched.
+
+## Superseded in part: `decisions/2026-10-06-squash-only-release-please-repos.md`, for `horopter-dev/horopter`, `horopter-dev/helm-charts` and `claude-plugin-lastlight-pr-gate`: squash is enforced there by disabling the other two merge buttons.

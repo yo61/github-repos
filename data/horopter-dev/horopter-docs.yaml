@@ -1,0 +1,19 @@
+---
+allow_merge_commit: false
+allow_rebase_merge: false
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "Documentation site for Horopter: tutorials, how-to guides, concepts and reference."
+has_issues: true
+name: horopter-docs
+pages:
+  build_type: workflow
+topics:
+  - documentation
+  - github-pages
+  - fumadocs
+visibility: public
+vulnerability_alerts: true

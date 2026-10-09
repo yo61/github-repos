@@ -73,3 +73,5 @@ changelog entries, so squash remains the choice for `unifi-mcp` and
 ## Supersedes: `decisions/2026-08-07-blank-merge-commit-message.md`, for
 `unifictl` only. That decision's `nullable = false` finding and its squash
 choice for the other release-please repos are unaffected.
+
+## Superseded: 2026-10-09 by `decisions/2026-10-09-squash-only-by-default.md`, which makes squash-only the module default for every repo.

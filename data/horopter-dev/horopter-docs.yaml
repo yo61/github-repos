@@ -1,6 +1,4 @@
 ---
-allow_merge_commit: false
-allow_rebase_merge: false
 collaborators:
   teams:
     - permission: admin

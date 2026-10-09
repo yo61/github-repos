@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+archived: true
 default_branch: master
 description: "Vagrant config to deploy a four-node puppet cluster consisting of postgresql, puppetdb,
   puppet master, puppetboard"

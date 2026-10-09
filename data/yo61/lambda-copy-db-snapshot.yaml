@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+archived: true
 default_branch: master
 description: "AWS Lambda function to copy a DB snapshot"
 has_wiki: true

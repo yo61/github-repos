@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+archived: true
 default_branch: master
 description: "Puppet module to install and manage google auth proxy instances with nginx"
 has_wiki: true

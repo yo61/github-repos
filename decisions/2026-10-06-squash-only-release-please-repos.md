@@ -22,3 +22,5 @@
 A finding against the 2026-08-07 record: it gave "release-please regenerates CHANGELOG.md from git history, so hand-edits would be fought on the next release" as the reason not to repair old entries. horopter's hand-curated 0.4.0 section survived the 0.4.1 release unchanged; release-please prepends the new section and leaves earlier ones alone. Repairing old entries is cheaper than that record assumed.
 
 ## Supersedes: `decisions/2026-08-07-blank-merge-commit-message.md` in part, for these three repos: squash becomes enforced rather than practised. Its finding that no merge-commit configuration avoids the duplicates stands.
+
+## Superseded: 2026-10-09 by `decisions/2026-10-09-squash-only-by-default.md`, which makes squash-only the module default for every repo.

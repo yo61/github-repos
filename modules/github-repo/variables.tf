@@ -32,16 +32,16 @@ variable "allow_auto_merge" {
 }
 
 variable "allow_merge_commit" {
-  description = "Set to false to disable merge commits on the repository."
+  description = "Set to true to enable merge commits on the repository. Off by default: every repo squash-merges."
   type        = bool
-  default     = true
+  default     = false
   nullable    = false
 }
 
 variable "allow_rebase_merge" {
-  description = "Set to false to disable rebase merges on the repository."
+  description = "Set to true to enable rebase merges on the repository. Off by default: every repo squash-merges."
   type        = bool
-  default     = true
+  default     = false
   nullable    = false
 }
 

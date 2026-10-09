@@ -1,0 +1,18 @@
+---
+# GitHub creates the first commit, so main exists without a direct push.
+auto_init: true
+# Empty, not omitted: rulesets are paywalled on a private repo in this free-plan
+# org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-08-10-private-repos-manual-review-gate.md.
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "Automation for the yo61 account's repositories, starting with the Renovate workflow that
+  keeps their pins current."
+has_issues: true
+name: infrastructure
+topics:
+  - renovate
+  - automation
+  - dependencies
+visibility: private
+vulnerability_alerts: true

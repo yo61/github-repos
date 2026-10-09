@@ -2,5 +2,8 @@
 # out to it, so without it a local `prek run` fails on any .tf change while CI
 # passes.
 [tools]
-terraform = "1.15"
+# Exact, matching CI's TERRAFORM_VERSION; Renovate moves the pair together.
+terraform = "1.15.8"
+# A range on purpose: CI's copy is pinned beside its checksum and moved by
+# hand, so Renovate is kept off this line (renovate.json5).
 terraform-docs = "0.24"

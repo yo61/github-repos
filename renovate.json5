@@ -1,0 +1,54 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // Two bots update this repository, each owning different pins. Dependabot keeps the pre-commit
+  // hooks, the workflows' action SHAs and the Terraform providers (.github/dependabot.yaml).
+  // Renovate owns the runner image, mise.toml and the annotated *_VERSION values in the
+  // workflows. terraform-docs is manual: CI pins it beside its checksum. enabledManagers keeps
+  // Renovate off everything Dependabot owns; github-actions runs only for runner images.
+  // Renovate runs from yo61/infrastructure's workflow, whose cron is the only schedule; do not
+  // add a `schedule`.
+  extends: ["config:recommended", "customManagers:githubActionsVersions"],
+  enabledManagers: ["github-actions", "mise", "custom.regex"],
+
+  // Policy shared by every repository Renovate updates; keep the copies alike.
+  semanticCommits: "enabled",
+  dependencyDashboard: true,
+  minimumReleaseAge: "7 days",
+  minimumReleaseAgeBehaviour: "timestamp-optional",
+  prHourlyLimit: 0,
+  prConcurrentLimit: 10,
+  osvVulnerabilityAlerts: true,
+  vulnerabilityAlerts: {
+    semanticCommitType: "fix",
+    labels: ["security"],
+  },
+
+  packageRules: [
+    {
+      matchUpdateTypes: ["major"],
+      minimumReleaseAge: "14 days",
+    },
+    {
+      // Action SHAs are Dependabot's; only runs-on images are Renovate's.
+      matchManagers: ["github-actions"],
+      matchDatasources: ["!github-runners"],
+      enabled: false,
+    },
+    {
+      // A range on purpose: CI pins terraform-docs beside its checksum, moved by hand.
+      matchManagers: ["mise"],
+      matchDepNames: ["terraform-docs"],
+      enabled: false,
+    },
+    {
+      // CI's Terraform and mise.toml's move together.
+      matchDepNames: ["hashicorp/terraform", "terraform"],
+      groupName: "terraform",
+    },
+    {
+      matchFileNames: [".github/workflows/**"],
+      semanticCommitScope: "ci",
+    },
+  ],
+}

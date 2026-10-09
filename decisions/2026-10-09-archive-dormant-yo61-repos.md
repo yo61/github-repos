@@ -18,3 +18,22 @@ Put to Robin on 2026-10-09:
 - **Any later change to these data files fails at apply** while the repositories stay archived, so they are left alone.
 
 ## Supersedes: none.
+
+## Amended 2026-10-09: the archived repositories are forgotten, not managed
+
+The first plan after archiving proposed an update to all twelve: archiving had switched
+secret-scanning push protection off on each, and the module's public-repository default wants it
+on. GitHub rejects that write on an archived repository, so every later apply would have failed
+on them. Robin chose to stop managing them: their data files are deleted and their module
+instances removed from state with `terraform state rm`, so GitHub keeps the repositories,
+archived, and Terraform no longer knows them. This is how `python-template-archived` is held, and
+the drift check already skips archived repositories
+(`decisions/2026-08-25-exclude-archived-from-drift-detection.md`).
+
+`removed { lifecycle { destroy = false } }` could not do it: Terraform 1.15 rejects a module
+instance key in `from` ("Module instance keys not allowed"). The state was backed up first
+(serial 94), and the removal ran just before this change merged, so no plan from `main` saw the
+config without the state or the state without the config.
+
+The first record's last trade-off no longer holds: these data files are gone rather than left
+alone. Unarchiving a repository now means unarchiving it in GitHub and importing it again.

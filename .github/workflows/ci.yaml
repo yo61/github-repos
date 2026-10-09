@@ -11,7 +11,7 @@ permissions: {}
 jobs:
   lint:
     name: lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -25,16 +25,23 @@ jobs:
       #
       # terraform_wrapper false: the wrapper shims `terraform` with a script
       # that captures stdout, which the hooks parse.
+      #
+      # Renovate moves TERRAFORM_VERSION with mise.toml's terraform, as one group.
       - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        env:
+          # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.+)$
+          TERRAFORM_VERSION: 1.15.8
         with:
-          terraform_version: 1.15.8
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
 
       # The tarball is verified against a checksum pinned here, not one fetched
       # beside it: a checksum from the same host as the artefact is re-signed by
       # whoever replaces the artefact. This is the same reason the actions above
       # are pinned to commit SHAs. Bump both together — the value comes from
-      # terraform-docs-<version>.sha256sum in the release.
+      # terraform-docs-<version>.sha256sum in the release. Manual: no bot can
+      # write the checksum, so neither Renovate nor Dependabot moves this pair,
+      # and mise.toml's terraform-docs moves with it.
       - name: Install terraform-docs
         env:
           VERSION: v0.24.0
@@ -55,5 +62,8 @@ jobs:
       # repo. The hook falls back to `init -backend=false`, which validates
       # syntax and provider schemas without touching state.
       - uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
+        env:
+          # renovate: datasource=github-releases depName=j178/prek extractVersion=^v(?<version>.+)$
+          PREK_VERSION: 0.5.4
         with:
-          prek-version: 0.4.13
+          prek-version: ${{ env.PREK_VERSION }}

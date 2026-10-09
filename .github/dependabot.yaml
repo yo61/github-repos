@@ -1,12 +1,51 @@
 ---
+# Dependabot keeps the pre-commit hooks, the action SHAs and the Terraform providers. Renovate
+# (renovate.json5) keeps the runner image, CI's Terraform and prek versions and mise.toml's
+# terraform. terraform-docs is manual: CI pins it beside its checksum, which no bot can write.
+# Each pin has one owner.
 version: 2
 updates:
+  # Hook revs are commit SHAs with `# frozen: vX.Y.Z` comments; Dependabot rewrites both.
   - package-ecosystem: "pre-commit"
     directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: "scope"
     groups:
       hooks:
         patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # Actions. Pins are SHAs with version comments; Dependabot rewrites both.
+  # Majors stay outside the group so they arrive singly.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      actions-minor-patch:
+        update-types: ["minor", "patch"]
+
+  # Providers: the root module's .terraform.lock.hcl and each module's constraints.
+  - package-ecosystem: "terraform"
+    directories: ["/", "/modules/*"]
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      providers-minor-patch:
+        update-types: ["minor", "patch"]

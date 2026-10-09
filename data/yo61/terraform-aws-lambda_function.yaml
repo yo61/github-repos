@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+archived: true
 default_branch: master
 description: "Terraform module to create a lambda function"
 has_wiki: true

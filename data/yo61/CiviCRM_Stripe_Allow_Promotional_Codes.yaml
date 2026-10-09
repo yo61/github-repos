@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+archived: true
 description: "Wordpress Plugin to set allow_promotional_codes to true for StripeCheckout payment types
   in CiviCRM."
 has_wiki: true

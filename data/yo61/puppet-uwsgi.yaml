@@ -1,5 +1,6 @@
 ---
 allow_update_branch: false
+archived: true
 default_branch: master
 dependabot_security_updates: true
 description: "Puppet module to manage uWSGI"

@@ -64,6 +64,6 @@ jobs:
       - uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
         env:
           # renovate: datasource=github-releases depName=j178/prek extractVersion=^v(?<version>.+)$
-          PREK_VERSION: 0.5.4
+          PREK_VERSION: 0.5.5
         with:
           prek-version: ${{ env.PREK_VERSION }}

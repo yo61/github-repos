@@ -1,0 +1,20 @@
+---
+# Empty, not omitted: rulesets are paywalled on a private repo in this
+# free-plan org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-09-21-infrastructure-branch-protection-declined.md. The
+# main and v* rulesets come with the flip to public (horopter HOR-15).
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "GitHub Action that records a workflow step as a Horopter change."
+has_issues: true
+name: record-action
+topics:
+  - github-actions
+  - horopter
+  - deployment
+visibility: private
+vulnerability_alerts: true

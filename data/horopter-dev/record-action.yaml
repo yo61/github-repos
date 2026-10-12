@@ -1,4 +1,7 @@
 ---
+# Immutable releases is enabled out of band; the provider cannot manage it. See
+# decisions/2026-10-12-immutable-releases-unmanaged.md.
+#
 # Empty, not omitted: rulesets are paywalled on a private repo in this
 # free-plan org, so declaring any would plan clean and fail mid-apply. See
 # decisions/2026-09-21-infrastructure-branch-protection-declined.md. The

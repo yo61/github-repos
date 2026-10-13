@@ -5,10 +5,17 @@ collaborators:
   teams:
     - permission: admin
       slug: admins
-# Inert while no review is required; kept to match yo61/homebrew-tap, whose
-# publish-bottles.yaml pushes to the bump PR branch before merging. See
-# decisions/2026-08-12-homebrew-tap-dismiss-stale-override.md.
-default_branch_ruleset_dismiss_stale_reviews_on_push: false
+# horopter's release pushes casks straight to main with a token from the
+# horopter-semantic-release-pusher App, which the pull_request rule would
+# refuse. A per-repo list replaces the org default, so the admin role is
+# restated.
+default_branch_ruleset_bypass_actors:
+  - actor_id: 5196299
+    actor_type: Integration
+    bypass_mode: always
+  - actor_id: 5
+    actor_type: RepositoryRole
+    bypass_mode: always
 dependabot_security_updates: true
 description: "Homebrew tap for horopter tools"
 has_issues: true

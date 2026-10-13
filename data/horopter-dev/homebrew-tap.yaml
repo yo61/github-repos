@@ -1,0 +1,23 @@
+---
+allow_auto_merge: true
+allow_update_branch: false
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+# Inert while no review is required; kept to match yo61/homebrew-tap, whose
+# publish-bottles.yaml pushes to the bump PR branch before merging. See
+# decisions/2026-08-12-homebrew-tap-dismiss-stale-override.md.
+default_branch_ruleset_dismiss_stale_reviews_on_push: false
+dependabot_security_updates: true
+description: "Homebrew tap for horopter tools"
+has_issues: true
+has_wiki: true
+name: homebrew-tap
+topics:
+  - homebrew
+  - homebrew-tap
+  - macos
+  - packaging
+visibility: public
+vulnerability_alerts: true

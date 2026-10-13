@@ -1,0 +1,16 @@
+---
+# Empty, not omitted: rulesets are paywalled on a private repo in this
+# free-plan org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-09-21-infrastructure-branch-protection-declined.md. The main
+# ruleset comes with the flip to public (horopter HOR-107).
+builtin_ruleset_names: []
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "Default community health files for horopter-dev"
+has_issues: true
+name: .github
+visibility: private
+vulnerability_alerts: true

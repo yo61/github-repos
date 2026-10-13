@@ -2,11 +2,34 @@
 # Immutable releases is enabled out of band; the provider cannot manage it. See
 # decisions/2026-10-12-immutable-releases-unmanaged.md.
 #
-# Empty, not omitted: rulesets are paywalled on a private repo in this
-# free-plan org, so declaring any would plan clean and fail mid-apply. See
-# decisions/2026-09-21-infrastructure-branch-protection-declined.md. The
-# main and v* rulesets come with the flip to public (horopter HOR-15).
-builtin_ruleset_names: []
+# Release tags: only the release App (horopter-semantic-release-pusher,
+# Integration 5196299) and admins may create, move or delete them (horopter
+# HOR-7). A ruleset naming its own bypass_actors replaces the org default, so
+# the admin role is restated.
+additional_rulesets:
+  release_tags:
+    enforcement: active
+    name: Release tags
+    target: tag
+    conditions:
+      - ref_name:
+          exclude: []
+          include:
+            - refs/tags/v*
+    rules:
+      - creation: true
+        deletion: true
+        non_fast_forward: true
+        required_signatures: false
+        update: true
+        update_allows_fetch_and_merge: false
+    bypass_actors:
+      - actor_id: 5196299
+        actor_type: Integration
+        bypass_mode: always
+      - actor_id: 5
+        actor_type: RepositoryRole
+        bypass_mode: always
 collaborators:
   teams:
     - permission: admin
@@ -19,5 +42,5 @@ topics:
   - github-actions
   - horopter
   - deployment
-visibility: private
+visibility: public
 vulnerability_alerts: true

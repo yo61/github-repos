@@ -16,18 +16,11 @@ default_branch_ruleset_bypass_actors:
   - actor_id: 5
     actor_type: RepositoryRole
     bypass_mode: always
-# Inert while no review is required; kept to match yo61/homebrew-tap, whose
-# publish-bottles.yaml pushes to the bump PR branch before merging. See
-# decisions/2026-08-12-homebrew-tap-dismiss-stale-override.md.
-default_branch_ruleset_dismiss_stale_reviews_on_push: false
 dependabot_security_updates: true
 description: "Homebrew tap for horopter tools"
 has_issues: true
 has_wiki: true
 name: homebrew-tap
-security_and_analysis:
-  secret_scanning: true
-  secret_scanning_push_protection: true
 topics:
   - homebrew
   - homebrew-tap

@@ -1,0 +1,16 @@
+---
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "The Horopter project site, www.horopter.dev"
+has_issues: true
+homepage_url: https://www.horopter.dev
+name: website
+topics:
+  - astro
+  - cloudflare-pages
+  - website
+visibility: public
+vulnerability_alerts: true

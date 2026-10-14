@@ -239,6 +239,7 @@ module "repo" {
   default_branch                   = can(each.value.default_branch) ? each.value.default_branch : null
   delete_branch_on_merge           = can(each.value.delete_branch_on_merge) ? each.value.delete_branch_on_merge : null
   description                      = can(each.value.description) ? each.value.description : null
+  environments                     = can(each.value.environments) ? each.value.environments : null
   has_discussions                  = can(each.value.has_discussions) ? each.value.has_discussions : null
   has_issues                       = can(each.value.has_issues) ? each.value.has_issues : null
   has_projects                     = can(each.value.has_projects) ? each.value.has_projects : null
@@ -285,6 +286,8 @@ No modules.
 | [github_repository.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
 | [github_repository_collaborators.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborators) | resource |
 | [github_repository_dependabot_security_updates.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_dependabot_security_updates) | resource |
+| [github_repository_environment.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment) | resource |
+| [github_repository_environment_deployment_policy.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment_deployment_policy) | resource |
 | [github_repository_pages.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_pages) | resource |
 | [github_repository_ruleset.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_repository_vulnerability_alerts.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_vulnerability_alerts) | resource |
@@ -315,6 +318,7 @@ No modules.
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Automatically delete head branch after a pull request is merged. | `bool` | `true` | no |
 | <a name="input_dependabot_security_updates"></a> [dependabot\_security\_updates](#input\_dependabot\_security\_updates) | Whether Dependabot opens PRs that fix vulnerable dependencies automatically.<br/>Set true/false to manage explicitly; leave null (the default) to leave the<br/>attribute unmanaged so existing repos see no drift. Enabling requires<br/>vulnerability\_alerts to be enabled — the GitHub API rejects this otherwise,<br/>and the module sets a depends\_on to enforce ordering on apply. | `bool` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `null` | no |
+| <a name="input_environments"></a> [environments](#input\_environments) | Deployment environments, keyed by name. Each environment accepts deployments<br/>only from branches matching one of its `deployment_branches` patterns, so a<br/>secret set on it reaches only workflow runs on those branches.<br/><br/>Environment secrets are not managed here; set them outside Terraform so no<br/>secret value enters state. | <pre>map(object({<br/>    deployment_branches = list(string)<br/>  }))</pre> | `{}` | no |
 | <a name="input_has_discussions"></a> [has\_discussions](#input\_has\_discussions) | Set to true to enable GitHub Discussions on the repository. Defaults to false. | `bool` | `false` | no |
 | <a name="input_has_issues"></a> [has\_issues](#input\_has\_issues) | Set to true to enable the GitHub Issues features on the repository. | `bool` | `false` | no |
 | <a name="input_has_projects"></a> [has\_projects](#input\_has\_projects) | Set to true to enable the GitHub Projects features on the repository.<br/>Defaults to true, matching GitHub's own behaviour for a repo in an org that<br/>permits repository projects.<br/><br/>`nullable = false` is deliberate and cannot be relaxed. `has_projects` is<br/>optional-but-NOT-computed in the provider schema, unlike<br/>`vulnerability_alerts` — so there is no representation of "absent" for it and<br/>passing null is read as "unset it", which plans as a change rather than<br/>leaving the setting alone. A null default was tried and rejected on that<br/>evidence; see decisions/2026-09-21-has-projects-default-true.md.<br/><br/>Consequence of the true default: every repo now sends `has_projects = true`.<br/>GitHub errors if that is sent while the org has disabled repository projects<br/>(`has_repository_projects: false`), so turning that org setting off would<br/>break every apply in this repository. All three orgs currently have it on. | `bool` | `true` | no |

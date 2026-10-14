@@ -51,6 +51,7 @@ module "repo" {
   delete_branch_on_merge      = lookup(each.value, "delete_branch_on_merge", null)
   dependabot_security_updates = lookup(each.value, "dependabot_security_updates", null)
   description                 = lookup(each.value, "description", null)
+  environments                = lookup(each.value, "environments", null)
   has_discussions             = lookup(each.value, "has_discussions", null)
   has_issues                  = lookup(each.value, "has_issues", null)
   has_projects                = lookup(each.value, "has_projects", null)

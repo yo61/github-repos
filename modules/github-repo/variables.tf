@@ -232,6 +232,29 @@ variable "description" {
   default     = null
 }
 
+variable "environments" {
+  description = <<-EOT
+    Deployment environments, keyed by name. Each environment accepts deployments
+    only from branches matching one of its `deployment_branches` patterns, so a
+    secret set on it reaches only workflow runs on those branches.
+
+    Environment secrets are not managed here; set them outside Terraform so no
+    secret value enters state.
+  EOT
+  type = map(object({
+    deployment_branches = list(string)
+  }))
+  default  = {}
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for environment in values(var.environments) : length(environment.deployment_branches) > 0
+    ])
+    error_message = "Every environment needs at least one deployment_branches pattern."
+  }
+}
+
 variable "has_discussions" {
   description = "Set to true to enable GitHub Discussions on the repository. Defaults to false."
   type        = bool

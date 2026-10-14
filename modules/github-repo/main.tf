@@ -75,6 +75,33 @@ resource "github_repository_pages" "this" {
   }
 }
 
+resource "github_repository_environment" "this" {
+  for_each = var.environments
+
+  repository  = github_repository.this.name
+  environment = each.key
+
+  deployment_branch_policy {
+    protected_branches     = false
+    custom_branch_policies = true
+  }
+}
+
+resource "github_repository_environment_deployment_policy" "this" {
+  for_each = merge([
+    for name, environment in var.environments : {
+      for pattern in environment.deployment_branches : "${name}:${pattern}" => {
+        environment = name
+        pattern     = pattern
+      }
+    }
+  ]...)
+
+  repository     = github_repository.this.name
+  environment    = github_repository_environment.this[each.value.environment].environment
+  branch_pattern = each.value.pattern
+}
+
 resource "github_repository_vulnerability_alerts" "this" {
   for_each = var.vulnerability_alerts == null ? toset([]) : toset(["this"])
 

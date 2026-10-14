@@ -5,6 +5,14 @@ collaborators:
       slug: admins
 dependabot_security_updates: true
 description: "The Horopter project site, www.horopter.dev"
+# Cloudflare deploy secrets live on these, so only main's workflow runs reach them.
+environments:
+  preview:
+    deployment_branches:
+      - main
+  production:
+    deployment_branches:
+      - main
 has_issues: true
 homepage_url: https://www.horopter.dev
 name: website

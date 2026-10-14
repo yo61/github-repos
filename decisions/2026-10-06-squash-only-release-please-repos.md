@@ -24,3 +24,5 @@ A finding against the 2026-08-07 record: it gave "release-please regenerates CHA
 ## Supersedes: `decisions/2026-08-07-blank-merge-commit-message.md` in part, for these three repos: squash becomes enforced rather than practised. Its finding that no merge-commit configuration avoids the duplicates stands.
 
 ## Superseded: 2026-10-09 by `decisions/2026-10-09-squash-only-by-default.md`, which makes squash-only the module default for every repo.
+
+## Superseded in part: 2026-10-14 by `decisions/2026-10-14-squash-title-is-the-pr-title.md`: the squash subject is the PR title for every PR, not only multi-commit ones.

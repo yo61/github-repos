@@ -415,7 +415,7 @@ variable "squash_merge_commit_message" {
 variable "squash_merge_commit_title" {
   description = "Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true."
   type        = string
-  default     = "COMMIT_OR_PR_TITLE"
+  default     = "PR_TITLE"
   nullable    = false
   validation {
     condition     = var.squash_merge_commit_title == null ? true : contains(["PR_TITLE", "COMMIT_OR_PR_TITLE"], var.squash_merge_commit_title)

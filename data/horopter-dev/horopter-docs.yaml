@@ -9,6 +9,7 @@ has_issues: true
 name: horopter-docs
 pages:
   build_type: workflow
+  cname: docs.horopter.dev
 topics:
   - documentation
   - github-pages

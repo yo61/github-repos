@@ -8,6 +8,7 @@ builtin_ruleset_names: []
 dependabot_security_updates: true
 description: "Playbooks, decisions and knowledge that apply across the yo61, horopter-dev and ycst-org-uk
   organisations. Work is tracked in Linear team GLB."
+has_issues: true
 name: global
 topics:
   - documentation

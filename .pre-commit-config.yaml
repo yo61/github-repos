@@ -46,6 +46,11 @@ repos:
       - id: terraform_fmt
       - id: terraform_docs
 
+  - repo: https://github.com/jdx/jactionlint
+    rev: 1027f0a131ab98bc7e191d995bfa15dbed5bbf8f # frozen: v2.2.0
+    hooks:
+      - id: jactionlint
+
   - repo: local
     hooks:
       - id: repo-yaml-name-check

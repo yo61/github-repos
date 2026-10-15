@@ -1,0 +1,16 @@
+---
+# GitHub creates the first commit, so main exists without a direct push.
+auto_init: true
+# Empty, not omitted: rulesets are paywalled on a private repo in this free-plan
+# org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-08-10-private-repos-manual-review-gate.md.
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "Playbooks, decisions and knowledge that apply across the yo61, horopter-dev and ycst-org-uk
+  organisations. Work is tracked in Linear team GLB."
+name: global
+topics:
+  - documentation
+  - decisions
+visibility: private
+vulnerability_alerts: true

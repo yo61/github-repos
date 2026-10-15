@@ -41,7 +41,7 @@ worktree: horopter-dev/website, ycst-org-uk/board-docs and yo61/claude-skills.
 Recorded in `decisions/2026-10-15-jactionlint-org-wide.md`.
 
 1. Shared docs live here in `yo61/github-repos`; kuard links to them.
-2. v2.2.0, with Phase 1 starting 2026-10-21, when it clears `minimumReleaseAge`.
+2. v2.2.0, with Phase 1 starting now, as an exception to `minimumReleaseAge`.
 3. homebrew-tap stays out: `brew style` brings its own actionlint.
 4. zizmor stays alongside jactionlint; whether one replaces the other is decided after Phase 2.
 5. Forks that track upstream stay out.
@@ -69,7 +69,7 @@ blocked by both pilots and blocks GLB-2.
 
 ## Phase 1: swap (or add) on `profile: correctness`
 
-**Pilot first, from 2026-10-21**: `yo61/python-template` (new repos inherit from it) and
+**Pilot first**: `yo61/python-template` (new repos inherit from it) and
 `yo61/gh-release-stats` (Group B). kuard proved the mise recipe. The remote-hook recipe hasn't
 run anywhere yet.
 

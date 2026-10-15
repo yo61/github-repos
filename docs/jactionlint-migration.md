@@ -30,8 +30,8 @@ Before choosing, run `jactionlint --profile default`. If it reports nothing, set
   prints a `note:` saying so. Phase 1 then fails on findings it was meant to postpone. Replace
   the file with `.github/jactionlint.yaml`.
 - **Release age.** Repositories follow a 7-day `minimumReleaseAge`, and jactionlint releases
-  often. Take a release old enough to clear it. kuard took 2.2.0 at one day old by explicit
-  exception, because no v2 release was old enough at the time.
+  often. Take a release old enough to clear it, unless Robin grants an exception. kuard and
+  this rollout took 2.2.0 at one day old by explicit exception.
 - **Keep the pin's owner.** Every pin needs exactly one updater. Whatever updates the actionlint
   pin today updates the jactionlint pin, so the migration doesn't move ownership between bots.
   Pick the recipe that matches.

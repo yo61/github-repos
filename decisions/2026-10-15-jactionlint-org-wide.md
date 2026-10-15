@@ -2,7 +2,8 @@
 
 Each repository is swapped on `profile: correctness`, then moved to `profile: default` with its
 findings fixed in a second PR, or in one PR when `default` reports nothing. The rollout starts
-on 2026-10-21, once 2.2.0 clears the 7-day `minimumReleaseAge`. Playbook:
+on 2026-10-15 on 2.2.0, released 2026-10-14, as an exception to the 7-day `minimumReleaseAge`
+that Robin granted the same day. Playbook:
 `docs/jactionlint-migration.md`. Repository list and order:
 `docs/superpowers/plans/2026-10-15-jactionlint-rollout.md`.
 
@@ -26,8 +27,9 @@ Put to Robin on 2026-10-15:
 
 - **Stay on `kjanat/actionlint` and finish moving the rhysd repositories to it.** Drop-in, but
   it has no security rules, and mise points away from it.
-- **Start now on 2.2.0 with a release-age exception, or on 2.1.0 from 2026-10-17.** Rejected
-  in favour of waiting until 2026-10-21, so no repository needs an exception.
+- **Wait until 2026-10-21, when 2.2.0 clears `minimumReleaseAge`, or start on 2.1.0 from
+  2026-10-17.** Chosen first, then dropped by Robin on 2026-10-15 in favour of starting now:
+  kuard already runs 2.2.0, and waiting only delays the pilots.
 - **Shared docs in `claude-plugin-dependency-updates` or left in kuard.** Rejected: this repo
   already holds the cross-org decisions.
 - **commitlint-github-action on kuard's mise recipe.** Rejected: it has only Dependabot, which
@@ -45,8 +47,12 @@ which bot owns what.
   Pinned by version, with releases that pass `gh attestation verify`.
 - zizmor stays alongside it, though jactionlint's `default` profile overlaps it. Whether one
   replaces the other is decided after phase 2 shows the overlap.
+- 2.2.0 goes in at one day old, inside the 7-day window meant to catch a bad release. The
+  pilots run first, and a release that turns out bad is reverted by its pin.
 - Up to two PRs per repository instead of one.
 - Repositories on rhysd or kjanat stay there until their turn in the rollout.
 
 ## Supersedes: item 3 of `2026-10-09-yo61-dependency-update-remediation.md` (actionlint from
-`kjanat/actionlint`). Items 1, 2 and 4 stand.
+`kjanat/actionlint`). Items 1, 2 and 4 stand. For horopter-dev, the matching bullet of
+`horopter-internal/decisions/2026-10-09-workflows-run-on-ubuntu-26-04.md` is superseded by
+`horopter-internal/decisions/2026-10-15-workflows-are-linted-with-jactionlint.md`.

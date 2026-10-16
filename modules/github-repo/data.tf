@@ -39,8 +39,16 @@ locals {
   rulesets_file        = "${path.module}/data/rulesets.yaml"
   builtin_rulesets_raw = yamldecode(file(local.rulesets_file))
 
+  # Unset, the ruleset allows all three methods whatever the repo's merge
+  # buttons say; derive the list so the two agree.
+  allowed_merge_methods = compact([
+    var.allow_merge_commit ? "merge" : "",
+    var.allow_squash_merge ? "squash" : "",
+    var.allow_rebase_merge ? "rebase" : "",
+  ])
+
   # Inject variable-driven fields into the default_branch built-in ruleset
-  # (bypass_actors, required_approving_review_count,
+  # (bypass_actors, allowed_merge_methods, required_approving_review_count,
   # dismiss_stale_reviews_on_push). Kept out of the YAML so
   # each org / repo can supply its own without forking the ruleset catalog.
   # Other built-ins (when added) pass through unchanged via the outer merge.
@@ -51,6 +59,7 @@ locals {
       rules = [
         for rule in local.builtin_rulesets_raw["default_branch"].rules : merge(rule, {
           pull_request = merge(rule.pull_request, {
+            allowed_merge_methods           = local.allowed_merge_methods
             dismiss_stale_reviews_on_push   = var.default_branch_ruleset_dismiss_stale_reviews_on_push
             require_last_push_approval      = var.default_branch_ruleset_require_last_push_approval
             required_approving_review_count = var.default_branch_ruleset_required_approving_review_count

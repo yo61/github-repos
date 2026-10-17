@@ -26,7 +26,6 @@ additional_rulesets:
             # so requiring them would block every other PR.
             - context: test
             - context: commitlint
-            - context: zizmor
 allow_auto_merge: true
 collaborators:
   users:

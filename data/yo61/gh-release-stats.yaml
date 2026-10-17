@@ -22,7 +22,6 @@ additional_rulesets:
             - context: test
             - context: lint
             - context: commitlint
-            - context: zizmor
 allow_auto_merge: true
 allow_update_branch: false
 dependabot_security_updates: true

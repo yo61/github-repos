@@ -21,7 +21,6 @@ additional_rulesets:
           required_check:
             - context: "Lint, typecheck, test"
             - context: Conventional Commits
-            - context: zizmor
 allow_auto_merge: true
 allow_update_branch: false
 dependabot_security_updates: true

@@ -1,0 +1,15 @@
+---
+auto_init: true
+builtin_ruleset_names: [] # paywalled (free plan); decisions/2026-08-10-private-repos-manual-review-gate.md
+collaborators:
+  teams:
+    - permission: admin
+      slug: admins
+dependabot_security_updates: true
+description: "Self-hosted Renovate and shared automation for ycst-org-uk repositories"
+has_issues: true
+name: infrastructure
+topics:
+  - automation
+  - renovate
+vulnerability_alerts: true

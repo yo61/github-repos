@@ -3,6 +3,6 @@
 # passes.
 [tools]
 # Exact, matching CI's TERRAFORM_VERSION; Renovate moves the pair together.
-terraform = "1.16.6"
+terraform = "1.17.0"
 # Exact, matching CI's VERSION; manual, moved by hand with CI's checksum.
 terraform-docs = "0.24.0"

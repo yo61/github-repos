@@ -1,0 +1,16 @@
+---
+# Empty, not omitted: rulesets are paywalled on a private repo in this free-plan
+# org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-08-10-private-repos-manual-review-gate.md.
+builtin_ruleset_names: []
+dependabot_security_updates: true
+description: "Terraform for the DNS zones of yo61's domains, hosted on Cloudflare."
+has_issues: true
+name: dns
+topics:
+  - terraform
+  - iac
+  - cloudflare
+  - dns
+visibility: private
+vulnerability_alerts: true

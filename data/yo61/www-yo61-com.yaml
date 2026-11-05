@@ -1,0 +1,19 @@
+---
+dependabot_security_updates: true
+description: "The yo61.com website, www.yo61.com"
+# Cloudflare deploy secrets live on these, so only main's workflow runs reach them.
+environments:
+  preview:
+    deployment_branches:
+      - main
+  production:
+    deployment_branches:
+      - main
+has_issues: true
+homepage_url: https://www.yo61.com
+name: www-yo61-com
+topics:
+  - cloudflare-pages
+  - website
+visibility: public
+vulnerability_alerts: true

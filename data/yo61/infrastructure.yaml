@@ -6,13 +6,17 @@ auto_init: true
 # decisions/2026-08-10-private-repos-manual-review-gate.md.
 builtin_ruleset_names: []
 dependabot_security_updates: true
-description: "Automation for the yo61 account's repositories, starting with the Renovate workflow that
-  keeps their pins current."
+description: "Infrastructure for yo61: the Renovate workflow for its repositories, and Terraform for its
+  domains' DNS and Cloudflare config."
 has_issues: true
 name: infrastructure
 topics:
   - renovate
   - automation
   - dependencies
+  - terraform
+  - iac
+  - cloudflare
+  - dns
 visibility: private
 vulnerability_alerts: true

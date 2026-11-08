@@ -8,5 +8,4 @@ dependabot_security_updates: true
 # deploy secrets are repo-level Actions secrets instead.
 has_issues: true
 name: my-rocketflare-app
-visibility: private
 vulnerability_alerts: true

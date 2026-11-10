@@ -40,14 +40,14 @@ repos:
         args: [-i, '2', -bn, -ci, -sr, -w]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: 443ffdff1cc1663b701ae73e7459029fe883455a # frozen: v1.109.3
+    rev: 4c4437d784e93cacb1f05f1d7bc28e4354fafd20 # frozen: v1.109.4
     hooks:
       - id: terraform_validate
       - id: terraform_fmt
       - id: terraform_docs
 
   - repo: https://github.com/jdx/jactionlint
-    rev: a65ab044e916760429068fe5794b8306abdfcbb9 # frozen: v2.3.0
+    rev: baa8d685e2b27ff5821558c9eeabb2051c1da61b # frozen: v2.4.0
     hooks:
       - id: jactionlint
 

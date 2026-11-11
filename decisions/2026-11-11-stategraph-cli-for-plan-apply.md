@@ -8,7 +8,7 @@ The reason for leaving the CLI was re-tested the same day on CLI 3.2.28, against
 - The first plan failed earlier, with `state schema out of date` (stored configuration at schema 13, server at 19). The cause is the native path itself: `terraform apply` writes state through the HTTP backend but never uploads HCL, so Stategraph's copy of the configuration goes stale. `stategraph import tf --hcl --overwrite -y` refreshed it without touching resources.
 - The two transactions left open by the August failures (`06747cad`, `eeccaa31`) were aborted; none remain open.
 
-The August `/logs/append` 404 fired only on plans with real changes, so an empty plan does not prove it fixed. Robin chose to commit to the switch rather than wait for a real change to prove it first.
+The August `/logs/append` 404 fired only on plans with real changes, so an empty plan does not prove it fixed. After the switch, a no-op `task plan` + `task apply` on `github-repos` committed cleanly (`Apply complete! Resources: 0 added, 0 changed, 0 destroyed.`, transaction `03495457`). Robin chose to commit to the switch rather than wait for a real change to prove it first.
 
 ## Alternatives considered:
 - **Wait for a real change to prove the write path, then switch.** Recommended, and declined in favour of moving now. The first real `task plan` on each state is that proof; if it fails, this decision is reversed rather than worked around.
@@ -22,6 +22,9 @@ The August `/logs/append` 404 fired only on plans with real changes, so an empty
 
 ## Trade-offs accepted:
 - **The CLI's write path has failed before.** stategraph/releases#3 is open, and the `/logs/append` 404 was never filed. A failed plan can leave a transaction open; clean up with `stategraph tx abort --tx <id>`.
+- **`check` results show on apply, not plan.** Verified on this state the same day: `task plan` reported `No changes` with no warnings, while a read-only native `terraform plan` and the subsequent `task apply` both reported `check "unmanaged_repos"` failing for `ycst-org-uk/ycst-wp-dev`. Robin chose to accept this and report it upstream rather than add a native plan alongside.
+- **The plan's cost preview reads like a destroy.** On a no-change plan it lists every resource with `-` and `Resources: 277 → 0 (-277)`; the plan line above it is the one to read.
+- **A plan with `--out` leaves its transaction `previewed` until applied.** An unapplied `task plan` must be aborted (`stategraph tx abort --tx <id>`, the id is in `tfplan.json`); this is where August's pile of previewed transactions came from.
 - **No `ORG=` scoping.** `stategraph tf plan` has no `-target`, only `--force`.
 - **Two ways to reach the state remain.** Native `terraform plan`/`apply` still works over `backend.tf`; it is undocumented as a route for changes, and CLAUDE.md says not to use it. Any write through it takes no lock and leaves the stored configuration stale until the next `import tf --hcl --overwrite`.
 - **Three more environment variables** (`STATEGRAPH_API_BASE`, `STATEGRAPH_API_KEY`, `STATEGRAPH_TENANT_ID`) and a present `stategraph.json` are now required. `stategraph.json` stays gitignored, for the same public-repo reason the backend address is partial.

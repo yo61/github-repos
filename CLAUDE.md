@@ -184,6 +184,16 @@ The Stategraph CLI needs `STATEGRAPH_API_BASE`, `STATEGRAPH_API_KEY` and
 the gitignored `stategraph.json`. `task` refuses to run if any is missing.
 There is no `ORG=` scoping: `stategraph tf plan` has no `-target`.
 
+Three behaviours differ from native terraform:
+
+- **`check` warnings appear in `task apply`, not `task plan`.** `check
+  "unmanaged_repos"` is silent at plan time.
+- **The cost preview lists every resource with `-`**, even on a no-change
+  plan. Read the plan line (`No changes.` / `Plan: …`), not the Costs block.
+- **An unapplied plan leaves its transaction `previewed`.** `tfplan.json`
+  holds only its `tx_id`; abort it with `stategraph tx abort --tx <id>` if you
+  don't apply.
+
 **Stategraph keeps its own copy of the configuration**, and native
 `terraform apply` never updates it. After any write that bypassed the
 Stategraph CLI, `stategraph tf plan` fails with "state schema out of date" or

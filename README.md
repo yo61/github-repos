@@ -63,6 +63,6 @@ Also available: `task init` (terraform, for the state tasks),
 ## Unmanaged repositories
 
 GitHub repos without a local YAML config are tolerated. A `check` block in
-[`modules/org/data.tf`](modules/org/data.tf) surfaces them as warnings during
-`task plan` but does not block apply. To bring one under management, add a
+[`modules/org/data.tf`](modules/org/data.tf) surfaces them as warnings. They
+appear in `task apply`'s output, not `task plan`'s, and do not block apply. To bring one under management, add a
 `data/<ORG>/<repo>.yaml` and import it (see `imports.tf.template`).

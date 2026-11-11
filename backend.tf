@@ -1,4 +1,4 @@
-# Stategraph HTTP backend for the terraform CLI.
+# Stategraph HTTP backend for the native terraform CLI.
 #
 # This is a PARTIAL configuration. `address` is deliberately omitted so this
 # public repository does not publish the state UUID; the http backend reads it
@@ -15,8 +15,9 @@
 # `*_override.tf`) is what stops a fresh clone from silently initialising a
 # LOCAL state file and planning to recreate every managed repository.
 #
-# State locking is not configured (Stategraph exposes no lock endpoint on this
-# backend), so the CLI runs unlocked — safe for solo use only.
+# plan and apply go through `stategraph tf` (see the Taskfile), whose
+# transactions are the concurrency control. This backend has no lock endpoint,
+# so it serves read-only inspection and state surgery only.
 
 terraform {
   backend "http" {

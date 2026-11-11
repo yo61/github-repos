@@ -7,7 +7,7 @@ silent: true
 set: [errexit, nounset, pipefail]
 
 vars:
-  PLAN_FILE: tfplan
+  PLAN_FILE: tfplan.json
 
 tasks:
   default:
@@ -15,10 +15,33 @@ tasks:
     cmds:
       - task --list-all
 
+  # plan and apply go through the Stategraph CLI, which binds to the state named
+  # by the gitignored stategraph.json and reads its endpoint, key and tenant
+  # from the environment.
+  preflight:stategraph:
+    internal: true
+    cmds:
+      - |
+        for var in STATEGRAPH_API_BASE STATEGRAPH_API_KEY STATEGRAPH_TENANT_ID; do
+          if [ -z "$(printenv "$var")" ]; then
+            echo "ERROR: $var is not set." >&2
+            echo "The Stategraph CLI needs STATEGRAPH_API_BASE, STATEGRAPH_API_KEY" >&2
+            echo "and STATEGRAPH_TENANT_ID (see \`stategraph user tenants list\`)." >&2
+            exit 1
+          fi
+        done
+      - |
+        if [ ! -f stategraph.json ]; then
+          echo "ERROR: stategraph.json is missing." >&2
+          echo "Copy stategraph.json.example to stategraph.json and fill in the" >&2
+          echo "state's group_id (\`stategraph states list\` shows it)." >&2
+          exit 1
+        fi
+
   # backend.tf is a partial config: the http backend reads its address and
   # credentials from the environment. Fail with a usable message rather than
   # letting terraform prompt for a missing address or 401 on a missing key.
-  preflight:
+  preflight:http:
     internal: true
     cmds:
       - |
@@ -44,22 +67,9 @@ tasks:
           backend=$(jq -r '.backend.type // "none"' .terraform/terraform.tfstate)
           if [ "$backend" != "http" ]; then
             echo "ERROR: terraform is initialised with the '$backend' backend." >&2
-            echo "Re-run 'task init' with backend_override.tf in place." >&2
+            echo "Re-run 'terraform init -reconfigure' with TF_HTTP_ADDRESS set." >&2
             exit 1
           fi
-        fi
-
-  # An unmatched -target is only a soft warning, and the resulting empty plan
-  # reads like "nothing to do". A data directory doesn't prove module.org_<org>
-  # exists, but it's a cheap proxy that catches a plain typo in ORG before
-  # terraform silently no-ops.
-  org-guard:
-    internal: true
-    cmds:
-      - |
-        if [ -n "{{.ORG}}" ] && [ ! -d "data/{{.ORG}}" ]; then
-          echo "ERROR: no data/{{.ORG}} directory; ORG must name a managed org." >&2
-          exit 1
         fi
 
   init:
@@ -69,40 +79,37 @@ tasks:
       — it names no address — so TF_HTTP_ADDRESS and TF_HTTP_PASSWORD must be exported first, the password
       being the Stategraph API key used as HTTP Basic auth. The preflight guard checks both and prints
       the exact exports rather than letting terraform prompt for an address or 401 mid-plan.
-    deps: [preflight]
+    deps: ['preflight:http']
     cmds:
       - terraform init
 
   plan:
-    desc: Generate a plan file via `terraform plan` (ORG=<org> scopes it to one org)
+    desc: Write a plan to tfplan.json via `stategraph tf plan`
     summary: >-
-      Writes a plan to tfplan for apply to consume. ORG=<org> narrows it to one organisation by turning
-      into -target=module.org_<org>, with hyphens converted to underscores. That path is guarded: an unmatched
-      -target is only a soft warning in terraform, so a typo in ORG would otherwise produce an empty plan
-      that reads like "nothing to do". The guard checks the module's data directory exists first — a cheap
-      proxy, not proof, but it catches the typo.
-    deps: [preflight, org-guard]
-    vars:
-      TARGET: '{{if .ORG}}-target=module.org_{{.ORG | replace "-" "_"}}{{end}}'
+      Plans through the Stategraph CLI, which opens a transaction against the state named in stategraph.json;
+      that transaction is what guards against concurrent changes, which the http backend cannot. The plan
+      is written to tfplan.json for apply to consume. A state last written by plain terraform needs its
+      stored configuration refreshed first with `stategraph import tf --hcl --overwrite`; CLAUDE.md has
+      the full command.
+    deps: ['preflight:stategraph']
     cmds:
-      - terraform plan -out={{.PLAN_FILE}} {{.TARGET}}
+      - stategraph tf plan --out {{.PLAN_FILE}}
 
   apply:
-    desc: Apply the previously generated plan file
+    desc: Apply tfplan.json via `stategraph tf apply`
     summary: >-
-      Applies the plan file tfplan produced by `task plan`, so it applies exactly what was planned rather
-      than re-planning. Run plan first; terraform refuses a saved plan whose state has moved on underneath
-      it.
-    deps: [preflight]
+      Commits the plan written by `task plan`, so it applies exactly what was reviewed. Stategraph refuses
+      a plan whose revision no longer matches the state.
+    deps: ['preflight:stategraph']
     cmds:
-      - terraform apply {{.PLAN_FILE}}
+      - stategraph tf apply {{.PLAN_FILE}}
 
   state:list:
     desc: List resource instance addresses in state
     summary: >-
       Lists every resource instance address in state — the raw addresses, for finding what to look at.
       state:show narrows it to one repo.
-    deps: [preflight]
+    deps: ['preflight:http']
     cmds:
       - terraform state list
 
@@ -111,7 +118,7 @@ tasks:
     summary: >-
       Filters the state address list down to one repo's instances, and fails with a clear message rather
       than empty output when REPO names nothing in state. It reports addresses, not attribute values.
-    deps: [preflight]
+    deps: ['preflight:http']
     requires:
       vars: [REPO]
     cmds:

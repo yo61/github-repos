@@ -1,9 +1,10 @@
 # Managing GitHub Repositories
 
 Terraform code to manage GitHub repository settings across multiple
-organisations. State is held in [stategraph](https://stategraph.dev/), reached
-through its **HTTP backend** using the native `terraform` CLI — Stategraph is a
-state store here, and its CLI does not run `plan` or `apply`.
+organisations. State is held in [Stategraph](https://stategraph.com/). `plan`
+and `apply` run through the `stategraph` CLI, whose transactions guard against
+concurrent changes; read-only state inspection uses the native `terraform` CLI
+over Stategraph's HTTP backend.
 
 ## Repository configuration
 
@@ -25,24 +26,23 @@ A full list of configuration parameters lives in
 
 ## Setup
 
-`backend.tf` is a partial configuration: it declares the backend but omits the
-address, so both the address and the API key come from the environment. They
-live in `.envrc`, loaded by direnv (`direnv allow` once per clone):
+Copy `stategraph.json.example` to `stategraph.json` and fill in the state's
+`group_id` (`stategraph states list` shows it). Then export, e.g. from a
+direnv `.envrc`:
 
 ```bash
-export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<state-uuid>"
+export STATEGRAPH_API_BASE="https://app.stategraph.cloud"
+export STATEGRAPH_API_KEY="<api-key>"
+export STATEGRAPH_TENANT_ID="<tenant-id>"   # stategraph user tenants list
+# Native terraform, for task init and task state:*
+export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<group-id>"
 export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
 ```
 
-`.envrc` is machine-specific and untracked. Any other way of exporting the two
-variables works just as well. `task` fails with a usable message if either is
-missing, rather than prompting for an address or returning a bare 401.
-
-State setup (one-time): copy `stategraph.json.example` to `stategraph.json` and
-fill in your `group_id`, then consult the
-[Stategraph docs](https://stategraph.com/docs) for the `stategraph states create`
-/ `stategraph import tf` invocation that matches your tenant. That is the extent
-of the Stategraph CLI's role — everything below is `terraform`.
+`backend.tf` is a partial HTTP backend configuration that takes its address
+from the environment. It exists so that a plain `terraform` command reaches
+the real state instead of initialising a local one. `task` fails with a usable
+message if any variable is missing.
 
 ## Usage
 
@@ -50,27 +50,19 @@ Drive everything through the [Task](https://taskfile.dev/) wrappers;
 `task --list` shows them all.
 
 ```bash
-task init    # terraform init                 (once per clone)
-task plan    # terraform plan -out tfplan     (read-only)
-task apply   # terraform apply tfplan         (only after reviewing the plan)
+task plan    # stategraph tf plan --out tfplan.json   (opens a transaction)
+task apply   # stategraph tf apply tfplan.json        (only after reviewing the plan)
 ```
 
-`plan` and `apply` are separate steps: `plan` writes a plan file named `tfplan`
-that `apply` then consumes, so what gets applied is what you reviewed.
+`plan` and `apply` are separate steps: `plan` writes `tfplan.json`, which
+`apply` then commits, so what gets applied is what you reviewed.
 
-`plan` takes an optional `ORG` to scope it to one organisation, which must name
-a directory under `data/`:
-
-```bash
-task plan ORG=yo61
-```
-
-Also available: `task state:list`, `task state:show REPO=<name>` and
-`task lockfile:sync`.
+Also available: `task init` (terraform, for the state tasks),
+`task state:list`, `task state:show REPO=<name>` and `task lockfile:sync`.
 
 ## Unmanaged repositories
 
 GitHub repos without a local YAML config are tolerated. A `check` block in
-[`modules/org/data.tf`](modules/org/data.tf) surfaces them as warnings during
-`terraform plan` but does not block apply. To bring one under management, add a
+[`modules/org/data.tf`](modules/org/data.tf) surfaces them as warnings. They
+appear in `task apply`'s output, not `task plan`'s, and do not block apply. To bring one under management, add a
 `data/<ORG>/<repo>.yaml` and import it (see `imports.tf.template`).

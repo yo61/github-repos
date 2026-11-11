@@ -166,15 +166,53 @@ the two only make sense together, per
 
 ## Applying changes
 
-State lives in Stategraph, reached through its **HTTP backend** using the
-native `terraform` CLI. The `stategraph` CLI is not used to plan or apply.
-Drive everything through the `Taskfile` wrappers (`task --list` shows
-everything).
+State lives in Stategraph. **`plan` and `apply` go through the `stategraph`
+CLI**, whose transactions are the only concurrency control this state has:
+the HTTP backend exposes no lock endpoint, so plain `terraform apply` runs
+unlocked. Read-only state inspection and state surgery still use native
+`terraform` over the HTTP backend. Drive everything through the `Taskfile`
+wrappers (`task --list` shows everything). See
+`decisions/2026-11-11-stategraph-cli-for-plan-apply.md`.
+
+```bash
+task plan    # stategraph tf plan --out tfplan.json   (opens a transaction)
+task apply   # stategraph tf apply tfplan.json        (only after reviewing the plan)
+```
+
+The Stategraph CLI needs `STATEGRAPH_API_BASE`, `STATEGRAPH_API_KEY` and
+`STATEGRAPH_TENANT_ID` in the environment, and binds to the state named by
+the gitignored `stategraph.json`. `task` refuses to run if any is missing.
+There is no `ORG=` scoping: `stategraph tf plan` has no `-target`.
+
+Three behaviours differ from native terraform:
+
+- **`check` warnings appear in `task apply`, not `task plan`.** `check
+  "unmanaged_repos"` is silent at plan time (stategraph/releases#5).
+- **The cost preview lists every resource with `-`**, even on a no-change
+  plan (stategraph/releases#6). Read the plan line (`No changes.` /
+  `Plan: …`), not the Costs block.
+- **An unapplied plan leaves its transaction `previewed`.** `tfplan.json`
+  holds only its `tx_id`; abort it with `stategraph tx abort --tx <id>` if you
+  don't apply.
+
+**Stategraph keeps its own copy of the configuration**, and native
+`terraform apply` never updates it. After any write that bypassed the
+Stategraph CLI, `stategraph tf plan` fails with "state schema out of date" or
+plans against stale HCL. Refresh it from the code that is deployed:
+`stategraph import tf --hcl --overwrite -y --tenant "$STATEGRAPH_TENANT_ID"
+--workspace default`. It replaces only the stored configuration, not
+resources; `-y` is needed in a non-interactive shell, where the y/n prompt
+otherwise reads as "no".
+
+### Native terraform over the HTTP backend
 
 `backend.tf` is a partial configuration: it declares the backend but omits
 the address, so both the address and the API key come from the environment.
-They live in `.envrc` in this directory, loaded by direnv (`direnv allow`
-once per clone):
+It is kept so that any `terraform` command reaches the real state rather
+than silently initialising a local one and planning to recreate every repo.
+`task init`, `task state:list` and `task state:show REPO=<name>` use it.
+The two variables live in `.envrc` in this directory, loaded by direnv
+(`direnv allow` once per clone):
 
 ```bash
 export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<group-id>"
@@ -186,31 +224,16 @@ shows both: this state's `id` is `9083e232-…` and appears in no config
 anywhere, while the address uses the `group_id` `29835210-…`. The gitignored
 `stategraph.json` holds exactly that value, so treat it as the address book.
 Getting it wrong does not fail at `task init` — init configures the backend
-from whatever address it is given — so confirm with `task plan`, which
+from whatever address it is given — so confirm with `task state:list`, which
 actually fetches state.
 
 `.envrc` is machine-specific and untracked. Like editor config, it belongs in
 a global ignore (`~/.gitignore`) rather than this repo's `.gitignore`. Any
-other way of exporting the two variables works just as well.
+other way of exporting the variables works just as well.
 
-```bash
-task init    # terraform init                    (once per clone)
-task plan    # terraform plan -out tfplan        (read-only)
-task apply   # terraform apply tfplan            (only after reviewing the plan)
-```
-
-`task plan ORG=<org>` scopes the plan to one org
-(`-target=module.org_<org>`, hyphens become underscores). Targeting skips the
-excluded org's `check "unmanaged_repos"` and its filename/`name:` validation,
-so it is for scoping a known change; unscoped `task plan` stays the default.
-
-Inspect state with `task state:list` (all instance addresses) and
-`task state:show REPO=<name>` (one repo's instances). Always review the plan
-before applying; plan files can contain sensitive values and are gitignored.
-
-`task` refuses to run if either environment variable is missing. The backend
-is unlocked (Stategraph exposes no lock endpoint), so avoid concurrent
-applies.
+Don't `terraform plan`/`apply` through this path: it takes no lock and leaves
+Stategraph's stored configuration stale. Always review the plan before
+applying; plan files can contain sensitive values and are gitignored.
 
 ## Git workflow
 

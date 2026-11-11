@@ -22,8 +22,8 @@ The August `/logs/append` 404 fired only on plans with real changes, so an empty
 
 ## Trade-offs accepted:
 - **The CLI's write path has failed before.** stategraph/releases#3 is open, and the `/logs/append` 404 was never filed. A failed plan can leave a transaction open; clean up with `stategraph tx abort --tx <id>`.
-- **`check` results show on apply, not plan.** Verified on this state the same day: `task plan` reported `No changes` with no warnings, while a read-only native `terraform plan` and the subsequent `task apply` both reported `check "unmanaged_repos"` failing for `ycst-org-uk/ycst-wp-dev`. Robin chose to accept this and report it upstream rather than add a native plan alongside.
-- **The plan's cost preview reads like a destroy.** On a no-change plan it lists every resource with `-` and `Resources: 277 → 0 (-277)`; the plan line above it is the one to read.
+- **`check` results show on apply, not plan.** Verified on this state the same day: `task plan` reported `No changes` with no warnings, while a read-only native `terraform plan` and the subsequent `task apply` both reported `check "unmanaged_repos"` failing for `ycst-org-uk/ycst-wp-dev`. Robin chose to accept this and report it upstream rather than add a native plan alongside; filed as stategraph/releases#5.
+- **The plan's cost preview reads like a destroy.** On a no-change plan it lists every resource with `-` and `Resources: 277 → 0 (-277)`; the plan line above it is the one to read. Filed as stategraph/releases#6.
 - **A plan with `--out` leaves its transaction `previewed` until applied.** An unapplied `task plan` must be aborted (`stategraph tx abort --tx <id>`, the id is in `tfplan.json`); this is where August's pile of previewed transactions came from.
 - **No `ORG=` scoping.** `stategraph tf plan` has no `-target`, only `--force`.
 - **Two ways to reach the state remain.** Native `terraform plan`/`apply` still works over `backend.tf`; it is undocumented as a route for changes, and CLAUDE.md says not to use it. Any write through it takes no lock and leaves the stored configuration stale until the next `import tf --hcl --overwrite`.

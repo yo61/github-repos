@@ -187,9 +187,10 @@ There is no `ORG=` scoping: `stategraph tf plan` has no `-target`.
 Three behaviours differ from native terraform:
 
 - **`check` warnings appear in `task apply`, not `task plan`.** `check
-  "unmanaged_repos"` is silent at plan time.
+  "unmanaged_repos"` is silent at plan time (stategraph/releases#5).
 - **The cost preview lists every resource with `-`**, even on a no-change
-  plan. Read the plan line (`No changes.` / `Plan: …`), not the Costs block.
+  plan (stategraph/releases#6). Read the plan line (`No changes.` /
+  `Plan: …`), not the Costs block.
 - **An unapplied plan leaves its transaction `previewed`.** `tfplan.json`
   holds only its `tx_id`; abort it with `stategraph tx abort --tx <id>` if you
   don't apply.

@@ -38,62 +38,16 @@ tasks:
           exit 1
         fi
 
-  # backend.tf is a partial config: the http backend reads its address and
-  # credentials from the environment. Fail with a usable message rather than
-  # letting terraform prompt for a missing address or 401 on a missing key.
-  preflight:http:
-    internal: true
-    cmds:
-      - |
-        if [ -z "${TF_HTTP_ADDRESS:-}" ]; then
-          echo "ERROR: TF_HTTP_ADDRESS is not set." >&2
-          echo >&2
-          echo "backend.tf omits the state address on purpose. Supply it:" >&2
-          echo "    export TF_HTTP_ADDRESS=\"https://app.stategraph.cloud/\\" >&2
-          echo "        api/v1/states/backend/<state-uuid>\"" >&2
-          exit 1
-        fi
-      - |
-        if [ -z "${TF_HTTP_PASSWORD:-}" ]; then
-          echo "ERROR: TF_HTTP_PASSWORD is not set." >&2
-          echo >&2
-          echo "The backend authenticates with the Stategraph API key as the" >&2
-          echo "HTTP Basic password:" >&2
-          echo "    export TF_HTTP_PASSWORD=\"\$STATEGRAPH_API_KEY\"" >&2
-          exit 1
-        fi
-      - |
-        if [ -f .terraform/terraform.tfstate ] && command -v jq >/dev/null 2>&1; then
-          backend=$(jq -r '.backend.type // "none"' .terraform/terraform.tfstate)
-          if [ "$backend" != "http" ]; then
-            echo "ERROR: terraform is initialised with the '$backend' backend." >&2
-            echo "Re-run 'terraform init -reconfigure' with TF_HTTP_ADDRESS set." >&2
-            exit 1
-          fi
-        fi
-
-  init:
-    desc: Initialise terraform against the Stategraph HTTP backend
-    summary: >-
-      Runs terraform init against the Stategraph HTTP backend. backend.tf is a partial config on purpose
-      — it names no address — so TF_HTTP_ADDRESS and TF_HTTP_PASSWORD must be exported first, the password
-      being the Stategraph API key used as HTTP Basic auth. The preflight guard checks both and prints
-      the exact exports rather than letting terraform prompt for an address or 401 mid-plan.
-    deps: ['preflight:http']
-    cmds:
-      - terraform init
-
   plan:
     desc: Write a plan to tfplan.json via `stategraph tf plan`
     summary: >-
       Plans through the Stategraph CLI, which opens a transaction against the state named in stategraph.json;
-      that transaction is what guards against concurrent changes, which the http backend cannot. The plan
-      is written to tfplan.json for apply to consume. A state last written by plain terraform needs its
-      stored configuration refreshed first with `stategraph import tf --hcl --overwrite`; CLAUDE.md has
-      the full command.
+      that transaction is what guards against concurrent changes. The plan is written to tfplan.json for
+      apply to consume. --skip-costs drops the cost preview, which on these unpriced resources lists every
+      one as removed (stategraph/releases#6).
     deps: ['preflight:stategraph']
     cmds:
-      - stategraph tf plan --out {{.PLAN_FILE}}
+      - stategraph tf plan --skip-costs --out {{.PLAN_FILE}}
 
   apply:
     desc: Apply tfplan.json via `stategraph tf apply`
@@ -104,27 +58,43 @@ tasks:
     cmds:
       - stategraph tf apply {{.PLAN_FILE}}
 
+  # Without --paginate the server returns its default 20 rows and only says so
+  # on stderr. The state id is resolved in cmds, not vars: vars are evaluated
+  # before deps, which would skip the preflight's message.
   state:list:
     desc: List resource instance addresses in state
     summary: >-
       Lists every resource instance address in state — the raw addresses, for finding what to look at.
       state:show narrows it to one repo.
-    deps: ['preflight:http']
+    deps: ['preflight:stategraph']
     cmds:
-      - terraform state list
+      - |
+        state_id=$(stategraph states resolve)
+        stategraph sql query --format simple --paginate \
+          "SELECT address FROM instances WHERE state_id = '$state_id' ORDER BY address"
 
   state:show:
     desc: Show all resource instances for one repo (REPO=<name>)
     summary: >-
       Filters the state address list down to one repo's instances, and fails with a clear message rather
       than empty output when REPO names nothing in state. It reports addresses, not attribute values.
-    deps: ['preflight:http']
+    deps: ['preflight:stategraph']
     requires:
       vars: [REPO]
+    env:
+      REPO: '{{.REPO}}'
     cmds:
       - |
-        terraform state list | grep -F 'module.repo["{{.REPO}}"]' || {
-          echo "No instances in state for repo '{{.REPO}}'." >&2
+        if ! printf '%s' "$REPO" | grep -Eq '^[A-Za-z0-9._-]+$'; then
+          echo "REPO must be a repository name, got '$REPO'." >&2
+          exit 1
+        fi
+      - |
+        state_id=$(stategraph states resolve)
+        stategraph sql query --format simple --paginate \
+          "SELECT address FROM instances WHERE state_id = '$state_id' ORDER BY address" \
+          | grep -F "module.repo[\"$REPO\"]" || {
+          echo "No instances in state for repo '$REPO'." >&2
           exit 1
         }
 

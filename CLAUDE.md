@@ -166,74 +166,68 @@ the two only make sense together, per
 
 ## Applying changes
 
-State lives in Stategraph. **`plan` and `apply` go through the `stategraph`
-CLI**, whose transactions are the only concurrency control this state has:
-the HTTP backend exposes no lock endpoint, so plain `terraform apply` runs
-unlocked. Read-only state inspection and state surgery still use native
-`terraform` over the HTTP backend. Drive everything through the `Taskfile`
-wrappers (`task --list` shows everything). See
+State lives in Stategraph and is reached only through the **`stategraph`
+CLI**, whose transactions are its concurrency control. There is no backend
+block: Stategraph's HTTP backend has no lock endpoint, and native terraform
+against it would bypass both the transactions and Stategraph's stored copy
+of the configuration. Drive everything through the `Taskfile` wrappers
+(`task --list` shows everything). See
 `decisions/2026-11-11-stategraph-cli-for-plan-apply.md`.
 
 ```bash
-task plan    # stategraph tf plan --out tfplan.json   (opens a transaction)
-task apply   # stategraph tf apply tfplan.json        (only after reviewing the plan)
+task plan    # stategraph tf plan --skip-costs --out tfplan.json   (opens a transaction)
+task apply   # stategraph tf apply tfplan.json                     (only after reviewing the plan)
+task state:list                  # every instance address, via stategraph sql
+task state:show REPO=<name>      # one repo's instances
 ```
 
-The Stategraph CLI needs `STATEGRAPH_API_BASE`, `STATEGRAPH_API_KEY` and
+The CLI needs `STATEGRAPH_API_BASE`, `STATEGRAPH_API_KEY` and
 `STATEGRAPH_TENANT_ID` in the environment, and binds to the state named by
-the gitignored `stategraph.json`. `task` refuses to run if any is missing.
-There is no `ORG=` scoping: `stategraph tf plan` has no `-target`.
+the gitignored `stategraph.json`. That file holds the state's **`group_id`**,
+not its `id`: `stategraph states list` shows both, and this state's `id`
+(`9083e232-…`) appears in no config anywhere. `task` refuses to run if any
+variable or the file is missing. No `terraform init` is needed. There is no
+`ORG=` scoping: `stategraph tf plan` has no `-target`.
 
-Three behaviours differ from native terraform:
+**Never run `terraform init`/`plan`/`apply` here.** With no backend block,
+terraform falls back to a local state and plans to create every repo. A clone
+that predates the backend's removal still has `.terraform/terraform.tfstate`
+caching the old `http` backend, and `terraform init` there offers to migrate
+state to a local file; delete that file.
+
+Two behaviours differ from native terraform:
 
 - **`check` warnings appear in `task apply`, not `task plan`.** `check
-  "unmanaged_repos"` is silent at plan time (stategraph/releases#5).
-- **The cost preview lists every resource with `-`**, even on a no-change
-  plan (stategraph/releases#6). Read the plan line (`No changes.` /
-  `Plan: …`), not the Costs block.
+  "unmanaged_repos"` is silent at plan time (stategraph/releases#5). Terraform
+  warnings in general seem to be held back to apply.
 - **An unapplied plan leaves its transaction `previewed`.** `tfplan.json`
   holds only its `tx_id`; abort it with `stategraph tx abort --tx <id>` if you
   don't apply.
 
-**Stategraph keeps its own copy of the configuration**, and native
-`terraform apply` never updates it. After any write that bypassed the
-Stategraph CLI, `stategraph tf plan` fails with "state schema out of date" or
-plans against stale HCL. Refresh it from the code that is deployed:
-`stategraph import tf --hcl --overwrite -y --tenant "$STATEGRAPH_TENANT_ID"
---workspace default`. It replaces only the stored configuration, not
-resources; `-y` is needed in a non-interactive shell, where the y/n prompt
-otherwise reads as "no".
+**Stategraph keeps its own copy of the configuration**, and only its CLI
+updates it. After any write that bypassed it, `stategraph tf plan` fails with
+"state schema out of date" or plans against stale HCL. Refresh it from the
+code that is deployed: `stategraph import tf --hcl --overwrite -y --tenant
+"$STATEGRAPH_TENANT_ID" --workspace default`. It replaces only the stored
+configuration, not resources; `-y` is needed in a non-interactive shell,
+where the y/n prompt otherwise reads as "no".
 
-### Native terraform over the HTTP backend
+### State surgery
 
-`backend.tf` is a partial configuration: it declares the backend but omits
-the address, so both the address and the API key come from the environment.
-It is kept so that any `terraform` command reaches the real state rather
-than silently initialising a local one and planning to recreate every repo.
-`task init`, `task state:list` and `task state:show REPO=<name>` use it.
-The two variables live in `.envrc` in this directory, loaded by direnv
-(`direnv allow` once per clone):
+There is no `terraform state` here; both operations go through the plan:
 
-```bash
-export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<group-id>"
-export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
-```
+- **Move** (`state mv`): `stategraph refactor start` / `step` / `complete`,
+  which writes the `moved` blocks, or a hand-written `moved` block.
+- **Forget** (`state rm`): a `removed` block with
+  `lifecycle { destroy = false }`, then `task plan`.
 
-The UUID is the state's **`group_id`**, not its `id`. `stategraph states list`
-shows both: this state's `id` is `9083e232-…` and appears in no config
-anywhere, while the address uses the `group_id` `29835210-…`. The gitignored
-`stategraph.json` holds exactly that value, so treat it as the address book.
-Getting it wrong does not fail at `task init` — init configures the backend
-from whatever address it is given — so confirm with `task state:list`, which
-actually fetches state.
+A repo **rename** cannot use `moved` (see `quality/criteria.md`): forget the
+old address with `removed` and adopt the new name with an `import` block.
+Native terraform rejected an instance-keyed `removed`
+(`module.org_yo61.module.repo["x"]`) on 2026-07-30; Stategraph's behaviour
+with one is unverified, so read that first plan closely.
 
-`.envrc` is machine-specific and untracked. Like editor config, it belongs in
-a global ignore (`~/.gitignore`) rather than this repo's `.gitignore`. Any
-other way of exporting the variables works just as well.
-
-Don't `terraform plan`/`apply` through this path: it takes no lock and leaves
-Stategraph's stored configuration stale. Always review the plan before
-applying; plan files can contain sensitive values and are gitignored.
+Always review the plan before applying; plan files are gitignored.
 
 ## Git workflow
 

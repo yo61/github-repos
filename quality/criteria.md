@@ -362,17 +362,21 @@ that drifted.
       whether refresh can still reach the object under the ID in state. Do
       not apply either way.
     - An instance address change needs a `moved` block, and its plan must
-      show the move rather than a destroy+create. Under the native CLI
-      against the HTTP backend `moved` is honoured, including across
-      provider aliases and renamed `for_each` keys in one block. The
-      retired `stategraph tf` wrapper ignored it.
+      show the move rather than a destroy+create. Native terraform honoured
+      `moved` across provider aliases and renamed `for_each` keys in one
+      block; the 2.x `stategraph tf` ignored it. The 3.x CLI generates
+      `moved` blocks (`stategraph refactor complete`), but its handling has
+      not been exercised on this state yet, so read the first such plan
+      closely.
     - A `moved` block cannot carry a **rename** when the resource ID is the
       name — as it is for `github_repository` and everything keyed on it.
       Terraform rewrites the address and the provider binding but never the
       ID, so refresh looks for the old name under the new owner, 404s, and
-      plans a create. Use `terraform state rm` plus `import` blocks instead;
-      both work against the HTTP backend. `removed` blocks cannot substitute
-      for the `state rm` — they reject instance keys.
+      plans a create. Forget the old address with a `removed` block
+      (`lifecycle { destroy = false }`) and adopt the new name with an
+      `import` block. Native terraform rejected `removed` on an instance
+      key; whether Stategraph accepts one is unverified, so the first such
+      plan must show a forget and an import, not a destroy.
     - A diff that reappears after being applied is a provider `Read`/`Update`
       asymmetry, not drift. Read the provider source for that field before
       applying it a second time — a field `Update` never sends, on a resource

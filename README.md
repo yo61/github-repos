@@ -1,10 +1,10 @@
 # Managing GitHub Repositories
 
 Terraform code to manage GitHub repository settings across multiple
-organisations. State is held in [Stategraph](https://stategraph.com/). `plan`
-and `apply` run through the `stategraph` CLI, whose transactions guard against
-concurrent changes; read-only state inspection uses the native `terraform` CLI
-over Stategraph's HTTP backend.
+organisations. State is held in [Stategraph](https://stategraph.com/). Plan,
+apply and state inspection all run through the `stategraph` CLI, whose
+transactions guard against concurrent changes. There is no backend block, so
+don't run `terraform plan`/`apply` directly: it would use a local state.
 
 ## Repository configuration
 
@@ -34,15 +34,10 @@ direnv `.envrc`:
 export STATEGRAPH_API_BASE="https://app.stategraph.cloud"
 export STATEGRAPH_API_KEY="<api-key>"
 export STATEGRAPH_TENANT_ID="<tenant-id>"   # stategraph user tenants list
-# Native terraform, for task init and task state:*
-export TF_HTTP_ADDRESS="https://app.stategraph.cloud/api/v1/states/backend/<group-id>"
-export TF_HTTP_PASSWORD="$STATEGRAPH_API_KEY"
 ```
 
-`backend.tf` is a partial HTTP backend configuration that takes its address
-from the environment. It exists so that a plain `terraform` command reaches
-the real state instead of initialising a local one. `task` fails with a usable
-message if any variable is missing.
+`task` fails with a usable message if any variable or `stategraph.json` is
+missing. No `terraform init` is needed.
 
 ## Usage
 
@@ -50,15 +45,15 @@ Drive everything through the [Task](https://taskfile.dev/) wrappers;
 `task --list` shows them all.
 
 ```bash
-task plan    # stategraph tf plan --out tfplan.json   (opens a transaction)
-task apply   # stategraph tf apply tfplan.json        (only after reviewing the plan)
+task plan    # stategraph tf plan --skip-costs --out tfplan.json   (opens a transaction)
+task apply   # stategraph tf apply tfplan.json                     (only after reviewing the plan)
 ```
 
 `plan` and `apply` are separate steps: `plan` writes `tfplan.json`, which
 `apply` then commits, so what gets applied is what you reviewed.
 
-Also available: `task init` (terraform, for the state tasks),
-`task state:list`, `task state:show REPO=<name>` and `task lockfile:sync`.
+Also available: `task state:list`, `task state:show REPO=<name>` and
+`task lockfile:sync`.
 
 ## Unmanaged repositories
 

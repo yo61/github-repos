@@ -62,10 +62,8 @@ jobs:
           chmod +x /usr/local/bin/terraform-docs
           terraform-docs --version
 
-      # terraform_validate would need `terraform init` against the Stategraph
-      # HTTP backend, whose address and API key are deliberately not in the
-      # repo. The hook falls back to `init -backend=false`, which validates
-      # syntax and provider schemas without touching state.
+      # The root declares no backend, so terraform_validate needs no state
+      # address or API key.
       - uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
         env:
           # renovate: datasource=github-releases depName=j178/prek extractVersion=^v(?<version>.+)$

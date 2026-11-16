@@ -1,0 +1,9 @@
+---
+# Empty, not omitted: rulesets are paywalled on a private repo in this free-plan
+# org, so declaring any would plan clean and fail mid-apply. See
+# decisions/2026-08-10-private-repos-manual-review-gate.md.
+builtin_ruleset_names: []
+dependabot_security_updates: true
+has_issues: true
+name: operated-apps-poc
+vulnerability_alerts: true

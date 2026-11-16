@@ -1,0 +1,6 @@
+---
+dependabot_security_updates: true
+has_issues: true
+name: my-rf-app
+visibility: public
+vulnerability_alerts: true
